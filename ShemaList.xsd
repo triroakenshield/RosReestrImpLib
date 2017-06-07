@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="Point">
+		<xs:complexType>
+			<xs:attribute name='Path' type='xs:string' use="optional" />
+			<xs:attribute name='Xattr' type='xs:string' />
+			<xs:attribute name='Yattr' type='xs:string' />
+			<xs:attribute name='Zattr' type='xs:string' use="optional" />
+		</xs:complexType>	
+	</xs:element>
+
+	<xs:element name="LineString">
+		<xs:complexType>			
+            <xs:sequence> 
+                <xs:element ref= "Point"/> 
+            </xs:sequence>
+			<xs:attribute name='Path' type='xs:string' />
+		</xs:complexType>	
+	</xs:element>
+	
+	<xs:element name="Polygon">
+		<xs:complexType>
+            <xs:sequence> 
+                <xs:element ref= "LineString"/> 
+            </xs:sequence>
+		</xs:complexType>	
+	</xs:element>
+	
+	<xs:element name="ShemaList">	
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Shema" maxOccurs="unbounded">
+					<xs:complexType>						
+						<xs:sequence>
+							<xs:element name="Layer" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="FieldRule" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:choice minOccurs="0" maxOccurs="1" >
+													<xs:element ref="Point" /> 
+													<xs:element ref="LineString" /> 
+													<xs:element ref="Polygon" /> 
+												</xs:choice>
+												<xs:attribute name='Name' type='xs:string' />
+												<xs:attribute name='Geom' type='xs:boolean' use="optional"/>
+												<xs:attribute name='Path' type='xs:string' />
+												<xs:attribute name='Attr' type='xs:string' />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								<xs:attribute name='Name' type='xs:string' />
+								<xs:attribute name='LayerPath' type='xs:string' />
+								<xs:attribute name='EntPath' type='xs:string' />									
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name='rootElem' type='xs:string' />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

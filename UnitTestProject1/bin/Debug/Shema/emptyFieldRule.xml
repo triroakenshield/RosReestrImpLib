@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ShemaList>
+	<Shema rootElem="KPT">
+		<Layer Name = "TestLayer1">
+			<FieldRule />
+		</Layer>
+	</Shema>
+</ShemaList>

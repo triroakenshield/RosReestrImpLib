@@ -1,0 +1,726 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RosReestrImp</name>
+    </assembly>
+    <members>
+        <member name="T:RosReestrImp.Data.DataLoadException">
+            <summary>
+            Ошика загрузки данных
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Data.DataLoadException.#ctor">
+            <summary>
+            Ошика загрузки данных
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Data.DataLoadException.#ctor(System.String)">
+            <summary>
+            Ошика загрузки данных
+            </summary>
+            <param name="message"> сообщение </param>
+        </member>
+        <member name="M:RosReestrImp.Data.DataLoadException.#ctor(System.String,System.Exception)">
+            <summary>
+            Ошика загрузки данных
+            </summary>
+            <param name="message"> сообщение </param>
+            <param name="inner"> внешняяя ошибка </param>
+        </member>
+        <member name="T:RosReestrImp.Data.Layer">
+            <summary>
+            Слой данных
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Data.Layer.Table">
+            <summary>
+            Таблица данных (записей)
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Data.Layer.#ctor(RosReestrImp.Rule.LayerRule)">
+            <summary>
+            Создаём слой данных
+            </summary>
+            <param name="nRule"> Правило загрузки данных </param>
+        </member>
+        <member name="M:RosReestrImp.Data.Layer.LoadNamespace(System.Xml.XmlDocument)">
+            <summary>
+            Получаем список Пространств имен xml-файла данных, префикс ns для Пространства имён по умолчанию
+            </summary>
+            <param name="wDoc"> xml-файл с данными </param>
+            <returns> Список Пространств имен </returns>
+        </member>
+        <member name="M:RosReestrImp.Data.Layer.LoadData(System.Xml.XmlDocument)">
+            <summary>
+            Загружаем данные слоя
+            </summary>
+            <param name="wDoc"> xml-файл с данными </param>
+            <returns> Список записей </returns>
+            <exception cref="T:RosReestrImp.Data.DataLoadException"> Ошибка XPath при загрузке слоя </exception>
+        </member>
+        <member name="M:RosReestrImp.Data.Layer.ToList">
+            <summary>
+            Получение таблицы значений слоя (список списков)
+            </summary>
+            <returns> Таблица значений слоя </returns>
+        </member>
+        <member name="M:RosReestrImp.Data.Layer.GetColumnNames">
+            <summary>
+            Получение списка имён полей слоя
+            </summary>
+            <returns> список имён полей слоя </returns>
+        </member>
+        <member name="M:RosReestrImp.Data.Layer.GetCSV">
+            <summary>
+            Получение данных слоя, в виде csv-файла
+            </summary>
+            <returns> csv-файл (в виде строки) </returns>
+        </member>
+        <member name="P:RosReestrImp.Data.Layer.Rule">
+            <summary>
+            Правило загрузки данных
+            </summary>
+        </member>
+        <member name="P:RosReestrImp.Data.Layer.Name">
+            <summary>
+            Имя слоя
+            </summary>
+        </member>
+        <member name="T:RosReestrImp.Geometry.TLineString">
+            <summary>
+            Внутрений формат для представления геометрии - линии
+            </summary>
+        </member>
+        <member name="T:RosReestrImp.Geometry.TGeometry">
+            <summary>
+            Внутрений формат для представления геометрии
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TGeometry.ToWKT2D">
+            <summary>
+            Получение геометрии в виде wkt-строки (2D)
+            </summary>
+            <returns> wkt-строка (2D) </returns>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TGeometry.GetGeometryType">
+            <summary>
+            Получение типа геометрии
+            </summary>
+            <returns> TGeometry.GeometryType </returns>
+        </member>
+        <member name="T:RosReestrImp.Geometry.TGeometry.GeometryType">
+            <summary>
+            Тип геометрии: точка (Point), линия (LineString), полигон (Polygon)
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TGeometry.GeometryType.No">
+            <summary>
+            Отсутствует
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TGeometry.GeometryType.Point">
+            <summary>
+            Точка
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TGeometry.GeometryType.LineString">
+            <summary>
+            Линия
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TGeometry.GeometryType.Polygon">
+            <summary>
+            Полигон
+            </summary>
+        </member>
+        <member name="T:RosReestrImp.Geometry.TGeometry.MyPoint">
+            <summary>
+            Структура для храниния координат точки
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TGeometry.MyPoint.X">
+            <summary>
+            Координата X
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TGeometry.MyPoint.Y">
+            <summary>
+            Координата Y
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TGeometry.MyPoint.Z">
+            <summary>
+            Координата Z
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TGeometry.MyPoint.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Создание 3D точки
+            </summary>
+            <param name="nX"> Координата X </param>
+            <param name="nY"> Координата Y </param>
+            <param name="nZ"> Координата Z </param>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TGeometry.MyPoint.#ctor(System.Double,System.Double)">
+            <summary>
+            Создание 2D точки (Z = 0)
+            </summary>
+            <param name="nX"> Координата X </param>
+            <param name="nY"> Координата Y </param>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TGeometry.MyPoint.#ctor(RosReestrImp.Geometry.TGeometry.MyPoint)">
+            <summary>
+            Копирование точки
+            </summary>
+            <param name="op"> исходная точка </param>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TLineString.Coords">
+            <summary>
+            Список координат
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TLineString.#ctor(System.Collections.Generic.List{RosReestrImp.Geometry.TGeometry.MyPoint})">
+            <summary>
+            Создание линии из списка координат
+            </summary>
+            <param name="nCoords"> Список координат </param>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TLineString.#ctor(System.Collections.Generic.List{RosReestrImp.Geometry.TPoint})">
+            <summary>
+            Создание линии из списка точек
+            </summary>
+            <param name="nCoords"> Список точек </param>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TLineString.ToWKT2D">
+            <summary>
+            Получение геометрии в виде wkt-строки (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0])  
+            </summary>
+            <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TLineString.GetGeometryType">
+            <summary>
+            Тип геометрии, всегда возвращает - TGeometry.GeometryType.LineString
+            </summary>
+            <returns> TGeometry.GeometryType.LineString </returns>
+        </member>
+        <member name="T:RosReestrImp.Geometry.TPolygon">
+            <summary>
+            Внутрений формат для представления геометрии - полигона
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TPolygon.Rings">
+            <summary>
+            Список замкнутых контуров - колец
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TPolygon.#ctor(System.Collections.Generic.List{RosReestrImp.Geometry.TLineString})">
+            <summary>
+            Создание полигона
+            </summary>
+            <param name="nRings"> Список контуров </param>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TPolygon.ToWKT2D">
+            <summary>
+            Получение геометрии в виде wkt-строки (2D) - Polygon((x0 y0, x1 y1, ..., xn yn, x0 y0), ..., (...))
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TPolygon.GetGeometryType">
+            <summary>
+            Тип геометрии, всегда возвращает - TGeometry.GeometryType.Polygon
+            </summary>
+            <returns> TGeometry.GeometryType.Polygon </returns>
+        </member>
+        <member name="T:RosReestrImp.Data.MyRecord">
+            <summary>
+            Запись данных
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Data.MyRecord.FileldList">
+            <summary>
+            Список полей
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Data.MyRecord.GetGeometry">
+            <summary>
+            Получение геометрии записи
+            </summary>
+            <returns> Геометрия </returns>
+        </member>
+        <member name="M:RosReestrImp.Data.MyRecord.SearchField(System.String)">
+            <summary>
+            Поиск значения поля, по его имени
+            </summary>
+            <param name="fname"> Имя поля </param>
+            <returns> Значение поля </returns>
+        </member>
+        <member name="M:RosReestrImp.Data.MyRecord.ToList">
+            <summary>
+            Получение записи в виде списка значений (строк)
+            </summary>
+            <returns> Список значений </returns>
+        </member>
+        <member name="M:RosReestrImp.Data.MyRecord.ToString">
+            <summary>
+            Получение записи в виде строки, разделённой ";"
+            </summary>
+            <returns> строка с разделителем - ";" </returns>
+        </member>
+        <member name="P:RosReestrImp.Data.MyRecord.Rule">
+            <summary>
+            Правило загрузки данных
+            </summary>
+        </member>
+        <member name="T:RosReestrImp.MyCommands">
+            <summary>
+            Команды для AutoCAD Civil 3D
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.CreateODTable(RosReestrImp.Rule.LayerRule)">
+            <summary>
+            Создаём таблицу ObjectData.
+            </summary>
+            <param name="wRule"> LayerRule как источник описания таблицы </param>
+            <returns> ObjectData.Table </returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.ConvertPoint2d(RosReestrImp.Geometry.TGeometry.MyPoint)">
+            <summary>
+            Создаём Point2d из Geometry.TGeometry.MyPoint
+            </summary>
+            <param name="wp"> Geometry.TGeometry.MyPoint </param>
+            <returns> Point2d </returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.ConvertLineString(RosReestrImp.Geometry.TLineString)">
+            <summary>
+            Создаём MPolygonLoop из Geometry.TLineString
+            </summary>
+            <param name="wLine"></param>
+            <returns> MPolygonLoop </returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.ConvertPolygon(RosReestrImp.Geometry.TPolygon)">
+            <summary>
+            Создаём MPolygonLoopCollection из Geometry.TPolygon
+            </summary>
+            <param name="wPoly"> Geometry.TPolygon </param>
+            <returns> MPolygonLoopCollection </returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.MakePoint(RosReestrImp.Geometry.TPoint)">
+            <summary>
+            Создаём DBPoint из Geometry.TPoint 
+            </summary>
+            <param name="wp"> Geometry.TPoint </param>
+            <returns> DBPoint </returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.MakePolyLine(RosReestrImp.Geometry.TLineString)">
+            <summary>
+            Создаём Polyline из Geometry.TLineString
+            </summary>
+            <param name="wl"> Geometry.TLineString </param>
+            <returns> Polyline </returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.MakePolygon(RosReestrImp.Geometry.TPolygon)">
+            <summary>
+            Создаём MPolygon из Geometry.TPolygon
+            </summary>
+            <param name="wp"> Geometry.TPolygon </param>
+            <returns> MPolygon </returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.AddAttr(Autodesk.AutoCAD.DatabaseServices.ObjectId,RosReestrImp.Data.MyRecord,Autodesk.Gis.Map.ObjectData.Table)">
+            <summary>
+            Добавляем ObjectData-атрибуты к примитиву чертежа
+            </summary>
+            <param name="wid"> ObjectId примитива </param>
+            <param name="wr"> Данные атрибутов </param>
+            <param name="wTbl"> Таблица ObjectData </param>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.MakeGeometry(RosReestrImp.Geometry.TGeometry)">
+            <summary>
+            Создаём AutoCAD-геометрию из TGeometry
+            </summary>
+            <param name="wg"> геометрия </param>
+            <returns></returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.DrawEntity(System.Collections.Generic.List{Autodesk.AutoCAD.DatabaseServices.Entity})">
+            <summary>
+            Добавляем примитивы в БД чертежа
+            </summary>
+            <param name="wEntlist"> список примитивов </param>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.DrawEntity(Autodesk.AutoCAD.DatabaseServices.Entity)">
+            <summary>
+            Добавляем примитив в БД чертежа
+            </summary>
+            <param name="ent"> примитив </param>
+            <returns></returns>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.DrawLayer(RosReestrImp.Data.Layer)">
+            <summary>
+            Рисуем слой
+            </summary>
+            <param name="wl"> слой </param>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.ImportXML">
+            <summary>
+            Импорт xml росреестра, используется файл правил - rule.xml
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.MyCommands.ImportXMLwithRule">
+            <summary>
+            Импорт xml росреестра, с запросом файла правил
+            </summary>
+        </member>
+        <member name="T:RosReestrImp.Rule.FieldRule">
+            <summary>
+            Описание поля слоя
+            элемент FieldRule
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.FName">
+            <summary>
+            Имя поля
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.FPath">
+            <summary>
+            Путь к данным
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.FAttr">
+            <summary>
+            Имя атрибута-источника
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.IsGeom">
+            <summary>
+            Является ли поле геометрией
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Rule.FieldRule.GetElAttr(System.Xml.XmlElement,System.String)">
+            <summary>
+            Получение значения атрибута, возвращает string.Empty если атрибута нет
+            </summary>
+            <param name="wEl"> xml-элемент </param>
+            <param name="AttrName"> имя атрибута </param>
+            <returns></returns>
+        </member>
+        <member name="M:RosReestrImp.Rule.FieldRule.LoadGeomRule(System.Xml.XmlElement)">
+            <summary>
+            Загрузка описания геометрии
+            </summary>
+            <param name="wEl"> Описание геометрии </param>
+        </member>
+        <member name="M:RosReestrImp.Rule.FieldRule.#ctor(System.Xml.XmlElement)">
+            <summary>
+            Создание правила
+            </summary>
+            <param name="wEl"> Описание правил </param>
+        </member>
+        <member name="M:RosReestrImp.Rule.FieldRule.GetGeomType">
+            <summary>
+            Получение типа геометрии поля
+            </summary>
+            <returns> тип геометрии </returns>
+        </member>
+        <member name="M:RosReestrImp.Rule.FieldRule.LoadPoint(System.Xml.XmlNode,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Загрузка данных точки
+            </summary>
+            <param name="wNode"> Узел с данными </param>
+            <param name="wNM"> Список пространств имён файла данных </param>
+            <returns> точка </returns>
+            <exception cref="T:RosReestrImp.Data.DataLoadException"> Ошибка чтения координат точки - отрицательные координаты </exception>
+            <exception cref="T:RosReestrImp.Data.DataLoadException"> Ошибка XPath в Point </exception>
+        </member>
+        <member name="M:RosReestrImp.Rule.FieldRule.LoadLineString(System.Xml.XmlNode,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Загрузка данных линии
+            </summary>
+            <param name="wNode"> Узел с данными </param>
+            <param name="wNM"> Список пространств имён файла данных </param>
+            <returns> Линия </returns>
+            <exception cref="T:RosReestrImp.Data.DataLoadException"> Ошибка XPath в LineString </exception>
+        </member>
+        <member name="M:RosReestrImp.Rule.FieldRule.LoadPolygon(System.Xml.XmlNode,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Загрузка данных полигона
+            </summary>
+            <param name="wNode"> Узел с данными </param>
+            <param name="wNM"> Список пространств имён файла данных </param>
+            <returns> Полигон </returns>
+            <exception cref="T:RosReestrImp.Data.DataLoadException"> Ошибка XPath в Polygon </exception>
+        </member>
+        <member name="M:RosReestrImp.Rule.FieldRule.LoadGeometry(System.Xml.XmlNode,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Загрузка данных геометрии
+            </summary>
+            <param name="wNode"> Узел с данными </param>
+            <param name="wNM"> Список пространств имён файла данных </param>
+            <returns> Геометрия </returns>
+        </member>
+        <member name="T:RosReestrImp.Rule.FieldRule.GeomRule">
+            <summary>
+            Описание геометрии
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.GeomRule.LineStringPath">
+            <summary>
+            Путь к данным линии
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.GeomRule.PointPath">
+            <summary>
+            Путь к данным точки
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.GeomRule.XPath">
+            <summary>
+            Путь к координате X
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.GeomRule.YPath">
+            <summary>
+            Путь к координате Y
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.FieldRule.GeomRule.Type">
+            <summary>
+            Тип геометрии
+            </summary>
+        </member>
+        <member name="T:RosReestrImp.Data.FieldValue">
+            <summary>
+            Данные поля
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Data.FieldValue._Rule">
+            <summary>
+            Правило поля
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Data.FieldValue.Value">
+            <summary>
+            Значение поля
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Data.FieldValue.#ctor(RosReestrImp.Rule.FieldRule)">
+            <summary>
+            Создание значения поля
+            </summary>
+            <param name="nRule"> правило </param>
+        </member>
+        <member name="M:RosReestrImp.Data.FieldValue.#ctor(RosReestrImp.Rule.FieldRule,System.Object)">
+            <summary>
+            Создание значения поля
+            </summary>
+            <param name="nRule"> правило </param>
+            <param name="nValue"> значение </param>
+        </member>
+        <member name="M:RosReestrImp.Data.FieldValue.LoadData(System.Xml.XmlNode,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Загрузка данных поля
+            </summary>
+            <param name="wNode"> Узел с данными </param>
+            <param name="wNM"> Список пространств имён файла данных </param>
+            <exception cref="T:RosReestrImp.Data.DataLoadException"> Ошибка XPath при загрузке поля </exception>
+        </member>
+        <member name="M:RosReestrImp.Data.FieldValue.GetString">
+            <summary>
+            Получение значения поля, в виде строки
+            </summary>
+            <returns> значение поля в виде строки </returns>
+        </member>
+        <member name="P:RosReestrImp.Data.FieldValue.Rule">
+            <summary>
+            Правило загрузки данных
+            </summary>
+        </member>
+        <member name="P:RosReestrImp.Data.FieldValue.IsGeom">
+            <summary>
+            Является ли поле геометрией
+            </summary>
+        </member>
+        <member name="T:RosReestrImp.Rule.LayerRule">
+            <summary>
+            Правила слоя,
+            элемент Layer 
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.LayerRule.LName">
+            <summary>
+            Имя слоя, аттрибут Name 
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.LayerRule.LayerPath">
+            <summary>
+            Путь слоя, аттрибут LayerPath
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.LayerRule.Entpath">
+            <summary>
+            Путь элементов слоя, аттрибут EntPath
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.LayerRule.FieldList">
+            <summary>
+             Список полей слоя
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Rule.LayerRule.GetColumnNames">
+            <summary>
+            Получение списка имён полей слоя
+            </summary>
+            <returns> список имён полей слоя </returns>
+        </member>
+        <member name="T:RosReestrImp.Rule.RuleLoadException">
+            <summary>
+            Ошибка загрузки схемы
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleLoadException.#ctor">
+            <summary>
+            Ошибка загрузки схемы
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleLoadException.#ctor(System.String)">
+            <summary>
+            Ошибка загрузки схемы
+            </summary>
+            <param name="message"> сообщение </param>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleLoadException.#ctor(System.String,System.Exception)">
+            <summary>
+            Ошибка загрузки схемы
+            </summary>
+            <param name="message"> сообщение </param>
+            <param name="inner"> внешняяя ошибка </param>
+        </member>
+        <member name="T:RosReestrImp.Rule.RuleManager">
+            <summary>
+            Менеджер правил
+            загружает xml-файл правил (корневой элемент - ShemaList)
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.RuleManager._ShemaList">
+            <summary>
+            Список схем
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleManager.#ctor(System.Xml.XmlDocument)">
+            <summary>
+            Конструктор
+            </summary>
+            <param name="wDoc"> xml-файл правил </param>
+            <exception cref="T:RosReestrImp.Rule.RuleLoadException"> Ошибка xml-файла правил </exception>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleManager.LoadXML(System.String)">
+            <summary>
+            Загрузка xml-файла
+            </summary>
+            <param name="filename"> имя файла </param>
+            <returns> XmlDocument </returns>
+            <exception cref="T:RosReestrImp.Rule.RuleLoadException"> Ошибка открытия xml-файла </exception>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleManager.#ctor(System.String)">
+            <summary>
+            Конструктор
+            </summary>
+            <param name="filename"> xml-файл правил </param>
+            <exception cref="T:RosReestrImp.Rule.RuleLoadException"> Ошибка xml-файла правил </exception>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleManager.FindShema(System.String)">
+            <summary>
+            Поиск схемы по имени
+            </summary>
+            <param name="DocName"> имя схемы </param>
+            <returns> Схема </returns>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleManager.LoadData(System.String)">
+            <summary>
+            Загрузка данных из файла
+            </summary>
+            <param name="filename"> xml-файл с данными </param>
+            <returns> Список данных слоёв </returns>
+        </member>
+        <member name="M:RosReestrImp.Rule.RuleManager.LoadData(System.Xml.XmlDocument)">
+            <summary>
+            Загрузка данных из файла
+            </summary>
+            <param name="wDoc"> xml-файл с данными </param>
+            <returns> Список данных слоёв </returns>
+        </member>
+        <member name="T:RosReestrImp.Rule.ShemaRule">
+            <summary>
+            Правила схемы, элемент Shema
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.ShemaRule._rootElem">
+            <summary>
+            Имя схемы
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Rule.ShemaRule._LayerList">
+            <summary>
+            Список слоёв (правил)
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Rule.ShemaRule.#ctor(System.Xml.XmlElement)">
+            <summary>
+            Загружаем правила схемы
+            </summary>
+            <param name="wEl"> Элемент Shema xml-файла правил </param>
+            <exception cref="T:RosReestrImp.Rule.RuleLoadException"> Ошибка xml-файла правил </exception>
+        </member>
+        <member name="M:RosReestrImp.Rule.ShemaRule.LoadData(System.Xml.XmlDocument,RosReestrImp.Rule.LayerRule)">
+            <summary>
+            Загружаем данные слоя
+            </summary>
+            <param name="wDoc"> xml-файл с данными </param>
+            <param name="wRule"> правила слоя </param>
+            <returns></returns>
+        </member>
+        <member name="M:RosReestrImp.Rule.ShemaRule.LoadData(System.Xml.XmlDocument)">
+            <summary>
+            Загружаем данные схемы
+            </summary>
+            <param name="wDoc"> xml-файл с данными </param>
+            <returns></returns>
+        </member>
+        <member name="T:RosReestrImp.Geometry.TPoint">
+            <summary>
+            Внутрений формат для представления геометрии - точки
+            </summary>
+        </member>
+        <member name="F:RosReestrImp.Geometry.TPoint.Coord">
+            <summary>
+            Координаты точки (MyPoint)
+            </summary>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TPoint.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Создание 3D точки
+            </summary>
+            <param name="nX"> Координата X </param>
+            <param name="nY"> Координата Y </param>
+            <param name="nZ"> Координата Z </param>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TPoint.#ctor(System.Double,System.Double)">
+            <summary>
+            Создание 2D точки (Z = 0)
+            </summary>
+            <param name="nX"> Координата X </param>
+            <param name="nY"> Координата Y </param>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TPoint.ToWKT2D">
+            <summary>
+            Получение геометрии в виде wkt-строки (2D) - POINT(X Y)
+            </summary>
+            <returns> wkt-строка (2D) - POINT(X Y) </returns>
+        </member>
+        <member name="M:RosReestrImp.Geometry.TPoint.GetGeometryType">
+            <summary>
+            Тип геометрии, всегда возвращает - TGeometry.GeometryType.Point
+            </summary>
+            <returns> TGeometry.GeometryType.Point </returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ShemaList>
+	<Shema rootElem="KPT">
+		<Layer Name = "TestLayer12" LayerPath="//ns:Zones" EntPath="ns:Zone">
+			<FieldRule Name="geom" Geom="true" Path=""> 
+		 	 <Polygon>
+			  <LineString Path="ns:EntitySpatial/ns3:SpatialElement">
+			   <Point Path="ns3:SpelementUnit/ns3:Ordinate" Xattr="@Y" Yattr="@X"/>
+			  </LineString>			
+			 </Polygon> 
+			</FieldRule> 
+			<FieldRule Name="AccountNumber" Path="ns:AccountNumber/text()" Attr=""/>
+		</Layer>			
+	</Shema>	
+	<Shema rootElem="Region_Cadastr" >	
+		<Layer Name = "TestLayer1" LayerPath="//ns:Parcels" EntPath="ns:Parcel">
+			<FieldRule Name="geom" Geom="true" Path=""> 
+		 	 <Polygon>
+			  <LineString Path="Entity_Spatial/Spatial_Element">
+			   <Point Path="Spelement_Unit/Ordinate"  Xattr="@X" Yattr="@Y"/>
+			  </LineString>			
+			 </Polygon> 
+			</FieldRule>
+			<FieldRule Name="CadastralNumber" Path="" Attr="CadastralNumber"/>		
+		</Layer>
+	</Shema>		
+</ShemaList>
