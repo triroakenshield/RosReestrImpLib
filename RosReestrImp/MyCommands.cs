@@ -246,7 +246,7 @@ namespace RosReestrImp
             Autodesk.Gis.Map.ObjectData.Table wTbl = CreateODTable(wl._Rule);
             ObjectId wid;
             Entity wEnt;
-            Geometry.TGeometry gж
+            Geometry.TGeometry g;
             foreach (Data.MyRecord wr in wl.Table)
             {
                 g = wr.GetGeometry();
