@@ -143,12 +143,12 @@ namespace RosReestrImp
         /// <param name="wTbl"> Таблица ObjectData </param>
         public void AddAttr(ObjectId wid, Data.MyRecord wr, Autodesk.Gis.Map.ObjectData.Table wTbl)
         {
-            AppServ.Document acDoc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            AppServ.Document acDoc = AppServ.Application.DocumentManager.MdiActiveDocument;
             using (AppServ.DocumentLock acLckDoc = acDoc.LockDocument())
             {
                 using (Transaction acTrans = acDoc.Database.TransactionManager.StartTransaction())
                 {
-                    using (Record odRecord = Autodesk.Gis.Map.ObjectData.Record.Create())
+                    using (Record odRecord = Record.Create())
                     {
                         wTbl.InitRecord(odRecord);
                         FieldDefinition fdef;
@@ -165,8 +165,7 @@ namespace RosReestrImp
                                 }
                             }
                         }
-                        DBObject dbObj = acTrans.GetObject(wid, Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
-                        wTbl.AddRecord(odRecord, dbObj);
+                        wTbl.AddRecord(odRecord, wid);
                         acTrans.Commit();
                     }                     
                 }
