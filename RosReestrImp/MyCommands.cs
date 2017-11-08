@@ -148,31 +148,27 @@ namespace RosReestrImp
             {
                 using (Transaction acTrans = acDoc.Database.TransactionManager.StartTransaction())
                 {
-                    DBObject dbObj = acTrans.GetObject(wid, Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
-                    Autodesk.Gis.Map.ObjectData.Records odrecords = wTbl.GetObjectTableRecords(Convert.ToUInt32(0), dbObj, Autodesk.Gis.Map.Constants.OpenMode.OpenForRead, false);
-                    Autodesk.Gis.Map.ObjectData.Record odRecord = Autodesk.Gis.Map.ObjectData.Record.Create();
-                    wTbl.InitRecord(odRecord);
-                    //
-                    FieldDefinition fdef;
-                    Data.FieldValue fval;
-                    //Autodesk.Gis.Map.Utilities.MapValue mapVal;
-                    for (int i = 0; i < wTbl.FieldDefinitions.Count; i++)
+                    using (Record odRecord = Autodesk.Gis.Map.ObjectData.Record.Create())
                     {
-                        fdef = wTbl.FieldDefinitions[i];
-                        fval = wr.SearchField(fdef.Name);
-                        if (fval != null)
+                        wTbl.InitRecord(odRecord);
+                        FieldDefinition fdef;
+                        Data.FieldValue fval;
+                        for (int i = 0; i < wTbl.FieldDefinitions.Count; i++)
                         {
-                            if (!fval.IsGeom)
+                            fdef = wTbl.FieldDefinitions[i];
+                            fval = wr.SearchField(fdef.Name);
+                            if (fval != null)
                             {
-                                //mapVal = odRecord[i];
-                                odRecord[i].Assign(fval.GetString());
+                                if (!fval.IsGeom)
+                                {
+                                    odRecord[i].Assign(fval.GetString());
+                                }
                             }
                         }
-                    }
-                    wTbl.AddRecord(odRecord, dbObj);
-                    acTrans.Commit();
-                    odRecord.Dispose();
-                    odrecords.Dispose();                    
+                        DBObject dbObj = acTrans.GetObject(wid, Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                        wTbl.AddRecord(odRecord, dbObj);
+                        acTrans.Commit();
+                    }                     
                 }
             }
         }
