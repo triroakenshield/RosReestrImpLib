@@ -252,7 +252,7 @@ namespace RosReestrImp
                 g = wr.GetGeometry();
                 if (g != null)
                 {
-                    wEnt = MakeGeometry(wr.GetGeometry());
+                    wEnt = MakeGeometry(g);
                     wid = DrawEntity(wEnt);
                     AddAttr(wid, wr, wTbl);
                 }
