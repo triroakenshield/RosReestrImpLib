@@ -68,14 +68,8 @@ namespace RosReestrImp.Data
                 nStr = attr.Name;
                 if (nStr.Contains("xmlns"))
                 {
-                    if (nStr.Length == 5)
-                    {
-                        res.AddNamespace("ns", attr.Value); //!!
-                    }
-                    else
-                    {
-                        res.AddNamespace(nStr.Replace("xmlns:", ""), attr.Value);
-                    }
+                    if (nStr.Length == 5) res.AddNamespace("ns", attr.Value); //!!
+                    else res.AddNamespace(nStr.Replace("xmlns:", ""), attr.Value);
                 }
             }
             //res.AddNamespace("ns", wDoc.DocumentElement.NamespaceURI);
@@ -130,10 +124,7 @@ namespace RosReestrImp.Data
         public List<List<String>> ToList()
         {
             List<List<String>> res = new List<List<String>>();
-            foreach (MyRecord r in this.Table)
-            {
-                res.Add(r.ToList());
-            }
+            this.Table.ForEach(r => res.Add(r.ToList()));
             return res;
         }
 

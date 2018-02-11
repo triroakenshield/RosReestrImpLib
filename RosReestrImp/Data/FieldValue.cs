@@ -92,7 +92,7 @@ namespace RosReestrImp.Data
                     else resNode = crNode;
                     //
                     if (this.IsGeom) this.Value = this.Rule.LoadGeometry(resNode, wNM);
-                    else   this.Value = resNode.Value; //!dict!
+                    else this.Value = resNode.Value; //!dict!
                 }
             }
             catch (System.Xml.XPath.XPathException e) 

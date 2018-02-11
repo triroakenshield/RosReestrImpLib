@@ -40,10 +40,7 @@ namespace RosReestrImp.Data
 
         internal void LoadData(XmlNode wNode, XmlNamespaceManager wNM)
         {
-            foreach (FieldValue f in this.FileldList) 
-            {
-                f.LoadData(wNode, wNM);
-            }
+            this.FileldList.ForEach(f => f.LoadData(wNode, wNM));
         }
 
         /// <summary>
