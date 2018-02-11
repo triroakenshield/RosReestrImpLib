@@ -70,14 +70,9 @@ namespace RRViewer1
                 oForms.SaveFileDialog wSFD = new oForms.SaveFileDialog();
                 if (wSFD.ShowDialog() == oForms.DialogResult.OK)
                 {
-                    string csv;
                     string ph = wSFD.FileName;
                     //ph = System.IO.Path.GetFullPath(ph) + "\\" + System.IO.Path.GetFileNameWithoutExtension(ph);
-                    foreach (Layer l in wData)
-                    {
-                        csv = l.GetCSV();
-                        File.WriteAllText(ph + "_" + l.Name + ".csv", csv);
-                    }
+                    wData.ForEach(l => File.WriteAllText(ph + "_" + l.Name + ".csv", l.GetCSV()));
                 }
             }
         }
