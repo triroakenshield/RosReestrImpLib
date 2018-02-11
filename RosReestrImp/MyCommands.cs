@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //
 using System.Reflection;
 using System.Windows.Forms;
@@ -69,10 +66,7 @@ namespace RosReestrImp
         public MPolygonLoop ConvertLineString(Geometry.TLineString wLine)
         {
             MPolygonLoop res = new MPolygonLoop();
-            foreach (Geometry.TGeometry.MyPoint tp in wLine.Coords)
-            {
-                res.Add(new BulgeVertex(ConvertPoint2d(tp), 0));
-            }
+            wLine.Coords.ForEach(tp => res.Add(new BulgeVertex(ConvertPoint2d(tp), 0)));
             return res;
         }
 
@@ -84,10 +78,7 @@ namespace RosReestrImp
         public MPolygonLoopCollection ConvertPolygon(Geometry.TPolygon wPoly)
         {
             MPolygonLoopCollection res = new MPolygonLoopCollection();
-            foreach (Geometry.TLineString wl in wPoly.Rings)
-            {
-                res.Add(ConvertLineString(wl));
-            }
+            wPoly.Rings.ForEach(wl => res.Add(ConvertLineString(wl)));
             return res;
         }
 
@@ -109,10 +100,7 @@ namespace RosReestrImp
         public Polyline MakePolyLine(Geometry.TLineString wl)
         {
             Polyline nPoly = new Polyline();
-            foreach (Geometry.TGeometry.MyPoint wp in wl.Coords)
-            {
-                nPoly.AddVertexAt(0, new Point2d(wp.X, wp.Y), 0, 0, 0);
-            }
+            wl.Coords.ForEach(wp => nPoly.AddVertexAt(0, new Point2d(wp.X, wp.Y), 0, 0, 0));
             return nPoly;
         }
 
@@ -243,7 +231,8 @@ namespace RosReestrImp
         public void DrawLayer(Data.Layer wl)
         {
             //List<Entity> wEntlist = new List<Entity>();
-            Autodesk.Gis.Map.ObjectData.Table wTbl = CreateODTable(wl._Rule);
+            Autodesk.Gis.Map.ObjectData.Table wTbl = null;
+            if (wl.HasAttributes()) wTbl = CreateODTable(wl._Rule);
             ObjectId wid;
             Entity wEnt;
             Geometry.TGeometry g;
@@ -254,7 +243,7 @@ namespace RosReestrImp
                 {
                     wEnt = MakeGeometry(g);
                     wid = DrawEntity(wEnt);
-                    AddAttr(wid, wr, wTbl);
+                    if (wl.HasAttributes()) AddAttr(wid, wr, wTbl);
                 }
                 //wEntlist.Add(wEnt);
             }
@@ -274,10 +263,7 @@ namespace RosReestrImp
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 List<Data.Layer> res = wRM.LoadData(openFileDialog1.FileName);
-                foreach (Data.Layer l in res)
-                {
-                    DrawLayer(l);
-                }
+                res.ForEach(l => DrawLayer(l));
             }
         }
 
@@ -295,13 +281,9 @@ namespace RosReestrImp
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     List<Data.Layer> res = wRM.LoadData(openFileDialog1.FileName);
-                    foreach (Data.Layer l in res)
-                    {
-                        DrawLayer(l);
-                    }
+                    res.ForEach(l => DrawLayer(l));
                 }
             }
-            //string RulePath = Assembly.GetExecutingAssembly().Location.Replace("RosReestrImp.dll", "rule.xml");
         }
 
     }

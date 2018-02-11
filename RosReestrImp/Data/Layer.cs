@@ -115,6 +115,15 @@ namespace RosReestrImp.Data
         }
 
         /// <summary>
+        /// Проверяем наличия поля с не геометрией
+        /// </summary>
+        /// <returns></returns>
+        public bool HasAttributes()
+        {
+            return this._Rule.FieldList.Exists(f => !f.IsGeom);
+        }
+
+        /// <summary>
         /// Получение таблицы значений слоя (список списков)
         /// </summary>
         /// <returns> Таблица значений слоя </returns>
