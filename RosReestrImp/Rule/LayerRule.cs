@@ -35,10 +35,7 @@ namespace RosReestrImp.Rule
 
         private string GetElAttr(XmlElement wEl, string AttrName) 
         {
-            if (wEl.HasAttribute(AttrName))
-            {
-                return wEl.GetAttribute(AttrName);
-            }
+            if (wEl.HasAttribute(AttrName)) return wEl.GetAttribute(AttrName);
             else return "";
         }
 
@@ -47,7 +44,6 @@ namespace RosReestrImp.Rule
                 this.LName = this.GetElAttr(wEl, "Name");
                 this.LayerPath = this.GetElAttr(wEl, "LayerPath");
                 this.Entpath = this.GetElAttr(wEl, "EntPath");
-                //
                 this.FieldList = new List<FieldRule>();
                 foreach (XmlElement ch in wEl.ChildNodes)
                 {

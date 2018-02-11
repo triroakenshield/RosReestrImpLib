@@ -65,10 +65,7 @@ namespace RosReestrImp.Rule
         internal List<Data.Layer> LoadData(XmlDocument wDoc)
         {
             List<Data.Layer> res = new List<Data.Layer>();
-            foreach (LayerRule r in this._LayerList)
-            {
-                res.Add(this.LoadData(wDoc, r));
-            }
+            this._LayerList.ForEach(r => res.Add(this.LoadData(wDoc, r)));
             return res;
         }
 

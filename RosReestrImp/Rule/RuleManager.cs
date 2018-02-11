@@ -66,8 +66,7 @@ namespace RosReestrImp.Rule
         /// </summary>
         /// <param name="filename"> xml-файл правил </param>
         /// <exception cref="RuleLoadException"> Ошибка xml-файла правил </exception>
-        public RuleManager(string filename)    :
-            this(RuleManager.LoadXML(filename))        
+        public RuleManager(string filename) : this(RuleManager.LoadXML(filename))        
         {
         }
 
@@ -105,10 +104,7 @@ namespace RosReestrImp.Rule
         {
             string DocName = wDoc.DocumentElement.Name;
             ShemaRule wSRule = this.FindShema(DocName);
-            if (wSRule != null)
-            {
-                return wSRule.LoadData(wDoc);
-            }
+            if (wSRule != null) return wSRule.LoadData(wDoc);
             else return null;
         }
 

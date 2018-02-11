@@ -75,10 +75,7 @@ namespace RosReestrImp.Rule
         /// <returns></returns>
         private string GetElAttr(XmlElement wEl, string AttrName)
         {
-            if (wEl.HasAttribute(AttrName))
-            {
-                return wEl.GetAttribute(AttrName);
-            }
+            if (wEl.HasAttribute(AttrName)) return wEl.GetAttribute(AttrName);
             else return string.Empty;
         }
 
@@ -139,16 +136,9 @@ namespace RosReestrImp.Rule
                 this.FPath = this.GetElAttr(wEl, "Path");
                 this.FAttr = this.GetElAttr(wEl, "Attr");
                 if (this.GetElAttr(wEl, "Geom").ToLower() == "true") { this.IsGeom = true; }
-                //
-                if (this.IsGeom)
-                {
-                    this.LoadGeomRule((XmlElement)wEl.FirstChild);
-                }
+                if (this.IsGeom) this.LoadGeomRule((XmlElement)wEl.FirstChild);
             }
-            else
-            {
-                throw new RuleLoadException("Нет имени поля");
-            }
+            else throw new RuleLoadException("Нет имени поля");
         }
 
         /// <summary>
@@ -188,10 +178,7 @@ namespace RosReestrImp.Rule
                         y = double.Parse(WorkStr, System.Globalization.CultureInfo.InvariantCulture);
                     }
                 }
-                if (x == -1 || y == -1)
-                {
-                    throw new Data.DataLoadException("Ошибка чтения координат точки");
-                }
+                if (x == -1 || y == -1) throw new Data.DataLoadException("Ошибка чтения координат точки");
                 return new Geometry.TPoint(x, y);
             }
             catch (System.Xml.XPath.XPathException e)
