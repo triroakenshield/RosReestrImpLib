@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace RosReestrImp.Geometry
 {
@@ -93,7 +90,22 @@ namespace RosReestrImp.Geometry
                 this.Z = op.Z;
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <returns></returns>
+            public string ToWKT2D()
+            {
+                return String.Format("{0} {1}", X.ToString(CultureInfo.InvariantCulture), Y.ToString(CultureInfo.InvariantCulture));
+            }
+
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract String ToShortWKT2D();
 
         /// <summary>
         /// Получение геометрии в виде wkt-строки (2D)

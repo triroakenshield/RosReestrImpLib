@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RosReestrImp.Geometry
 {
@@ -26,25 +24,22 @@ namespace RosReestrImp.Geometry
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToShortWKT2D()
+        {
+            return String.Join(", ", this.Rings.Select(p => 
+                String.Format("({0})", p.RingToShortWKT2D())));
+        }
+
+        /// <summary>
         /// Получение геометрии в виде wkt-строки (2D) - Polygon((x0 y0, x1 y1, ..., xn yn, x0 y0), ..., (...))
         /// </summary>
         /// <returns></returns>
         public override string ToWKT2D()
         {
-            //string workStr = "Polygon(";
-            string workStr1 = "Polygon(";
-            foreach (TLineString ls in this.Rings)
-            {
-                //workStr1 = "Polygon(";
-                foreach (TGeometry.MyPoint p in ls.Coords)
-                {
-                    workStr1 = String.Concat(workStr1, p.X, " ", p.Y, ", ");
-                }
-                workStr1 = String.Concat(workStr1, ls.Coords[0].X, " ", ls.Coords[0].Y, ")");
-
-            }
-
-            return String.Concat(workStr1, ")");
+            return String.Format("Polygon({0})", this.ToShortWKT2D());
         }
 
         /// <summary>

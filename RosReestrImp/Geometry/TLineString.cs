@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RosReestrImp.Geometry
 {
@@ -32,10 +30,25 @@ namespace RosReestrImp.Geometry
         public TLineString(List<Geometry.TPoint> nCoords)
         {
             this.Coords = new List<TGeometry.MyPoint>();
-            foreach (Geometry.TPoint p in nCoords)
-            {
-                this.Coords.Add(new TGeometry.MyPoint(p.Coord));
-            }
+            nCoords.ForEach(p => this.Coords.Add(new TGeometry.MyPoint(p.Coord)));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToShortWKT2D()
+        {
+            return String.Join(", ", this.Coords.Select(p => p.ToWKT2D()));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string RingToShortWKT2D()
+        {
+            return String.Format("{0}, {1}", ToShortWKT2D(), this.Coords[0].ToWKT2D());
         }
 
         /// <summary>
@@ -44,13 +57,16 @@ namespace RosReestrImp.Geometry
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
         public override string ToWKT2D()
         {
-            string workStr = "LineString(";
-            foreach (TGeometry.MyPoint p in this.Coords)
-            {
-                workStr = String.Concat(workStr, p.X, " ", p.Y, ", ");
-            }
-            workStr = String.Concat(workStr, this.Coords[0].X, " ", this.Coords[0].Y, ")");
-            return String.Concat(workStr, ")");
+            return String.Format("LineString({0})", this.ToShortWKT2D());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string RingToWKT2D()
+        {
+            return String.Format("LineString({0})", this.RingToShortWKT2D());
         }
 
         /// <summary>

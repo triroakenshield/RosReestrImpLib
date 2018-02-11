@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RosReestrImp.Geometry
 {
@@ -42,12 +38,21 @@ namespace RosReestrImp.Geometry
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToShortWKT2D()
+        {
+            return Coord.ToWKT2D();
+        }
+
+        /// <summary>
         /// Получение геометрии в виде wkt-строки (2D) - POINT(X Y)
         /// </summary>
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
         public override string ToWKT2D()
         {
-            return String.Concat("POINT(", Coord.X, " ", Coord.Y, ")");
+            return String.Format("POINT({1})", this.ToShortWKT2D());
         }
 
         /// <summary>
