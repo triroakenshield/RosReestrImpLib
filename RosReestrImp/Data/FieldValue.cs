@@ -76,14 +76,8 @@ namespace RosReestrImp.Data
             {
                 XmlNode crNode;
                 XmlNode resNode;
-                if (this.Rule.FPath != "")
-                {
-                    crNode = wNode.SelectSingleNode(this.Rule.FPath, wNM);
-                }
-                else
-                {
-                    crNode = wNode;
-                }
+                if (this.Rule.FPath != "") crNode = wNode.SelectSingleNode(this.Rule.FPath, wNM);
+                else crNode = wNode;
                 if (crNode != null)
                 {
                     if (this.Rule.FAttr != "")
@@ -97,14 +91,8 @@ namespace RosReestrImp.Data
                     }
                     else resNode = crNode;
                     //
-                    if (this.IsGeom)
-                    {
-                        this.Value = this.Rule.LoadGeometry(resNode, wNM);
-                    }
-                    else
-                    {
-                        this.Value = resNode.Value; //!dict!
-                    }
+                    if (this.IsGeom) this.Value = this.Rule.LoadGeometry(resNode, wNM);
+                    else   this.Value = resNode.Value; //!dict!
                 }
             }
             catch (System.Xml.XPath.XPathException e) 
@@ -121,21 +109,24 @@ namespace RosReestrImp.Data
         {
             if (this.Value != null)
             {
-                if (this.IsGeom)
-                {
-                    Geometry.TGeometry g = (Geometry.TGeometry)this.Value;
-                    return g.ToWKT2D();
-                    //return "{geom}";
-                }
-                else
-                {
-                    return this.Value.ToString();
-                }
+                if (this.IsGeom) return ((Geometry.TGeometry)this.Value).ToWKT2D();
+                else return this.Value.ToString();
             }
-            else
+            else return "null";
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetCSV()
+        {
+            if (this.Value != null)
             {
-                return "null";
+                if (this.IsGeom) return ((Geometry.TGeometry)this.Value).ToWKT2D();
+                else return String.Format("\"{0}\"", this.Value.ToString().Replace("\"", "\"\""));
             }
+            else return "\"null\"";
         }
 
     }

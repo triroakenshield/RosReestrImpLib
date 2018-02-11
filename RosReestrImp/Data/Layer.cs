@@ -144,10 +144,8 @@ namespace RosReestrImp.Data
         public string GetCSV()
         {
             StringBuilder wSB = new StringBuilder();
-            foreach (MyRecord r in this.Table)
-            {
-                wSB.AppendLine(r.ToString());
-            }
+            wSB.AppendLine(String.Join(";", this.GetColumnNames()));
+            this.Table.ForEach(r => wSB.AppendLine(r.ToString()));
             return wSB.ToString();
         }
 

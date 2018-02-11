@@ -35,10 +35,7 @@ namespace RosReestrImp.Data
         {
             this._Rule = nRule;
             this.FileldList = new List<FieldValue>();
-            foreach (Rule.FieldRule r in this._Rule.FieldList)
-            {
-                this.FileldList.Add(new FieldValue(r));
-            }            
+            this._Rule.FieldList.ForEach(r => this.FileldList.Add(new FieldValue(r)));         
         }
 
         internal void LoadData(XmlNode wNode, XmlNamespaceManager wNM)
@@ -74,10 +71,7 @@ namespace RosReestrImp.Data
             {
                 return this.FileldList.First(x => x.Rule.FName == fname);
             }
-            else
-            {
-                return null;
-            }
+            else return null;
         }
 
         /// <summary>
@@ -87,10 +81,7 @@ namespace RosReestrImp.Data
         public List<String> ToList()
         {
             List<String> res = new List<String>();
-            foreach (FieldValue f in this.FileldList)
-            {
-                res.Add(f.GetString());
-            }
+            this.FileldList.ForEach(f => res.Add(f.GetString()));
             return res;
         }
 
@@ -98,14 +89,9 @@ namespace RosReestrImp.Data
         /// Получение записи в виде строки, разделённой ";"
         /// </summary>
         /// <returns> строка с разделителем - ";" </returns>
-        public override string ToString()
+        public override string ToString() // на удаление?
         {
-            string res = string.Empty;
-            foreach (FieldValue f in this.FileldList)
-            {
-                res += f.GetString() + ";";
-            }
-            return res;
+            return String.Join(";", this.FileldList.Select(f => f.GetCSV()));
         }
 
     }
