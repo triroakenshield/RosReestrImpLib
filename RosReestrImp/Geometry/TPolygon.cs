@@ -29,8 +29,7 @@ namespace RosReestrImp.Geometry
         /// <returns></returns>
         public override string ToShortWKT2D()
         {
-            return String.Join(", ", this.Rings.Select(p => 
-                String.Format("({0})", p.RingToShortWKT2D())));
+            return String.Join(", ", this.Rings.Select(p => $"({p.RingToShortWKT2D()})"));
         }
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace RosReestrImp.Geometry
         /// <returns></returns>
         public override string ToWKT2D()
         {
-            return String.Format("Polygon({0})", this.ToShortWKT2D());
+            return $"Polygon({this.ToShortWKT2D()})";
         }
 
         /// <summary>

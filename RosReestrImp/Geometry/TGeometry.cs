@@ -96,7 +96,7 @@ namespace RosReestrImp.Geometry
             /// <returns></returns>
             public string ToWKT2D()
             {
-                return String.Format("{0} {1}", X.ToString(CultureInfo.InvariantCulture), Y.ToString(CultureInfo.InvariantCulture));
+                return $"{X.ToString(CultureInfo.InvariantCulture)} {Y.ToString(CultureInfo.InvariantCulture)}";
             }
 
         }

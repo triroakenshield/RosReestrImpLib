@@ -124,7 +124,7 @@ namespace RosReestrImp.Data
             if (this.Value != null)
             {
                 if (this.IsGeom) return ((Geometry.TGeometry)this.Value).ToWKT2D();
-                else return String.Format("\"{0}\"", this.Value.ToString().Replace("\"", "\"\""));
+                else return $"\"{this.Value.ToString().Replace("\"", "\"\"")}\"";
             }
             else return "\"null\"";
         }

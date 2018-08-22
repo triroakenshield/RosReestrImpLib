@@ -48,7 +48,7 @@ namespace RosReestrImp.Geometry
         /// <returns></returns>
         public string RingToShortWKT2D()
         {
-            return String.Format("{0}, {1}", ToShortWKT2D(), this.Coords[0].ToWKT2D());
+            return $"{ToShortWKT2D()}, {this.Coords[0].ToWKT2D()}";
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace RosReestrImp.Geometry
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
         public override string ToWKT2D()
         {
-            return String.Format("LineString({0})", this.ToShortWKT2D());
+            return $"LineString({this.ToShortWKT2D()})";
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace RosReestrImp.Geometry
         /// <returns></returns>
         public string RingToWKT2D()
         {
-            return String.Format("LineString({0})", this.RingToShortWKT2D());
+            return $"LineString({this.RingToShortWKT2D()})";
         }
 
         /// <summary>

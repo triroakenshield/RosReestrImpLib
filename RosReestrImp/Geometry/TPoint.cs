@@ -52,7 +52,7 @@ namespace RosReestrImp.Geometry
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
         public override string ToWKT2D()
         {
-            return String.Format("Point({0})", this.ToShortWKT2D());
+            return $"Point({this.ToShortWKT2D()})";
         }
 
         /// <summary>
