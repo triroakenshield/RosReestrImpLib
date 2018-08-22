@@ -9,6 +9,9 @@ namespace RosReestrImp.Geometry
     /// </summary>
     public class TLineString : TGeometry
     {
+
+        public new static readonly string Type = "LINESTRING";
+
         /// <summary>
         /// Список координат
         /// </summary>
@@ -57,7 +60,7 @@ namespace RosReestrImp.Geometry
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
         public override string ToWKT2D()
         {
-            return $"LineString({this.ToShortWKT2D()})";
+            return $"{TLineString.Type}({this.ToShortWKT2D()})";
         }
 
         /// <summary>
@@ -66,7 +69,7 @@ namespace RosReestrImp.Geometry
         /// <returns></returns>
         public string RingToWKT2D()
         {
-            return $"LineString({this.RingToShortWKT2D()})";
+            return $"{TLineString.Type}({this.RingToShortWKT2D()})";
         }
 
         /// <summary>

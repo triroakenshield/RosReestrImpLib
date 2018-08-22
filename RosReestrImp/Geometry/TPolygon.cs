@@ -9,6 +9,9 @@ namespace RosReestrImp.Geometry
     /// </summary>
     public class TPolygon : TGeometry
     {
+
+        public new static readonly string Type = "POLYGON";
+
         /// <summary>
         /// Список замкнутых контуров - колец
         /// </summary>
@@ -38,7 +41,7 @@ namespace RosReestrImp.Geometry
         /// <returns></returns>
         public override string ToWKT2D()
         {
-            return $"Polygon({this.ToShortWKT2D()})";
+            return $"{TPolygon.Type}({this.ToShortWKT2D()})";
         }
 
         /// <summary>

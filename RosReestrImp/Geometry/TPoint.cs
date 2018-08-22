@@ -7,10 +7,13 @@ namespace RosReestrImp.Geometry
     /// </summary>
     public class TPoint : TGeometry
     {
+
+        public new static readonly string Type = "POINT";
+
         /// <summary>
         /// Координаты точки (MyPoint)
         /// </summary>
-        public TGeometry.MyPoint Coord;
+        public TGeometry.MyPoint Coord;              
 
         /// <summary>
         /// Создание 3D точки
@@ -52,7 +55,7 @@ namespace RosReestrImp.Geometry
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
         public override string ToWKT2D()
         {
-            return $"Point({this.ToShortWKT2D()})";
+            return $"{TPoint.Type}({this.ToShortWKT2D()})";
         }
 
         /// <summary>
