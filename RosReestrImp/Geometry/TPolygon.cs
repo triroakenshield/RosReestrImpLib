@@ -26,6 +26,11 @@ namespace RosReestrImp.Geometry
             this.Rings = nRings.GetRange(0, nRings.Count);
         }
 
+        public override bool IsEmpty()
+        {
+            return this.Rings.Count == 0;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -41,6 +46,7 @@ namespace RosReestrImp.Geometry
         /// <returns></returns>
         public override string ToWKT2D()
         {
+            if (this.IsEmpty()) return $"{TPolygon.Type} {TGeometry.Emp}";
             return $"{TPolygon.Type}({this.ToShortWKT2D()})";
         }
 

@@ -40,6 +40,11 @@ namespace RosReestrImp.Geometry
             this.Coord.Z = 0;
         }
 
+        public override bool IsEmpty()
+        {
+            return false;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -55,6 +60,7 @@ namespace RosReestrImp.Geometry
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
         public override string ToWKT2D()
         {
+            if (this.IsEmpty()) return $"{TPoint.Type} {TGeometry.Emp}";
             return $"{TPoint.Type}({this.ToShortWKT2D()})";
         }
 

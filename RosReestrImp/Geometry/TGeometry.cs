@@ -104,6 +104,8 @@ namespace RosReestrImp.Geometry
         public static readonly string Type = "GEOMETRY";
         public static readonly string Emp = "EMPTY";
 
+        public abstract bool IsEmpty();
+
         /// <summary>
         /// 
         /// </summary>

@@ -15,7 +15,7 @@ namespace RosReestrImp.Geometry
         /// <summary>
         /// Список координат
         /// </summary>
-        public List<TGeometry.MyPoint> Coords;
+        public List<TGeometry.MyPoint> Coords = null;
 
         /// <summary>
         /// Создание линии из списка координат
@@ -34,6 +34,11 @@ namespace RosReestrImp.Geometry
         {
             this.Coords = new List<TGeometry.MyPoint>();
             nCoords.ForEach(p => this.Coords.Add(new TGeometry.MyPoint(p.Coord)));
+        }
+
+        public override bool IsEmpty()
+        {
+            return this.Coords.Count == 0;
         }
 
         /// <summary>
@@ -60,6 +65,7 @@ namespace RosReestrImp.Geometry
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
         public override string ToWKT2D()
         {
+            if (this.IsEmpty()) return $"{TLineString.Type} {TGeometry.Emp}";
             return $"{TLineString.Type}({this.ToShortWKT2D()})";
         }
 
@@ -69,6 +75,7 @@ namespace RosReestrImp.Geometry
         /// <returns></returns>
         public string RingToWKT2D()
         {
+            if (this.IsEmpty()) return $"{TLineString.Type} {TGeometry.Emp}";
             return $"{TLineString.Type}({this.RingToShortWKT2D()})";
         }
 
