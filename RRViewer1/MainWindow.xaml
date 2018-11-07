@@ -7,6 +7,8 @@
             <MenuItem Header="Данные" >
                 <MenuItem Header="Открыть" Click="MenuItemOpenFile_Click" />
                 <MenuItem Header="Сохранить csv" Click="MenuItemSaveCSV_Click"/>
+                <MenuItem Header="Сохранить tab" Click="MenuItemSaveTAB_Click" />
+                <MenuItem Header="Сохранить mif" Click="MenuItemSaveMIF_Click" />
                 <MenuItem Header="Закрыть" />
             </MenuItem>
             <MenuItem Header="Схема"  />

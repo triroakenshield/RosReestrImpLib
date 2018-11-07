@@ -110,9 +110,9 @@ namespace MITAB
                         type = FeatureType.TABFC_Region;
                         break;
                 }
+                if (geom.IsValid()) return this.AddFeature(type, this.GetParts(geom), GetFieldValues(rec), null);
             }
-            if (geom.IsValid()) this.AddFeature(type, this.GetParts(geom), GetFieldValues(rec), null);
-            else this.AddFeature(FeatureType.TABFC_NoGeom, new List<List<Vertex>>(), GetFieldValues(rec), null);
+            if (type == FeatureType.TABFC_NoGeom) return this.AddFeature(type, new List<List<Vertex>>(), GetFieldValues(rec), null);
             return null;
         }
 

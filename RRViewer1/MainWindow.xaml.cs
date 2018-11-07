@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using oForms = System.Windows.Forms;
 using RosReestrImp.Rule;
 using RosReestrImp.Data;
+using MITAB;
 
 namespace RRViewer1
 {
@@ -73,6 +74,38 @@ namespace RRViewer1
                     string ph = wSFD.FileName;
                     //ph = System.IO.Path.GetFullPath(ph) + "\\" + System.IO.Path.GetFileNameWithoutExtension(ph);
                     wData.ForEach(l => File.WriteAllText(ph + "_" + l.Name + ".csv", l.GetCSV()));
+                }
+            }
+        }
+
+        private void MenuItemSaveTAB_Click(object sender, RoutedEventArgs e)
+        {
+            if (wData != null)
+            {
+                oForms.SaveFileDialog wSFD = new oForms.SaveFileDialog();
+                if (wSFD.ShowDialog() == oForms.DialogResult.OK)
+                {
+                    string ph = wSFD.FileName;
+                    foreach (DataLayer l in wData)
+                    {
+                        MiLayer.CreateTAB(ph + "_" + l.Name + ".tab", l);
+                    }
+                }
+            }
+        }
+
+        private void MenuItemSaveMIF_Click(object sender, RoutedEventArgs e)
+        {
+            if (wData != null)
+            {
+                oForms.SaveFileDialog wSFD = new oForms.SaveFileDialog();
+                if (wSFD.ShowDialog() == oForms.DialogResult.OK)
+                {
+                    string ph = wSFD.FileName;
+                    foreach (DataLayer l in wData)
+                    {
+                        MiLayer.CreateMIF(ph + "_" + l.Name + ".mif", l);
+                    }
                 }
             }
         }
