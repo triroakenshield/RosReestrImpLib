@@ -24,11 +24,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void CreateTLineString()
         {
-            List<TGeometry.MyPoint> nCoords = new List<TGeometry.MyPoint>();
-            nCoords.Add(new TGeometry.MyPoint(1, 1, 1));
-            nCoords.Add(new TGeometry.MyPoint(2, 2, 2));
-            nCoords.Add(new TGeometry.MyPoint(3, 3, 3));
-            nCoords.Add(new TGeometry.MyPoint(4, 4, 4));
+            List<MyPoint> nCoords = new List<MyPoint>();
+            nCoords.Add(new MyPoint(1, 1, 1));
+            nCoords.Add(new MyPoint(2, 2, 2));
+            nCoords.Add(new MyPoint(3, 3, 3));
+            nCoords.Add(new MyPoint(4, 4, 4));
             TLineString nLS = new TLineString(nCoords);
             Assert.IsTrue(true, "good");
         }
