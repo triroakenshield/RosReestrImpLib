@@ -10,7 +10,7 @@ namespace RosReestrImp.Data
     /// <summary>
     /// Слой данных
     /// </summary>
-    public class Layer
+    public class DataLayer
     {
 
         internal Rule.LayerRule _Rule;
@@ -35,7 +35,7 @@ namespace RosReestrImp.Data
         /// Создаём слой данных
         /// </summary>
         /// <param name="nRule"> Правило загрузки данных </param>
-        internal Layer(Rule.LayerRule nRule)
+        internal DataLayer(Rule.LayerRule nRule)
         {
             this._Rule = nRule;
             this.Table = new List<MyRecord>();

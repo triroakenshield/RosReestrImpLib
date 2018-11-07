@@ -60,13 +60,13 @@ namespace UnitTestProject1
             }
         }
 
-        [TestCategoryAttribute("Layer"), TestCategoryAttribute("DataLoadException"), TestMethod]
+        [TestCategoryAttribute("DataLayer"), TestCategoryAttribute("DataLoadException"), TestMethod]
         public void LoadEmpLayer()
         {
             try
             {
                 RuleManager wRM = new RuleManager("Shema\\emptyLayer.xml");
-                List<Layer> res = wRM.LoadData("doc9415874.xml");
+                List<DataLayer> res = wRM.LoadData("doc9415874.xml");
             }
             catch (DataLoadException e)
             {

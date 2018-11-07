@@ -9,7 +9,7 @@ namespace RosReestrImp.Rule
 {
     /// <summary>
     /// Правила слоя,
-    /// элемент Layer 
+    /// элемент DataLayer 
     /// </summary>
     public class LayerRule 
     {

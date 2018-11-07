@@ -50,9 +50,9 @@ namespace RosReestrImp.Rule
         /// <param name="wDoc"> xml-файл с данными </param>
         /// <param name="wRule"> правила слоя </param>
         /// <returns></returns>
-        internal Data.Layer LoadData(XmlDocument wDoc, LayerRule wRule)
+        internal Data.DataLayer LoadData(XmlDocument wDoc, LayerRule wRule)
         {
-            Data.Layer res = new Data.Layer(wRule);
+            Data.DataLayer res = new Data.DataLayer(wRule);
             res.LoadData(wDoc);
             return res;
         }
@@ -62,9 +62,9 @@ namespace RosReestrImp.Rule
         /// </summary>
         /// <param name="wDoc"> xml-файл с данными </param>
         /// <returns></returns>
-        internal List<Data.Layer> LoadData(XmlDocument wDoc)
+        internal List<Data.DataLayer> LoadData(XmlDocument wDoc)
         {
-            List<Data.Layer> res = new List<Data.Layer>();
+            List<Data.DataLayer> res = new List<Data.DataLayer>();
             this._LayerList.ForEach(r => res.Add(this.LoadData(wDoc, r)));
             return res;
         }

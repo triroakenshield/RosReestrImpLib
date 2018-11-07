@@ -228,7 +228,7 @@ namespace RosReestrImp
         /// Рисуем слой
         /// </summary>
         /// <param name="wl"> слой </param>
-        public void DrawLayer(Data.Layer wl)
+        public void DrawLayer(Data.DataLayer wl)
         {
             //List<Entity> wEntlist = new List<Entity>();
             Autodesk.Gis.Map.ObjectData.Table wTbl = null;
@@ -262,7 +262,7 @@ namespace RosReestrImp
             openFileDialog1.Filter = "xml files (*.xml)|*.xml";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                List<Data.Layer> res = wRM.LoadData(openFileDialog1.FileName);
+                List<Data.DataLayer> res = wRM.LoadData(openFileDialog1.FileName);
                 res.ForEach(l => DrawLayer(l));
             }
         }
@@ -280,7 +280,7 @@ namespace RosReestrImp
                 Rule.RuleManager wRM = new Rule.RuleManager(openFileDialog1.FileName);
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    List<Data.Layer> res = wRM.LoadData(openFileDialog1.FileName);
+                    List<Data.DataLayer> res = wRM.LoadData(openFileDialog1.FileName);
                     res.ForEach(l => DrawLayer(l));
                 }
             }

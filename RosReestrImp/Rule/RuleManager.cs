@@ -90,7 +90,7 @@ namespace RosReestrImp.Rule
         /// </summary>
         /// <param name="filename"> xml-файл с данными </param>
         /// <returns> Список данных слоёв </returns>
-        public List<Data.Layer> LoadData(string filename)
+        public List<Data.DataLayer> LoadData(string filename)
         {
             return this.LoadData(RuleManager.LoadXML(filename));
         }
@@ -100,7 +100,7 @@ namespace RosReestrImp.Rule
         /// </summary>
         /// <param name="wDoc"> xml-файл с данными </param>
         /// <returns> Список данных слоёв </returns>
-        public List<Data.Layer> LoadData(XmlDocument wDoc)
+        public List<Data.DataLayer> LoadData(XmlDocument wDoc)
         {
             string DocName = wDoc.DocumentElement.Name;
             ShemaRule wSRule = this.FindShema(DocName);

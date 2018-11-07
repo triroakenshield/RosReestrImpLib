@@ -12,7 +12,7 @@ namespace RRViewer1
     public class MyLayerDataView : IBindingList
     {
 
-        private Layer data;
+        private DataLayer data;
         private List<MyRecordView> rows;
         //
         //private string[] columnNames;
@@ -21,7 +21,7 @@ namespace RRViewer1
 
         #region Constructors
 
-        public MyLayerDataView(Layer l)
+        public MyLayerDataView(DataLayer l)
         {
             this.data = l;
             this.rows = new List<MyRecordView>();

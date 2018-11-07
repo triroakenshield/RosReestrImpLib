@@ -17,7 +17,7 @@ namespace UnitTestProject1
         public void LoadData1()
         {
             RuleManager wRM = new RuleManager("Shema\\testList2.xml");
-            List<Layer> res = wRM.LoadData("doc9415874.xml");
+            List<DataLayer> res = wRM.LoadData("doc9415874.xml");
             Assert.IsTrue(true, "good");
         }
 

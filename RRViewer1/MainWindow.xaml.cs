@@ -16,7 +16,7 @@ namespace RRViewer1
     public partial class MainWindow : Window
     {
         RuleManager wRM;
-        List<Layer> wData = null;
+        List<DataLayer> wData = null;
 
         public MainWindow()
         {
@@ -24,7 +24,7 @@ namespace RRViewer1
             wRM = new RuleManager("rule.xml");
         }
 
-        private void FillTbl(DataGrid wDTable, Layer l)
+        private void FillTbl(DataGrid wDTable, DataLayer l)
         {
             wDTable.ItemsSource = new MyLayerDataView(l);
             wDTable.ColumnWidth = 100;
@@ -42,7 +42,7 @@ namespace RRViewer1
                     wData = wRM.LoadData(wOpenFileDialog.FileName);
                     if (wData != null)
                     {
-                        foreach (Layer l in wData)
+                        foreach (DataLayer l in wData)
                         {
                             wTab = new TabItem();
                             wTab.Header = l.Name;
