@@ -66,6 +66,29 @@ namespace RosReestrImp.Geometry
             return GeometryType.Polygon;
         }
 
-    }
+        public override TMBR GetMBR()
+        {
+            TMBR res = null;
+            foreach (TLineString p in this.Rings)
+            {
+                if (res == null) res = p.GetMBR();
+                else { res.AddMBR(p.GetMBR()); }
+            }
+            return res;
+        }
+
+        public override bool IsValid()
+        {
+            if (this.Rings.Count > 0)
+            {
+                foreach (TLineString ls in this.Rings)
+                {
+                    if (!ls.IsValid()) return false;
+                }
+                return true;
+            }
+            return false;
+
+        }
 
 }

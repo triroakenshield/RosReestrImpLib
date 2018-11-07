@@ -137,5 +137,9 @@ namespace RosReestrImp.Geometry
         /// <returns> TGeometry.GeometryType </returns>
         public abstract GeometryType GetGeometryType();
 
+        public abstract TMBR GetMBR();
+
+        public abstract bool IsValid();
+
     }
 }

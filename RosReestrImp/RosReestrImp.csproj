@@ -66,6 +66,7 @@
     <Compile Include="Data\DataLoadException.cs" />
     <Compile Include="Data\DataLayer.cs" />
     <Compile Include="Geometry\TLineString.cs" />
+    <Compile Include="Geometry\TMBR.cs" />
     <Compile Include="Geometry\TPolygon.cs" />
     <Compile Include="Data\MyRecord.cs" />
     <Compile Include="MyCommands.cs" />

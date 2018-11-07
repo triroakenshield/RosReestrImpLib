@@ -80,6 +80,16 @@ namespace RosReestrImp.Geometry
             return GeometryType.Point;
         }
 
+        public override TMBR GetMBR()
+        {
+            return new TMBR(this.Coord);
+        }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
+
     }
 
 }

@@ -95,5 +95,21 @@ namespace RosReestrImp.Geometry
             return GeometryType.LineString;
         }
 
+        public override TMBR GetMBR()
+        {
+            TMBR res = null;
+            foreach (MyPoint p in this.Coords)
+            {
+                if (res == null) res = new TMBR(p);
+                else { res.AddPoint(p); }
+            }
+            return res;
+        }
+
+        public override bool IsValid()
+        {
+            return this.Coords.Count > 1;
+        }
+
     }
 }
