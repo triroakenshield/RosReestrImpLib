@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Threading.Tasks;
+//
+using RosReestrImp.Geometry;
 
 namespace RosReestrImp.Data
 {
@@ -147,6 +149,21 @@ namespace RosReestrImp.Data
             wSB.AppendLine(String.Join(";", this.GetColumnNames()));
             this.Table.ForEach(r => wSB.AppendLine(r.ToString()));
             return wSB.ToString();
+        }
+
+        public TMBR GetMBR()
+        {
+            TMBR res = null, nmbr;
+            foreach (MyRecord r in this.Table)
+            {
+                nmbr = r.GetMBR();
+                if (nmbr != null)
+                {
+                    if (res == null) res = nmbr;
+                    else res.AddMBR(nmbr);
+                }
+            }
+            return res;
         }
 
     }

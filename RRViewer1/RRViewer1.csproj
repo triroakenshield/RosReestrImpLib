@@ -69,6 +69,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="mitab\Feature.cs" />
+    <Compile Include="mitab\Field.cs" />
+    <Compile Include="mitab\Fields.cs" />
+    <Compile Include="mitab\MiApi.cs" />
+    <Compile Include="mitab\MiLayer.cs" />
+    <Compile Include="mitab\MiWrapper.cs" />
+    <Compile Include="mitab\Part.cs" />
     <Compile Include="MyFieldPropertyDescriptor.cs" />
     <Compile Include="MyLayerDataView.cs" />
     <Compile Include="MyRecordView.cs" />

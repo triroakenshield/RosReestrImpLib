@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Threading.Tasks;
+//
+using RosReestrImp.Geometry;
 
 namespace RosReestrImp.Data
 {
@@ -89,6 +91,13 @@ namespace RosReestrImp.Data
         public override string ToString() // на удаление?
         {
             return String.Join(";", this.FileldList.Select(f => f.GetCSV()));
+        }
+
+        public TMBR GetMBR()
+        {
+            TGeometry geom = this.GetGeometry();
+            if (geom == null) return null;
+            else return geom.GetMBR();
         }
 
     }
