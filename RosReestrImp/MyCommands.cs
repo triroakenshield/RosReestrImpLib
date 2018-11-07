@@ -53,7 +53,7 @@ namespace RosReestrImp
         /// </summary>
         /// <param name="wp"> Geometry.TGeometry.MyPoint </param>
         /// <returns> Point2d </returns>
-        public Point2d ConvertPoint2d(Geometry.TGeometry.MyPoint wp)
+        public Point2d ConvertPoint2d(Geometry.MyPoint wp)
         {
             return new Point2d(wp.X, wp.Y);
         }
@@ -169,13 +169,13 @@ namespace RosReestrImp
         {
             switch (wg.GetGeometryType())
             {
-                case Geometry.TGeometry.GeometryType.Point:
+                case Geometry.GeometryType.Point:
                     return MakePoint((Geometry.TPoint)wg);
 
-                case Geometry.TGeometry.GeometryType.LineString:
+                case Geometry.GeometryType.LineString:
                     return MakePolyLine((Geometry.TLineString)wg);
 
-                case Geometry.TGeometry.GeometryType.Polygon:
+                case Geometry.GeometryType.Polygon:
                     return MakePolygon((Geometry.TPolygon)wg);
 
                 default:

@@ -8,12 +8,15 @@ namespace RosReestrImp.Geometry
     public class TPoint : TGeometry
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
         public new static readonly string Type = "POINT";
 
         /// <summary>
         /// Координаты точки (MyPoint)
         /// </summary>
-        public TGeometry.MyPoint Coord;              
+        public MyPoint Coord;              
 
         /// <summary>
         /// Создание 3D точки
@@ -40,6 +43,10 @@ namespace RosReestrImp.Geometry
             this.Coord.Z = 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override bool IsEmpty()
         {
             return false;
@@ -68,9 +75,9 @@ namespace RosReestrImp.Geometry
         /// Тип геометрии, всегда возвращает - TGeometry.GeometryType.Point
         /// </summary>
         /// <returns> TGeometry.GeometryType.Point </returns>
-        public override TGeometry.GeometryType GetGeometryType()
+        public override GeometryType GetGeometryType()
         {
-            return TGeometry.GeometryType.Point;
+            return GeometryType.Point;
         }
 
     }

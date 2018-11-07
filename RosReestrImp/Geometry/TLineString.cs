@@ -10,18 +10,21 @@ namespace RosReestrImp.Geometry
     public class TLineString : TGeometry
     {
 
+        /// <summary>
+        /// Тип
+        /// </summary>
         public new static readonly string Type = "LINESTRING";
 
         /// <summary>
         /// Список координат
         /// </summary>
-        public List<TGeometry.MyPoint> Coords = null;
+        public List<MyPoint> Coords = null;
 
         /// <summary>
         /// Создание линии из списка координат
         /// </summary>
         /// <param name="nCoords"> Список координат </param>
-        public TLineString(List<TGeometry.MyPoint> nCoords)
+        public TLineString(List<MyPoint> nCoords)
         {
             this.Coords = nCoords.GetRange(0, nCoords.Count);
         }
@@ -30,12 +33,16 @@ namespace RosReestrImp.Geometry
         /// Создание линии из списка точек
         /// </summary>
         /// <param name="nCoords"> Список точек </param>
-        public TLineString(List<Geometry.TPoint> nCoords)
+        public TLineString(List<TPoint> nCoords)
         {
-            this.Coords = new List<TGeometry.MyPoint>();
-            nCoords.ForEach(p => this.Coords.Add(new TGeometry.MyPoint(p.Coord)));
+            this.Coords = new List<MyPoint>();
+            nCoords.ForEach(p => this.Coords.Add(new MyPoint(p.Coord)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override bool IsEmpty()
         {
             return this.Coords.Count == 0;
@@ -83,9 +90,9 @@ namespace RosReestrImp.Geometry
         /// Тип геометрии, всегда возвращает - TGeometry.GeometryType.LineString
         /// </summary>
         /// <returns> TGeometry.GeometryType.LineString </returns>
-        public override TGeometry.GeometryType GetGeometryType()
+        public override GeometryType GetGeometryType()
         {
-            return TGeometry.GeometryType.LineString;
+            return GeometryType.LineString;
         }
 
     }

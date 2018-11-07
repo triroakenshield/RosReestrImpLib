@@ -10,6 +10,9 @@ namespace RosReestrImp.Geometry
     public class TPolygon : TGeometry
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
         public new static readonly string Type = "POLYGON";
 
         /// <summary>
@@ -26,6 +29,10 @@ namespace RosReestrImp.Geometry
             this.Rings = nRings.GetRange(0, nRings.Count);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override bool IsEmpty()
         {
             return this.Rings.Count == 0;
@@ -54,9 +61,9 @@ namespace RosReestrImp.Geometry
         /// Тип геометрии, всегда возвращает - TGeometry.GeometryType.Polygon
         /// </summary>
         /// <returns> TGeometry.GeometryType.Polygon </returns>
-        public override TGeometry.GeometryType GetGeometryType()
+        public override GeometryType GetGeometryType()
         {
-            return TGeometry.GeometryType.Polygon;
+            return GeometryType.Polygon;
         }
 
     }

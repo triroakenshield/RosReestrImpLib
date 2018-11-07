@@ -41,7 +41,7 @@ namespace RosReestrImp.Rule
             /// <summary>
             /// Тип геометрии
             /// </summary>
-            public Geometry.TGeometry.GeometryType Type;
+            public Geometry.GeometryType Type;
         }
 
         /// <summary>
@@ -97,23 +97,23 @@ namespace RosReestrImp.Rule
                             this.GR.PointPath = this.GetElAttr(ch, "Path");
                             this.GR.XPath = this.GetElAttr(ch, "Xattr");
                             this.GR.YPath = this.GetElAttr(ch, "Yattr");
-                            if (this.GR.Type == Geometry.TGeometry.GeometryType.No)
+                            if (this.GR.Type == Geometry.GeometryType.No)
                             {
-                                this.GR.Type = Geometry.TGeometry.GeometryType.Point;
+                                this.GR.Type = Geometry.GeometryType.Point;
                             }
                             ex = false;
                             break;
                         case "LineString":
                             this.GR.LineStringPath = this.GetElAttr(ch, "Path");
                             ch = (XmlElement)ch.FirstChild;
-                            if (this.GR.Type == Geometry.TGeometry.GeometryType.No)
+                            if (this.GR.Type == Geometry.GeometryType.No)
                             {
-                                this.GR.Type = Geometry.TGeometry.GeometryType.LineString;
+                                this.GR.Type = Geometry.GeometryType.LineString;
                             }
                             break;
                         case "Polygon":
                             ch = (XmlElement)ch.FirstChild;
-                            this.GR.Type = Geometry.TGeometry.GeometryType.Polygon;
+                            this.GR.Type = Geometry.GeometryType.Polygon;
                             break;
                     }
                 } while (ex);
@@ -145,7 +145,7 @@ namespace RosReestrImp.Rule
         /// Получение типа геометрии поля
         /// </summary>
         /// <returns> тип геометрии </returns>
-        public Geometry.TGeometry.GeometryType GetGeomType()
+        public Geometry.GeometryType GetGeomType()
         {
             return this.GR.Type;
         }
@@ -247,13 +247,13 @@ namespace RosReestrImp.Rule
         {
             switch (this.GetGeomType())
             {
-                case Geometry.TGeometry.GeometryType.Point:
+                case Geometry.GeometryType.Point:
                     return this.LoadPoint(wNode, wNM);
 
-                case Geometry.TGeometry.GeometryType.LineString:
+                case Geometry.GeometryType.LineString:
                     return this.LoadLineString(wNode, wNM);
 
-                case Geometry.TGeometry.GeometryType.Polygon:
+                case Geometry.GeometryType.Polygon:
                     return this.LoadPolygon(wNode, wNM);
 
                 default:

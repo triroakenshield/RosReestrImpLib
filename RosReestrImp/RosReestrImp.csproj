@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataLoadException.cs" />
-    <Compile Include="Data\Layer.cs" />
+    <Compile Include="Data\DataLayer.cs" />
     <Compile Include="Geometry\TLineString.cs" />
     <Compile Include="Geometry\TPolygon.cs" />
     <Compile Include="Data\MyRecord.cs" />
