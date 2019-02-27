@@ -18,6 +18,9 @@ namespace RosReestrImp.Rule
         /// </summary>
         public struct GeomRule
         {
+
+            public string PolygonPath;
+
             /// <summary>
             /// Путь к данным линии
             /// </summary>
@@ -112,8 +115,13 @@ namespace RosReestrImp.Rule
                             }
                             break;
                         case "Polygon":
+                            this.GR.PolygonPath = this.GetElAttr(ch, "Path");
                             ch = (XmlElement)ch.FirstChild;
-                            this.GR.Type = Geometry.GeometryType.Polygon;
+                            if (this.GR.Type == Geometry.GeometryType.No) this.GR.Type = Geometry.GeometryType.Polygon;
+                            break;
+                        case "MultiPolygon":
+                            ch = (XmlElement)ch.FirstChild;
+                            this.GR.Type = Geometry.GeometryType.MultiPolygon;
                             break;
                     }
                 } while (ex);
@@ -237,6 +245,26 @@ namespace RosReestrImp.Rule
             }
         }
 
+        private Geometry.TMultiPolygon LoadMultiPolygon(XmlNode wNode, XmlNamespaceManager wNM)
+        {
+            try
+            {
+                List<Geometry.TPolygon> nPolygons = new List<Geometry.TPolygon>();
+                //
+                XmlNodeList crNodes = wNode.SelectNodes(this.GR.PolygonPath, wNM);
+                foreach (XmlNode n in crNodes)
+                {
+                    nPolygons.Add(this.LoadPolygon(n, wNM));
+                }
+                //
+                return new Geometry.TMultiPolygon(nPolygons);
+            }
+            catch (System.Xml.XPath.XPathException e)
+            {
+                throw new Data.DataLoadException("Ошибка XPath в MultiPolygon", e);
+            }
+        }
+
         /// <summary>
         /// Загрузка данных геометрии
         /// </summary>
@@ -255,6 +283,9 @@ namespace RosReestrImp.Rule
 
                 case Geometry.GeometryType.Polygon:
                     return this.LoadPolygon(wNode, wNM);
+
+                case Geometry.GeometryType.MultiPolygon:
+                    return this.LoadMultiPolygon(wNode, wNM);
 
                 default:
                     return null;

@@ -27,7 +27,15 @@ namespace RosReestrImp.Geometry
         /// <summary>
         /// Полигон
         /// </summary>
-        Polygon
+        Polygon,
+
+        /// <summary>
+        /// GeometryCollection
+        /// </summary>
+        GeometryCollection,
+
+        MultiPolygon
+
     }
 
     /// <summary>

@@ -78,6 +78,23 @@ namespace MITAB
                         res.Add(plist);
                     }
                     break;
+                case GeometryType.MultiPolygon:
+                    TMultiPolygon mpoly = geom as TMultiPolygon;
+                    TPolygon spoly;
+                    foreach (TGeometry sg in mpoly.Geometries)
+                    {
+                        spoly = sg as TPolygon;
+                        foreach (TLineString ring in spoly.Rings)
+                        {
+                            plist = new List<Vertex>();
+                            foreach (MyPoint np in ring.Coords)
+                            {
+                                plist.Add(new Vertex(np.X, np.Y));
+                            }
+                            res.Add(plist);
+                        }
+                    }
+                    break;
             }
             return res;
         }
@@ -107,6 +124,7 @@ namespace MITAB
                         type = FeatureType.TABFC_Polyline;
                         break;
                     case GeometryType.Polygon:
+                    case GeometryType.MultiPolygon:
                         type = FeatureType.TABFC_Region;
                         break;
                 }
