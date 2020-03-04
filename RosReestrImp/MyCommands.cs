@@ -263,7 +263,7 @@ namespace RosReestrImp
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 List<Data.DataLayer> res = wRM.LoadData(openFileDialog1.FileName);
-                res.ForEach(l => DrawLayer(l));
+                if (res != null) res.ForEach(l => DrawLayer(l));
             }
         }
 
@@ -281,7 +281,7 @@ namespace RosReestrImp
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     List<Data.DataLayer> res = wRM.LoadData(openFileDialog1.FileName);
-                    res.ForEach(l => DrawLayer(l));
+                    if (res != null) res.ForEach(l => DrawLayer(l));
                 }
             }
         }
