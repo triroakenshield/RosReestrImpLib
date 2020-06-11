@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 //
 using RosReestrImp.Data;
@@ -19,21 +15,11 @@ namespace RRViewer1
             this.owner = nowner;
         }
 
-        public string Name
-        {
-            get { return owner.Rule.LName; }
-        }
+        public string Name => owner.Rule.LName;
 
         public object GetColumn(int index)
         {
-            if (index < this.owner.FileldList.Count)
-            {
-                return this.owner.FileldList[index].ToString(); //!!!
-            }
-            else
-            {
-                return null;
-            }
+            return index < this.owner.FileldList.Count ? this.owner.FileldList[index].ToString() : null;
         }
 
         #region ICustomTypeDescriptor Members
@@ -105,6 +91,5 @@ namespace RRViewer1
         }
 
         #endregion
-
     }
 }

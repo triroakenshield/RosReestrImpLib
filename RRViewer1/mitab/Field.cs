@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// $Id: Field.cs,v 1.2 2005/03/24 17:02:06 dmorissette Exp $
+//
+
+using System;
 
 namespace MITAB
 {
-    /// <summary>
-    /// Represents a readonly view of field in a layer.
-    /// </summary>
+    /// <summary>Represents a readonly view of field in a layer.</summary>
     /// <remarks>
     /// A field instance does not relate explicity to a single feature instance. Rather
     /// it represents all the features in the layer. To find the value of a field for a particular
@@ -16,31 +13,27 @@ namespace MITAB
     /// </remarks>
     public class Field
     {
-        /// <summary>
-        /// The field name
-        /// </summary>
+        /// <summary>The field name</summary>
         public readonly string Name;
-        /// <summary>
-        /// The field type
-        /// </summary>
+
+        /// <summary>The field type</summary>
         public FieldType Type;
-        /// <summary>
-        /// The index of the field within the layers set of fields.
-        /// </summary>
+
+        /// <summary>The index of the field within the layers set of fields.</summary>
         public readonly int Index;
-        /// <summary>
-        /// The field width
-        /// </summary>
+
+        /// <summary>The field width</summary>
         public readonly int Width;
-        /// <summary>
-        /// The field precision
-        /// </summary>
+
+        /// <summary>The field precision</summary>
         public readonly short Precision;
-        /// <summary>
-        /// The layer this field belongs to.
-        /// </summary>
+
+        /// <summary>The layer this field belongs to.</summary>
         public readonly MiLayer Layer;
 
+        /// <summary>Конструктор</summary>
+        /// <param name="layer">Слой</param>
+        /// <param name="i">Индекс</param>
         protected internal Field(MiLayer layer, int i)
         {
             this.Layer = layer;
@@ -51,21 +44,28 @@ namespace MITAB
             this.Width = MiApi.mitab_c_get_field_width(layer.Handle, i);
         }
 
-        protected internal Field(MiLayer layer, string field_name, FieldType field_type, int width, int precision, int indexed, int unique)
+        /// <summary>Конструктор</summary>
+        /// <param name="layer">Слой</param>
+        /// <param name="fieldName">Имя поля</param>
+        /// <param name="fieldType">Тип поля</param>
+        /// <param name="width">Ширина</param>
+        /// <param name="precision">Точность</param>
+        /// <param name="indexed"></param>
+        /// <param name="unique"></param>
+        protected internal Field(MiLayer layer, string fieldName, FieldType fieldType, int width, int precision, 
+            int indexed, int unique)
         {
-            IntPtr field_id = MiApi.mitab_c_add_field(layer.Handle,
-                field_name, (int)field_type, width, precision, indexed, unique); ;
+            IntPtr fieldId = MiApi.mitab_c_add_field(layer.Handle,
+                fieldName, (int)fieldType, width, precision, indexed, unique); ;
             this.Layer = layer;
-            this.Index = field_id.ToInt32();
-            this.Name = field_name;
-            this.Type = field_type;
+            this.Index = fieldId.ToInt32();
+            this.Name = fieldName;
+            this.Type = fieldType;
             this.Precision = (short)precision;
             this.Width = width;
         }
 
-        /// <summary>
-        /// Returns a string representation of this fields value for the given feature.
-        /// </summary>
+        /// <summary>Returns a string representation of this fields value for the given feature.</summary>
         /// <param name="feature">The feature to find the fields value for.</param>
         /// <returns>A string representation of this fields value for the given feature</returns>
         public string GetValueAsString(Feature feature)
@@ -73,9 +73,7 @@ namespace MITAB
             return MiApi.mitab_c_get_field_as_string(feature.Handle, this.Index);
         }
 
-        /// <summary>
-        /// Returns a double representation of this fields value for the given feature.
-        /// </summary>
+        /// <summary>Returns a double representation of this fields value for the given feature.</summary>
         /// <param name="feature">The feature to find the fields value for.</param>
         /// <returns>A double representation of this fields value for the given feature</returns>
         public double GetValueAsDouble(Feature feature)
@@ -83,10 +81,10 @@ namespace MITAB
             return MiApi.mitab_c_get_field_as_double(feature.Handle, this.Index);
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
-            return this.Name + ", " + this.Type;
+            return $"{this.Name}, {this.Type}";
         }
-
     }
 }

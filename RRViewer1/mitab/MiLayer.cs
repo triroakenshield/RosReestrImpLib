@@ -1,34 +1,48 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//
-using RosReestrImp.Geometry;
-using RosReestrImp.Rule;
+using System.IO;
+
 using RosReestrImp.Data;
+using RosReestrImp.Geometry;
 
 namespace MITAB
 {
+    /// <summary>Слой tab/mif</summary>
     public class MiLayer
     {
+        /// <summary>Следующий ключ</summary>
         protected internal int next_id = 1;
+
+        /// <summary>Хэндл</summary>
         protected internal IntPtr _handle;
+
+        /// <summary>Поля</summary>
         protected internal Fields _fields;
+
+        /// <summary>Сущности</summary>
         protected internal Features _features;
+
+        /// <summary>Имя файла</summary>
         protected internal string _fileName;
+
+        /// <summary>Границы поля</summary>
         protected internal TMBR _bounds;
 
-        /// <summary>
-        /// Handle used to manipulate the object in the C API
-        /// </summary>
-        public IntPtr Handle { get { return this._handle; } }
-        public Fields Fields { get { return this._fields; } }
-        public Features Features { get { return this._features; } }
-        public string FileName { get { return this._fileName; } }
+        /// <summary>Handle used to manipulate the object in the C API</summary>
+        public IntPtr Handle => this._handle;
 
+        /// <summary>Поля</summary>
+        public Fields Fields => this._fields;
+
+        /// <summary>Сущности</summary>
+        public Features Features => this._features;
+
+        /// <summary>Имя файла</summary>
+        public string FileName { get { return _fileName; } }
+
+        /// <summary>Конструктор</summary>
+        /// <param name="handle">Хэндл</param>
+        /// <param name="fileName">Имя файла</param>
         protected internal MiLayer(IntPtr handle, string fileName)
         {
             this._handle = handle;
@@ -37,6 +51,8 @@ namespace MITAB
             this._fileName = fileName;
         }
 
+        /// <summary>Конструктор</summary>
+        /// <param name="fileName">Имя файла</param>
         protected internal MiLayer(string fileName)
         {
             this._handle = MiApi.mitab_c_open(fileName);
@@ -95,20 +111,26 @@ namespace MITAB
                         }
                     }
                     break;
+                case GeometryType.No:
+                    break;
+                case GeometryType.GeometryCollection:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             return res;
         }
 
-        private List<String> GetFieldValues(MyRecord rec)
+        private List<string> GetFieldValues(MyRecord rec)
         {
-            List<String> res = new List<String>();
-            foreach (FieldValue f in rec.FileldList)
-            {
-                if (!f.IsGeom) res.Add(f.GetString());
-            }
+            var res = new List<string>();
+            foreach (var f in rec.FileldList) if (!f.IsGeom) res.Add(f.GetString());
             return res;
         }
 
+        /// <summary>Добавить сущность</summary>
+        /// <param name="rec">Запись</param>
+        /// <returns></returns>
         public Feature AddFeature(MyRecord rec)
         {
             TGeometry geom = rec.GetGeometry();
@@ -127,29 +149,36 @@ namespace MITAB
                     case GeometryType.MultiPolygon:
                         type = FeatureType.TABFC_Region;
                         break;
+                    case GeometryType.No:
+                        break;
+                    case GeometryType.GeometryCollection:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
                 if (geom.IsValid()) return this.AddFeature(type, this.GetParts(geom), GetFieldValues(rec), null);
             }
-            if (type == FeatureType.TABFC_NoGeom) return this.AddFeature(type, new List<List<Vertex>>(), GetFieldValues(rec), null);
-            return null;
+            return type == FeatureType.TABFC_NoGeom ? this.AddFeature(type, new List<List<Vertex>>(), 
+                GetFieldValues(rec), null) : null;
         }
 
         private void AddLayer(DataLayer lay)
         {
-            foreach (FieldRule fr in lay.Rule.FieldList)
+            foreach (var fr in lay.Rule.FieldList)
             {
                 if (!fr.IsGeom) this.AddField(fr.FName, FieldType.TABFT_Char, 250, 0, 0, 0);
             }
-            foreach (MyRecord rec in lay.Table)
-            {
-                this.AddFeature(rec);
-            }
+            foreach (var rec in lay.Table) this.AddFeature(rec);
         }
 
+        /// <summary>Создать tab-файл</summary>
+        /// <param name="tabFileName">Имя файла</param>
+        /// <param name="lay">Слой данных</param>
+        /// <returns></returns>
         public static MiLayer CreateTAB(string tabFileName, DataLayer lay)
         {
-            TMBR bounds = lay.GetMBR();
-            MiLayer res = new MiLayer(MiApi.mitab_c_create(tabFileName, "tab", "NonEarth Units \"m\"", 
+            var bounds = lay.GetMBR();
+            var res = new MiLayer(MiApi.mitab_c_create(tabFileName, "tab", "NonEarth Units \"m\"", 
                 bounds.maxy, bounds.miny, bounds.minx, bounds.maxx), tabFileName);
             //
             res.AddLayer(lay);
@@ -157,37 +186,35 @@ namespace MITAB
             return res;
         }
 
+        /// <summary>Создать mif-файл</summary>
+        /// <param name="tabFileName">Имя файла</param>
+        /// <param name="lay">Слой данных</param>
+        /// <returns></returns>
         public static MiLayer CreateMIF(string tabFileName, DataLayer lay)
         {
-            TMBR bounds = lay.GetMBR();
-            MiLayer res = new MiLayer(MiApi.mitab_c_create(tabFileName, "mif", "NonEarth Units \"m\"", 
+            var bounds = lay.GetMBR();
+            var res = new MiLayer(MiApi.mitab_c_create(tabFileName, "mif", "NonEarth Units \"m\"", 
                 bounds.maxy, bounds.miny, bounds.minx, bounds.maxx), tabFileName);
             res.AddLayer(lay);
             res.Close();
             return res;
         }
 
-        /// <summary>
-        /// Override this to support descendants of the Fields class.
-        /// </summary>
+        /// <summary>Override this to support descendants of the Fields class.</summary>
         /// <returns>This layers fields</returns>
         protected internal virtual Fields CreateFields()
         {
             return new Fields(this);
         }
 
-        /// <summary>
-        /// Override this to support descendants of the Feature class.
-        /// </summary>
+        /// <summary>Override this to support descendants of the Feature class.</summary>
         /// <returns>This layers features</returns>
         protected internal virtual Features CreateFeatures()
         {
             return new Features(this);
         }
 
-        /// <summary>
-        /// Factory method to return the layer with a given name.
-        /// </summary>
+        /// <summary>Factory method to return the layer with a given name.</summary>
         /// <param name="tabFileName"></param>
         /// <returns></returns>
         public static MiLayer GetByName(string tabFileName)
@@ -195,55 +222,72 @@ namespace MITAB
             return new MiLayer(tabFileName);
         }
 
+        /// <summary>Создать tab-файл</summary>
+        /// <param name="tabFileName">Имя файла</param>
+        /// <returns></returns>
         public static MiLayer CreateTAB(string tabFileName)
         {
             return new MiLayer(MiApi.mitab_c_create(tabFileName, "tab", null, 0, 0, 0, 0), tabFileName);
         }
 
+        /// <summary>Создать mif-файл</summary>
+        /// <param name="tabFileName">Имя файла</param>
+        /// <returns></returns>
         public static MiLayer CreateMIF(string tabFileName)
         {
             return new MiLayer(MiApi.mitab_c_create(tabFileName, "mif", null, 0, 0, 0, 0), tabFileName);
         }
 
-        public void AddField(string field_name, FieldType field_type, int width, int precision, int indexed, int unique)
+        /// <summary>Добавить поле</summary>
+        /// <param name="fieldName">Имя поля</param>
+        /// <param name="fieldType">Тип поля</param>
+        /// <param name="width">Ширина</param>
+        /// <param name="precision">Точность</param>
+        /// <param name="indexed"></param>
+        /// <param name="unique"></param>
+        public void AddField(string fieldName, FieldType fieldType, int width, int precision, int indexed, int unique)
         {
-            this.Fields.AddField(this, field_name, field_type, width, precision, indexed, unique);
+            this.Fields.AddField(this, fieldName, fieldType, width, precision, indexed, unique);
         }
 
-        public Feature AddFeature(FeatureType type, List<List<Vertex>> nParts, List<String> nFieldValues, Dictionary<string, string> nStyle)
+        /// <summary>Добавить сущность</summary>
+        /// <param name="type">Тип</param>
+        /// <param name="nParts">Части</param>
+        /// <param name="nFieldValues">Значения полей</param>
+        /// <param name="nStyle">Стили</param>
+        /// <returns></returns>
+        public Feature AddFeature(FeatureType type, List<List<Vertex>> nParts, List<string> nFieldValues, 
+            Dictionary<string, string> nStyle)
         {
             return this.Features.AddFeature(type, this.next_id++, nParts, nFieldValues, nStyle);
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
-            return "Layer: " + this.FileName;
+            return $"Layer: {this.FileName}";
         }
 
-        /// <summary>
-        /// Writes this layers features to the given textwriter
-        /// </summary>
+        /// <summary>Writes this layers features to the given textwriter</summary>
         /// <param name="writer">Destintation for the layers features</param>
         public void ToText(TextWriter writer)
         {
             writer.WriteLine(this);
-            writer.WriteLine(this.Fields + "\n");
+            writer.WriteLine($"{this.Fields}\n");
             writer.WriteLine(this.Features);
         }
 
-        /// <summary>
-        /// Writes this layers features as a text file.
-        /// </summary>
+        /// <summary>Writes this layers features as a text file.</summary>
         /// <param name="fileName">The name of the file that will be created.</param>
         public void ToText(string fileName)
         {
             ToText(new StreamWriter(fileName));
         }
 
+        /// <summary>Закрыть файл</summary>
         public void Close()
         {
             MiApi.mitab_c_close(this.Handle);
         }
-
     }
 }

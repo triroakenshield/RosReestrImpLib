@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//
 using System.ComponentModel;
+
 using RosReestrImp.Data;
 
 namespace RRViewer1
@@ -14,10 +11,8 @@ namespace RRViewer1
 
         private DataLayer data;
         private List<MyRecordView> rows;
-        //
-        //private string[] columnNames;
 
-        public event System.ComponentModel.ListChangedEventHandler ListChanged;
+        public event ListChangedEventHandler ListChanged;
 
         #region Constructors
 
@@ -35,23 +30,11 @@ namespace RRViewer1
 
         #region Properties
 
-        public string[] ColumnNames
-        {
-            get
-            {
-                return this.data.GetColumnNames(); 
-            }
-        }
+        public string[] ColumnNames => this.data.GetColumnNames();
 
-        public int RowCount
-        {
-            get { return this.data.Table.Count; }
-        }
+        public int RowCount => this.data.Table.Count;
 
-        public int ColumnsCount
-        {
-            get { return this.data.Rule.FieldList.Count; }
-        }
+        public int ColumnsCount => this.data.Rule.FieldList.Count;
 
         #endregion
 
@@ -65,64 +48,37 @@ namespace RRViewer1
 
         }
 
-        public bool AllowNew
-        {
-            get { return false; }
-        }
+        public bool AllowNew => false;
 
         public void ApplySort(PropertyDescriptor property, System.ComponentModel.ListSortDirection direction)
         {
 
         }
 
-        public PropertyDescriptor SortProperty
-        {
-            get { return null; }
-        }
+        public PropertyDescriptor SortProperty => null;
 
         public int Find(PropertyDescriptor property, object key)
         {
             return 0;
         }
 
-        public bool SupportsSorting
-        {
-            get { return false; }
-        }
+        public bool SupportsSorting => false;
 
-        public bool IsSorted
-        {
-            get { return false; }
-        }
+        public bool IsSorted => false;
 
-        public bool AllowRemove
-        {
-            get { return false; }
-        }
+        public bool AllowRemove => false;
 
-        public bool SupportsSearching
-        {
-            get { return false; }
-        }
+        public bool SupportsSearching => false;
 
-        public ListSortDirection SortDirection
-        {
-            get { return new System.ComponentModel.ListSortDirection(); }
-        }
+        public ListSortDirection SortDirection => new ListSortDirection();
 
 
         private void OnListChanged(ListChangedEventArgs e)
         {
-            if (ListChanged != null)
-            {
-                ListChanged(this, e);
-            }
+            ListChanged?.Invoke(this, e);
         }
 
-        public bool SupportsChangeNotification
-        {
-            get { return true; }
-        }
+        public bool SupportsChangeNotification => true;
 
         public void RemoveSort()
         {
@@ -134,26 +90,16 @@ namespace RRViewer1
             return null;
         }
 
-        public bool AllowEdit
-        {
-            get { return true; }
-        }
+        public bool AllowEdit => true;
 
         public void RemoveIndex(PropertyDescriptor property)
         {
 
         }
 
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
-        public object this[int index]
-        {
-            get { return rows[index]; }
-            set { throw new NotSupportedException(); }
-        }
+        public object this[int index] { get => rows[index]; set => throw new NotSupportedException(); }
 
         public void RemoveAt(int index)
         {
@@ -190,35 +136,22 @@ namespace RRViewer1
             return 0;
         }
 
-        public bool IsFixedSize
-        {
-            get { return true; }
-        }
+        public bool IsFixedSize => true;
 
-        public bool IsSynchronized
-        {
-            get { return false; }
-        }
+        public bool IsSynchronized => false;
 
-        public int Count
-        {
-            get { return rows.Count; }
-        }
+        public int Count => rows.Count;
 
         public void CopyTo(Array array, int index)
         {
 
         }
 
-        public object SyncRoot
-        {
-            get { return null; }
-        }
+        public object SyncRoot => null;
 
         public System.Collections.IEnumerator GetEnumerator()
         {
             return rows.GetEnumerator();
         }
-
     }
 }
