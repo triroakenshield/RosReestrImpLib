@@ -1,22 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RosReestrImp.Geometry
 {
     public class TGeometryCollection : TGeometry
-    {
-
-        /// <summary>
-        /// 
-        /// </summary>
+    {        
+        /// <summary></summary>
         public new static readonly string Type = "GEOMETRYCOLLECTION";
 
-        /// <summary>
-        /// Список 
-        /// </summary>
+        /// <summary>Список</summary>
         public List<TGeometry> Geometries;
 
         public TGeometryCollection()
@@ -80,6 +73,5 @@ namespace RosReestrImp.Geometry
             if (this.IsEmpty()) return $"{TGeometryCollection.Type} {TGeometry.Emp}";
             return $"{TGeometryCollection.Type}({this.ToShortWKT2D()})";
         }
-
     }
 }

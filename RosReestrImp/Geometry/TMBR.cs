@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RosReestrImp.Geometry
 {
     public class TMBR
     {
-
         public double minx { get; private set; }
         public double miny { get; private set; }
         public double maxx { get; private set; }
@@ -56,6 +51,5 @@ namespace RosReestrImp.Geometry
                 this.maxy = Math.Max(this.maxy, nmbr.maxy);
             }
         }
-
     }
 }

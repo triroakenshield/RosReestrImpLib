@@ -1,26 +1,16 @@
-﻿using System;
-
-namespace RosReestrImp.Geometry
+﻿namespace RosReestrImp.Geometry
 {
-    /// <summary>
-    /// Внутрений формат для представления геометрии - точки
-    /// </summary>
+    /// <summary>Внутрений формат для представления геометрии - точки</summary>
     public class TPoint : TGeometry
     {
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         public new static readonly string Type = "POINT";
 
-        /// <summary>
-        /// Координаты точки (MyPoint)
-        /// </summary>
-        public MyPoint Coord;              
+        /// <summary>Координаты точки (MyPoint)</summary>
+        public MyPoint Coord;
 
-        /// <summary>
-        /// Создание 3D точки
-        /// </summary>
+        /// <summary>Создание 3D точки</summary>
         /// <param name="nX"> Координата X </param>
         /// <param name="nY"> Координата Y </param>
         /// <param name="nZ"> Координата Z </param>
@@ -31,9 +21,7 @@ namespace RosReestrImp.Geometry
             this.Coord.Z = nZ;
         }
 
-        /// <summary>
-        /// Создание 2D точки (Z = 0)
-        /// </summary>
+        /// <summary>Создание 2D точки (Z = 0)</summary>
         /// <param name="nX"> Координата X </param>
         /// <param name="nY"> Координата Y </param>
         public TPoint(double nX, double nY)
@@ -43,27 +31,21 @@ namespace RosReestrImp.Geometry
             this.Coord.Z = 0;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <returns></returns>
         public override bool IsEmpty()
         {
             return false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <returns></returns>
         public override string ToShortWKT2D()
         {
             return Coord.ToWKT2D();
         }
 
-        /// <summary>
-        /// Получение геометрии в виде wkt-строки (2D) - POINT(X Y)
-        /// </summary>
+        /// <summary>Получение геометрии в виде wkt-строки (2D) - POINT(X Y)</summary>
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
         public override string ToWKT2D()
         {
@@ -89,7 +71,5 @@ namespace RosReestrImp.Geometry
         {
             return true;
         }
-
     }
-
 }

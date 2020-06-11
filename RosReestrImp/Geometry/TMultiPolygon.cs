@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RosReestrImp.Geometry
 {
     public class TMultiPolygon : TGeometryCollection
-    {
-
+    {     
         public new static readonly string Type = "MULTIPOLYGON";
 
         public TMultiPolygon(List<TPolygon> nPolygons) //: base((List<TGeometry>)nPolygons.Cast<TGeometry>())
@@ -67,6 +64,5 @@ namespace RosReestrImp.Geometry
             if (this.IsEmpty()) return $"{TMultiPolygon.Type} {TGeometry.Emp}";
             return $"{TMultiPolygon.Type}({this.ToShortWKT2D()})";
         }
-
     }
 }

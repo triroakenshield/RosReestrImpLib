@@ -4,34 +4,23 @@ using System.Linq;
 
 namespace RosReestrImp.Geometry
 {
-    /// <summary>
-    /// Внутрений формат для представления геометрии - линии
-    /// </summary>
+    /// <summary>Внутрений формат для представления геометрии - линии</summary>
     public class TLineString : TGeometry
     {
-
-        /// <summary>
-        /// Тип
-        /// </summary>
+        /// <summary>Тип</summary>
         public new static readonly string Type = "LINESTRING";
 
-        /// <summary>
-        /// Список координат
-        /// </summary>
+        /// <summary>Список координат</summary>
         public List<MyPoint> Coords = null;
 
-        /// <summary>
-        /// Создание линии из списка координат
-        /// </summary>
+        /// <summary>Создание линии из списка координат</summary>
         /// <param name="nCoords"> Список координат </param>
         public TLineString(List<MyPoint> nCoords)
         {
             this.Coords = nCoords.GetRange(0, nCoords.Count);
         }
 
-        /// <summary>
-        /// Создание линии из списка точек
-        /// </summary>
+        /// <summary>Создание линии из списка точек</summary>
         /// <param name="nCoords"> Список точек </param>
         public TLineString(List<TPoint> nCoords)
         {
@@ -39,27 +28,21 @@ namespace RosReestrImp.Geometry
             nCoords.ForEach(p => this.Coords.Add(new MyPoint(p.Coord)));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <returns></returns>
         public override bool IsEmpty()
         {
             return this.Coords.Count == 0;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <returns></returns>
         public override string ToShortWKT2D()
         {
             return String.Join(", ", this.Coords.Select(p => p.ToWKT2D()));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <returns></returns>
         public string RingToShortWKT2D()
         {
@@ -76,9 +59,7 @@ namespace RosReestrImp.Geometry
             return $"{TLineString.Type}({this.ToShortWKT2D()})";
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <returns></returns>
         public string RingToWKT2D()
         {
@@ -110,6 +91,5 @@ namespace RosReestrImp.Geometry
         {
             return this.Coords.Count > 1;
         }
-
     }
 }

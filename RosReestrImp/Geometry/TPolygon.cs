@@ -4,43 +4,31 @@ using System.Linq;
 
 namespace RosReestrImp.Geometry
 {
-    /// <summary>
-    /// Внутрений формат для представления геометрии - полигона
-    /// </summary>
+    /// <summary>Внутрений формат для представления геометрии - полигона</summary>
     public class TPolygon : TGeometry
     {
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         public new static readonly string Type = "POLYGON";
 
-        /// <summary>
-        /// Список замкнутых контуров - колец
-        /// </summary>
+        /// <summary>Список замкнутых контуров - колец</summary>
         public List<TLineString> Rings;
 
-        /// <summary>
-        /// Создание полигона
-        /// </summary>
+        /// <summary>Создание полигона</summary>
         /// <param name="nRings"> Список контуров </param>
         public TPolygon(List<TLineString> nRings)
         {
             this.Rings = nRings.GetRange(0, nRings.Count);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <returns></returns>
         public override bool IsEmpty()
         {
             return this.Rings.Count == 0;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <returns></returns>
         public override string ToShortWKT2D()
         {
@@ -88,8 +76,6 @@ namespace RosReestrImp.Geometry
                 return true;
             }
             return false;
-
         }
     }
-
 }
