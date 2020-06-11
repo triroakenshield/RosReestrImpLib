@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 //
 using RosReestrImp.Rule;
@@ -67,6 +68,21 @@ namespace UnitTestProject1
             XmlNode XmlNode1 = wDoc.DocumentElement.SelectSingleNode("//ns:ObjectsRealty//ns:EntitySpatial", wNM);
             Assert.IsTrue(true, "good");
         }
+
+        [TestMethod]
+        public void TestHashSet()
+        {
+            HashSet<object> tSet = new HashSet<object>
+            {
+                1,
+                2,
+                3
+            };
+            //var bres = tSet.Contains(i => i == 4);
+            //var res = tSet.First(i => i == 4);
+            var res = tSet.FirstOrDefault(i => (int)i == 4);
+        }
+
 
     }
 }
