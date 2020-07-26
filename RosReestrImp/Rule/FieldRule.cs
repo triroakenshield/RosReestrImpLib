@@ -1,90 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml;
-using System.Threading.Tasks;
 
 namespace RosReestrImp.Rule
 {
-    /// <summary>
-    /// Описание поля слоя
-    /// элемент FieldRule
-    /// </summary>
+    /// <summary>Описание поля слоя, элемент FieldRule</summary>
     public class FieldRule
     {
-        /// <summary>
-        /// Описание геометрии
-        /// </summary>
+        /// <summary>Описание геометрии</summary>
         public struct GeomRule
         {
-
+            /// <summary>Путь к данным полигона</summary>
             public string PolygonPath;
 
-            /// <summary>
-            /// Путь к данным линии
-            /// </summary>
+            /// <summary>Путь к данным линии</summary>
             public string LineStringPath;
 
-            /// <summary>
-            /// Путь к данным точки
-            /// </summary>
+            /// <summary>Путь к данным точки</summary>
             public string PointPath;
 
-            /// <summary>
-            /// Путь к координате X
-            /// </summary>
+            /// <summary>Путь к координате X</summary>
             public string XPath;
 
-            /// <summary>
-            /// Путь к координате Y
-            /// </summary>
+            /// <summary>Путь к координате Y</summary>
             public string YPath;
 
-            /// <summary>
-            /// Тип геометрии
-            /// </summary>
+            /// <summary>Тип геометрии</summary>
             public Geometry.GeometryType Type;
         }
 
-        /// <summary>
-        /// Имя поля
-        /// </summary>
-        public string FName = "";
+        /// <summary>Имя поля</summary>
+        public string FName;
 
-        /// <summary>
-        /// Путь к данным
-        /// </summary>
-        public string FPath = "";
+        /// <summary>Путь к данным</summary>
+        public string FPath;
 
-        /// <summary>
-        /// Имя атрибута-источника
-        /// </summary>
-        public string FAttr = "";
+        /// <summary>Имя атрибута-источника</summary>
+        public string FAttr;
 
-        /// <summary>
-        /// Является ли поле геометрией
-        /// </summary>
-        public bool IsGeom = false;
-        private GeomRule GR;
+        /// <summary>Является ли поле геометрией</summary>
+        public bool IsGeom;
+
+        private GeomRule _gr;
         //
         //public string dict;
 
-        /// <summary>
-        /// Получение значения атрибута, возвращает string.Empty если атрибута нет
-        /// </summary>
+        /// <summary>Получение значения атрибута, возвращает string.Empty если атрибута нет</summary>
         /// <param name="wEl"> xml-элемент </param>
-        /// <param name="AttrName"> имя атрибута </param>
+        /// <param name="attrName"> имя атрибута </param>
         /// <returns></returns>
-        private string GetElAttr(XmlElement wEl, string AttrName)
+        private string GetElAttr(XmlElement wEl, string attrName)
         {
-            if (wEl.HasAttribute(AttrName)) return wEl.GetAttribute(AttrName);
-            else return string.Empty;
+            return wEl.HasAttribute(attrName) ? wEl.GetAttribute(attrName) : string.Empty;
         }
 
-        /// <summary>
-        /// Загрузка описания геометрии
-        /// </summary>
+        /// <summary>Загрузка описания геометрии</summary>
         /// <param name="wEl"> Описание геометрии </param>
         private void LoadGeomRule(XmlElement wEl)
         {
@@ -97,44 +68,33 @@ namespace RosReestrImp.Rule
                     switch (ch.LocalName)
                     {
                         case "Point":
-                            this.GR.PointPath = this.GetElAttr(ch, "Path");
-                            this.GR.XPath = this.GetElAttr(ch, "Xattr");
-                            this.GR.YPath = this.GetElAttr(ch, "Yattr");
-                            if (this.GR.Type == Geometry.GeometryType.No)
-                            {
-                                this.GR.Type = Geometry.GeometryType.Point;
-                            }
+                            this._gr.PointPath = this.GetElAttr(ch, "Path");
+                            this._gr.XPath = this.GetElAttr(ch, "Xattr");
+                            this._gr.YPath = this.GetElAttr(ch, "Yattr");
+                            if (_gr.Type == Geometry.GeometryType.No) _gr.Type = Geometry.GeometryType.Point;
                             ex = false;
                             break;
                         case "LineString":
-                            this.GR.LineStringPath = this.GetElAttr(ch, "Path");
+                            this._gr.LineStringPath = this.GetElAttr(ch, "Path");
                             ch = (XmlElement)ch.FirstChild;
-                            if (this.GR.Type == Geometry.GeometryType.No)
-                            {
-                                this.GR.Type = Geometry.GeometryType.LineString;
-                            }
+                            if (_gr.Type == Geometry.GeometryType.No) _gr.Type = Geometry.GeometryType.LineString;
                             break;
                         case "Polygon":
-                            this.GR.PolygonPath = this.GetElAttr(ch, "Path");
+                            this._gr.PolygonPath = this.GetElAttr(ch, "Path");
                             ch = (XmlElement)ch.FirstChild;
-                            if (this.GR.Type == Geometry.GeometryType.No) this.GR.Type = Geometry.GeometryType.Polygon;
+                            if (_gr.Type == Geometry.GeometryType.No) _gr.Type = Geometry.GeometryType.Polygon;
                             break;
                         case "MultiPolygon":
                             ch = (XmlElement)ch.FirstChild;
-                            this.GR.Type = Geometry.GeometryType.MultiPolygon;
+                            this._gr.Type = Geometry.GeometryType.MultiPolygon;
                             break;
                     }
                 } while (ex);
             }
-            catch (Exception e) 
-            {
-                throw new RuleLoadException("Ошибка чтения правила геометрии", e);
-            }
+            catch (Exception e) { throw new RuleLoadException("Ошибка чтения правила геометрии", e); }
         }
 
-        /// <summary>
-        /// Создание правила
-        /// </summary>
+        /// <summary>Создание правила</summary>
         /// <param name="wEl"> Описание правил </param>
         internal FieldRule(XmlElement wEl)
         {
@@ -149,40 +109,35 @@ namespace RosReestrImp.Rule
             else throw new RuleLoadException("Нет имени поля");
         }
 
-        /// <summary>
-        /// Получение типа геометрии поля
-        /// </summary>
+        /// <summary>Получение типа геометрии поля</summary>
         /// <returns> тип геометрии </returns>
         public Geometry.GeometryType GetGeomType()
         {
-            return this.GR.Type;
+            return this._gr.Type;
         }
 
-        /// <summary>
-        /// Загрузка данных точки
-        /// </summary>
+        /// <summary>Загрузка данных точки</summary>
         /// <param name="wNode"> Узел с данными </param>
-        /// <param name="wNM"> Список пространств имён файла данных </param>
+        /// <param name="wNm"> Список пространств имён файла данных </param>
         /// <returns> точка </returns>
         /// <exception cref="Data.DataLoadException"> Ошибка чтения координат точки - отрицательные координаты </exception>
         /// <exception cref="Data.DataLoadException"> Ошибка XPath в Point </exception>
-        private Geometry.TPoint LoadPoint(XmlNode wNode, XmlNamespaceManager wNM)
+        private Geometry.TPoint LoadPoint(XmlNode wNode, XmlNamespaceManager wNm)
         {
             try
             {
                 double x = -1, y = -1;
-                string WorkStr;
                 //WorkStr = wNode.Attributes.GetNamedItem(this.GR.XPath).Value;
-                XmlNode XmlNode2 = wNode.SelectSingleNode(this.GR.XPath, wNM);
-                if (XmlNode2 != null)
+                XmlNode xmlNode2 = wNode.SelectSingleNode(this._gr.XPath, wNm);
+                if (xmlNode2 != null)
                 {
-                    WorkStr = XmlNode2.Value;
+                    var WorkStr = xmlNode2.Value;
                     x = double.Parse(WorkStr, System.Globalization.CultureInfo.InvariantCulture);
                     //WorkStr = wNode.Attributes.GetNamedItem(this.GR.YPath).Value;
-                    XmlNode2 = wNode.SelectSingleNode(this.GR.YPath, wNM);
-                    if (XmlNode2 != null)
+                    xmlNode2 = wNode.SelectSingleNode(this._gr.YPath, wNm);
+                    if (xmlNode2 != null)
                     {
-                        WorkStr = XmlNode2.Value;
+                        WorkStr = xmlNode2.Value;
                         y = double.Parse(WorkStr, System.Globalization.CultureInfo.InvariantCulture);
                     }
                 }
@@ -195,9 +150,7 @@ namespace RosReestrImp.Rule
             }
         }
 
-        /// <summary>
-        /// Загрузка данных линии
-        /// </summary>
+        /// <summary>Загрузка данных линии</summary>
         /// <param name="wNode"> Узел с данными </param>
         /// <param name="wNM"> Список пространств имён файла данных </param>
         /// <returns> Линия </returns>
@@ -206,13 +159,9 @@ namespace RosReestrImp.Rule
         {
             try
             {
-                List<Geometry.TPoint> Coords = new List<Geometry.TPoint>();
-                XmlNodeList crNodes = wNode.SelectNodes(this.GR.PointPath, wNM);
-                foreach (XmlNode n in crNodes)
-                {
-                    Coords.Add(this.LoadPoint(n, wNM));
-                }
-                return new Geometry.TLineString(Coords);
+                XmlNodeList crNodes = wNode.SelectNodes(this._gr.PointPath, wNM);
+                List<Geometry.TPoint> coords = (from XmlNode n in crNodes select this.LoadPoint(n, wNM)).ToList();
+                return new Geometry.TLineString(coords);
             }
             catch (System.Xml.XPath.XPathException e)
             {
@@ -220,9 +169,7 @@ namespace RosReestrImp.Rule
             }
         }
 
-        /// <summary>
-        /// Загрузка данных полигона
-        /// </summary>
+        /// <summary>Загрузка данных полигона</summary>
         /// <param name="wNode"> Узел с данными </param>
         /// <param name="wNM"> Список пространств имён файла данных </param>
         /// <returns> Полигон </returns>
@@ -231,12 +178,8 @@ namespace RosReestrImp.Rule
         {
             try
             {
-                List<Geometry.TLineString> Rings = new List<Geometry.TLineString>();
-                XmlNodeList crNodes = wNode.SelectNodes(this.GR.LineStringPath, wNM);
-                foreach (XmlNode n in crNodes)
-                {
-                    Rings.Add(this.LoadLineString(n, wNM));
-                }
+                XmlNodeList crNodes = wNode.SelectNodes(this._gr.LineStringPath, wNM);
+                List<Geometry.TLineString> Rings = (from XmlNode n in crNodes select this.LoadLineString(n, wNM)).ToList();
                 return new Geometry.TPolygon(Rings);
             }
             catch (System.Xml.XPath.XPathException e)
@@ -249,14 +192,8 @@ namespace RosReestrImp.Rule
         {
             try
             {
-                List<Geometry.TPolygon> nPolygons = new List<Geometry.TPolygon>();
-                //
-                XmlNodeList crNodes = wNode.SelectNodes(this.GR.PolygonPath, wNM);
-                foreach (XmlNode n in crNodes)
-                {
-                    nPolygons.Add(this.LoadPolygon(n, wNM));
-                }
-                //
+                XmlNodeList crNodes = wNode.SelectNodes(this._gr.PolygonPath, wNM);
+                List<Geometry.TPolygon> nPolygons = (from XmlNode n in crNodes select this.LoadPolygon(n, wNM)).ToList();
                 return new Geometry.TMultiPolygon(nPolygons);
             }
             catch (System.Xml.XPath.XPathException e)
@@ -265,9 +202,7 @@ namespace RosReestrImp.Rule
             }
         }
 
-        /// <summary>
-        /// Загрузка данных геометрии
-        /// </summary>
+        /// <summary>Загрузка данных геометрии</summary>
         /// <param name="wNode"> Узел с данными </param>
         /// <param name="wNM"> Список пространств имён файла данных </param>
         /// <returns> Геометрия </returns>
@@ -291,6 +226,5 @@ namespace RosReestrImp.Rule
                     return null;
             }
         }
-
     }
 }

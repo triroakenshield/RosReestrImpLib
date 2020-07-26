@@ -1,44 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml;
-using System.Threading.Tasks;
 
 namespace RosReestrImp.Rule
 {
-    /// <summary>
-    /// Правила слоя,
-    /// элемент DataLayer 
-    /// </summary>
+    /// <summary>Правила слоя, элемент DataLayer</summary>
     public class LayerRule 
     {
-        /// <summary>
-        /// Имя слоя, аттрибут Name 
-        /// </summary>
+        /// <summary>Имя слоя, атрибут Name</summary>
         public string LName; 
 
-        /// <summary>
-        /// Путь слоя, аттрибут LayerPath
-        /// </summary>
+        /// <summary>Путь слоя, атрибут LayerPath</summary>
         internal string LayerPath; 
 
-        /// <summary>
-        /// Путь элементов слоя, аттрибут EntPath
-        /// </summary>
+        /// <summary>Путь элементов слоя, атрибут EntPath</summary>
         internal string Entpath; 
 
-        /// <summary>
-        ///  Список полей слоя
-        /// </summary>
+        /// <summary>Список полей слоя</summary>
         public List<FieldRule> FieldList; 
 
-        private string GetElAttr(XmlElement wEl, string AttrName) 
+        private string GetElAttr(XmlElement wEl, string attrName)
         {
-            if (wEl.HasAttribute(AttrName)) return wEl.GetAttribute(AttrName);
-            else return "";
+            return wEl.HasAttribute(attrName) ? wEl.GetAttribute(attrName) : "";
         }
 
+        /// <summary></summary>
+        /// <param name="wEl"></param>
         internal LayerRule(XmlElement wEl)
         {
                 this.LName = this.GetElAttr(wEl, "Name");
@@ -51,20 +37,16 @@ namespace RosReestrImp.Rule
                 }
         }
 
-        /// <summary>
-        /// Получение списка имён полей слоя
-        /// </summary>
+        /// <summary>Получение списка имён полей слоя</summary>
         /// <returns> список имён полей слоя </returns>
         public string[] GetColumnNames()
         {
             string[] res = new string[this.FieldList.Count];
-            for (int i = 0; i < this.FieldList.Count; i++)
+            for (var i = 0; i < this.FieldList.Count; i++)
             {
                 res[i] = this.FieldList[i].FName;
             }
             return res;
         }
-        
     }
-
 }
