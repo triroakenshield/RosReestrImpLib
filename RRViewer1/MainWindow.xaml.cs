@@ -11,9 +11,7 @@ using MITAB;
 
 namespace RRViewer1
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
+    /// <summary>Логика взаимодействия для MainWindow.xaml</summary>
     public partial class MainWindow : Window
     {
         RuleManager wRM;
@@ -109,6 +107,5 @@ namespace RRViewer1
                 }
             }
         }
-
     }
 }

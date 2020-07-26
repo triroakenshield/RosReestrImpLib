@@ -1,7 +1,4 @@
-﻿// $Id: Feature.cs,v 1.2 2005/03/24 17:02:06 dmorissette Exp $
-//
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 

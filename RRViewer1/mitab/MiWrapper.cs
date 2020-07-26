@@ -1,5 +1,4 @@
 // $Id: MiWrapper.cs,v 1.2 2005/03/24 17:02:06 dmorissette Exp $
-//
 
 using System;
 using System.Collections;
@@ -9,7 +8,6 @@ using System.Text;
 // ReSharper disable once CheckNamespace
 namespace MITAB
 {
-
     /*
      * These classes wrap the mitab c api functions to produce a hierarchy of classes giving readonly 
      * access to the feature points.

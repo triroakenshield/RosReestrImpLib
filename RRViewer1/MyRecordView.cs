@@ -1,90 +1,94 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 //
 using RosReestrImp.Data;
 
 namespace RRViewer1
 {
+    /// <summary>Обёртка записи для биндинга</summary>
     public class MyRecordView : ICustomTypeDescriptor
     {
 
-        private MyRecord owner;
+        private readonly MyRecord _owner;
 
-        public MyRecordView(MyRecord nowner)
+        /// <summary>Конструктор</summary>
+        /// <param name="nOwner">запись</param>
+        public MyRecordView(MyRecord nOwner)
         {
-            this.owner = nowner;
+            this._owner = nOwner;
         }
-
-        public string Name => owner.Rule.LName;
-
-        public object GetColumn(int index)
-        {
-            return index < this.owner.FieldList.Count ? this.owner.FieldList[index].ToString() : null;
-        }
-
-        #region ICustomTypeDescriptor Members
         
+        #region ICustomTypeDescriptor Members
+
+        /// <inheritdoc />
         public TypeConverter GetConverter()
         {
             return null;
         }
 
+        /// <inheritdoc />
         public EventDescriptorCollection GetEvents(Attribute[] attributes)
         {
             return EventDescriptorCollection.Empty;
         }
 
-        EventDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetEvents()
+        /// <inheritdoc />
+        EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
         {
             return EventDescriptorCollection.Empty;
         }
 
+        /// <inheritdoc />
         public string GetComponentName()
         {
             return null;
         }
 
+        /// <inheritdoc />
         public object GetPropertyOwner(PropertyDescriptor pd)
         {
-            return owner;
+            return _owner;
         }
 
+        /// <inheritdoc />
         public AttributeCollection GetAttributes()
         {
             return AttributeCollection.Empty;
         }
 
+        /// <inheritdoc />
         public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
-            PropertyDescriptor[] prop;
-            int cols = owner.FieldList.Count;
-            prop = new PropertyDescriptor[cols];
-            for (int i = 0; i < cols; i++)
-                prop[i] = new MyFieldPropertyDescriptor(owner.FieldList[i]);
-
-            return new PropertyDescriptorCollection(prop);
+            return new PropertyDescriptorCollection(_owner.FieldList
+                .Select(f => new MyFieldPropertyDescriptor(f)).ToArray<PropertyDescriptor>());
         }
 
-        PropertyDescriptorCollection System.ComponentModel.ICustomTypeDescriptor.GetProperties()
+        /// <inheritdoc />
+        PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
             return GetProperties(null);
         }
 
+        /// <inheritdoc />
         public object GetEditor(Type editorBaseType)
         {
             return null;
         }
 
+        /// <inheritdoc />
         public PropertyDescriptor GetDefaultProperty()
         {
             return null;
         }
 
+        /// <inheritdoc />
         public EventDescriptor GetDefaultEvent()
         {
             return null;
         }
 
+        /// <inheritdoc />
         public string GetClassName()
         {
             return this.GetType().Name;
