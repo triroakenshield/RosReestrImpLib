@@ -1,43 +1,31 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace RosReestrImp.Geometry
 {
-
-    /// <summary>
-    /// Тип геометрии: точка (Point), 
-    /// линия (LineString), полигон (Polygon)
-    /// </summary>
+    /// <summary>Тип геометрии: точка (Point), линия (LineString), полигон (Polygon)</summary>
     public enum GeometryType
     {
         /// <summary>Отсутствует</summary>
         No,
-
         /// <summary>Точка</summary>
         Point,
-
         /// <summary>Линия</summary>
         LineString,
-
         /// <summary>Полигон</summary>
         Polygon,
-
         /// <summary>GeometryCollection</summary>
         GeometryCollection,
-
+        /// <summary>Мултиполигон</summary>
         MultiPolygon
-
     }
 
-    /// <summary> Структура для храниния координат точки</summary>
+    /// <summary>Структура для хранения координат точки</summary>
     public struct MyPoint
     {
         /// <summary>Координата X</summary>
         public double X;
-
         /// <summary>Координата Y</summary>
         public double Y;
-
         /// <summary>Координата Z</summary>
         public double Z;
 
@@ -71,43 +59,45 @@ namespace RosReestrImp.Geometry
             this.Z = op.Z;
         }
 
-        /// <summary></summary>
+        /// <summary>Получение wkt-строки с 2d геометрией</summary>
         /// <returns></returns>
         public string ToWKT2D()
         {
             return $"{X.ToString(CultureInfo.InvariantCulture)} {Y.ToString(CultureInfo.InvariantCulture)}";
         }
-
     }
 
-    /// <summary>Внутрений формат для представления геометрии</summary>
+    /// <summary>Внутренний формат для представления геометрии</summary>
     public abstract class TGeometry
     {
-
-        /// <summary></summary>
+        /// <summary>Имя типа</summary>
         public static readonly string Type = "GEOMETRY";
 
-        /// <summary></summary>
+        /// <summary>Пустое значение</summary>
         public static readonly string Emp = "EMPTY";
 
-        /// <summary></summary>
+        /// <summary>Признак пусттой геометрии</summary>
         /// <returns></returns>
         public abstract bool IsEmpty();
 
-        /// <summary></summary>
+        /// <summary>Получение короткой wkt-строки с 2d геометрией</summary>
         /// <returns></returns>
-        public abstract String ToShortWKT2D();
+        public abstract string ToShortWKT2D();
 
         /// <summary>Получение геометрии в виде wkt-строки (2D)</summary>
         /// <returns> wkt-строка (2D) </returns>
-        public abstract String ToWKT2D();
+        public abstract string ToWKT2D();
 
         /// <summary>Получение типа геометрии</summary>
-        /// <returns> TGeometry.GeometryType </returns>
+        /// <returns> <see cref="TGeometry"/>.<see cref="GeometryType"/> </returns>
         public abstract GeometryType GetGeometryType();
 
+        /// <summary>Получить MBR для геометрии</summary>
+        /// <returns></returns>
         public abstract TMBR GetMBR();
 
-        public abstract bool IsValid();       
+        /// <summary>Признак правильности геометрии</summary>
+        /// <returns></returns>
+        public abstract bool IsValid();
     }
 }

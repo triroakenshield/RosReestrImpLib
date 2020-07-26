@@ -1,13 +1,12 @@
 ﻿namespace RosReestrImp.Geometry
 {
-    /// <summary>Внутрений формат для представления геометрии - точки</summary>
+    /// <summary>Внутренний формат для представления геометрии - точки</summary>
     public class TPoint : TGeometry
     {
-
-        /// <summary></summary>
+        ///<inheritdoc/>
         public new static readonly string Type = "POINT";
 
-        /// <summary>Координаты точки (MyPoint)</summary>
+        /// <summary>Координаты точки (<see cref="MyPoint"/>)</summary>
         public MyPoint Coord;
 
         /// <summary>Создание 3D точки</summary>
@@ -31,15 +30,13 @@
             this.Coord.Z = 0;
         }
 
-        /// <summary></summary>
-        /// <returns></returns>
+        ///<inheritdoc/>
         public override bool IsEmpty()
         {
             return false;
         }
 
-        /// <summary></summary>
-        /// <returns></returns>
+        ///<inheritdoc/>
         public override string ToShortWKT2D()
         {
             return Coord.ToWKT2D();
@@ -49,24 +46,23 @@
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
         public override string ToWKT2D()
         {
-            if (this.IsEmpty()) return $"{TPoint.Type} {TGeometry.Emp}";
-            return $"{TPoint.Type}({this.ToShortWKT2D()})";
+            return this.IsEmpty() ? $"{TPoint.Type} {TGeometry.Emp}" : $"{TPoint.Type}({this.ToShortWKT2D()})";
         }
 
-        /// <summary>
-        /// Тип геометрии, всегда возвращает - TGeometry.GeometryType.Point
-        /// </summary>
+        /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.Point</summary>
         /// <returns> TGeometry.GeometryType.Point </returns>
         public override GeometryType GetGeometryType()
         {
             return GeometryType.Point;
         }
 
+        ///<inheritdoc/>
         public override TMBR GetMBR()
         {
             return new TMBR(this.Coord);
         }
 
+        ///<inheritdoc/>
         public override bool IsValid()
         {
             return true;

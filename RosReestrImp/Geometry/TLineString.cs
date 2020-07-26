@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace RosReestrImp.Geometry
 {
-    /// <summary>Внутрений формат для представления геометрии - линии</summary>
+    /// <summary>Внутренний формат для представления геометрии - линии</summary>
     public class TLineString : TGeometry
     {
         /// <summary>Тип</summary>
@@ -28,65 +27,59 @@ namespace RosReestrImp.Geometry
             nCoords.ForEach(p => this.Coords.Add(new MyPoint(p.Coord)));
         }
 
-        /// <summary></summary>
-        /// <returns></returns>
+        ///<inheritdoc/>
         public override bool IsEmpty()
         {
             return this.Coords.Count == 0;
         }
 
-        /// <summary></summary>
-        /// <returns></returns>
+        ///<inheritdoc/>
         public override string ToShortWKT2D()
         {
-            return String.Join(", ", this.Coords.Select(p => p.ToWKT2D()));
+            return string.Join(", ", this.Coords.Select(p => p.ToWKT2D()));
         }
 
-        /// <summary></summary>
+        /// <summary>Получение короткой wkt-строки (2D) для кольца (без типа)</summary>
         /// <returns></returns>
         public string RingToShortWKT2D()
         {
             return $"{ToShortWKT2D()}, {this.Coords[0].ToWKT2D()}";
         }
 
-        /// <summary>
-        /// Получение геометрии в виде wkt-строки (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0])  
-        /// </summary>
+        /// <summary>Получение геометрии в виде wkt-строки (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0])  </summary>
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
         public override string ToWKT2D()
         {
-            if (this.IsEmpty()) return $"{TLineString.Type} {TGeometry.Emp}";
-            return $"{TLineString.Type}({this.ToShortWKT2D()})";
+            return this.IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({this.ToShortWKT2D()})";
         }
 
-        /// <summary></summary>
+        /// <summary>Получение wkt-строки (2D) для кольца</summary>
         /// <returns></returns>
         public string RingToWKT2D()
         {
-            if (this.IsEmpty()) return $"{TLineString.Type} {TGeometry.Emp}";
-            return $"{TLineString.Type}({this.RingToShortWKT2D()})";
+            return this.IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({this.RingToShortWKT2D()})";
         }
 
-        /// <summary>
-        /// Тип геометрии, всегда возвращает - TGeometry.GeometryType.LineString
-        /// </summary>
+        /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.LineString</summary>
         /// <returns> TGeometry.GeometryType.LineString </returns>
         public override GeometryType GetGeometryType()
         {
             return GeometryType.LineString;
         }
 
+        ///<inheritdoc/>
         public override TMBR GetMBR()
         {
             TMBR res = null;
             foreach (MyPoint p in this.Coords)
             {
                 if (res == null) res = new TMBR(p);
-                else { res.AddPoint(p); }
+                else res.AddPoint(p); 
             }
             return res;
         }
 
+        ///<inheritdoc/>
         public override bool IsValid()
         {
             return this.Coords.Count > 1;
