@@ -68,6 +68,29 @@ namespace RosReestrImp.Geometry
         }
 
         ///<inheritdoc/>
+        public override double[] GetXYArray()
+        {
+            double[] arr = new double[this.Coords.Count*2];
+            for (var i = 0; i < this.Coords.Count; i++)
+            {
+                arr[i * 2] = this.Coords[i].X;
+                arr[i * 2 + 1] = this.Coords[i].Y;
+            }
+            return arr;
+        }
+
+        ///<inheritdoc/>
+        public override double[] GetZArray()
+        {
+            double[] arr = new double[this.Coords.Count];
+            for (var i = 0; i < this.Coords.Count; i++)
+            {
+                arr[i] = this.Coords[i].Z;
+            }
+            return arr;
+        }
+
+        ///<inheritdoc/>
         public override TMBR GetMBR()
         {
             TMBR res = null;

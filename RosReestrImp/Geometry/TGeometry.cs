@@ -92,6 +92,14 @@ namespace RosReestrImp.Geometry
         /// <returns> <see cref="TGeometry"/>.<see cref="GeometryType"/> </returns>
         public abstract GeometryType GetGeometryType();
 
+        /// <summary>Получить архив координат xy</summary>
+        /// <returns></returns>
+        public abstract double[] GetXYArray();
+
+        /// <summary>Получить архив координат z</summary>
+        /// <returns></returns>
+        public abstract double[] GetZArray();
+
         /// <summary>Получить MBR для геометрии</summary>
         /// <returns></returns>
         public abstract TMBR GetMBR();

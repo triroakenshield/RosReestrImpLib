@@ -46,6 +46,18 @@ namespace RosReestrImp.Geometry
         }
 
         ///<inheritdoc/>
+        public override double[] GetXYArray()
+        {
+            return null;
+        }
+
+        ///<inheritdoc/>
+        public override double[] GetZArray()
+        {
+            return null;
+        }
+
+        ///<inheritdoc/>
         public override TMBR GetMBR()
         {
             TMBR res = null;

@@ -4,16 +4,23 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 //
+using DotSpatial.Projections;
+using SharpKml.Base;
+using SharpKml.Dom;
+using SharpKml.Engine;
+//
 using oForms = System.Windows.Forms;
 using RosReestrImp.Rule;
 using RosReestrImp.Data;
 using MITAB;
+using RRViewer1.kml;
 
 namespace RRViewer1
 {
     /// <summary>Логика взаимодействия для MainWindow.xaml</summary>
     public partial class MainWindow : Window
     {
+        ProjectionInfo SelectProjection = null;
         RuleManager wRM;
         List<DataLayer> wData = null;
 
@@ -103,6 +110,36 @@ namespace RRViewer1
                     foreach (DataLayer l in wData)
                     {
                         MiLayer.CreateMIF(ph + "_" + l.Name + ".mif", l);
+                    }
+                }
+            }
+        }
+
+        private void MI_Projection_Click(object sender, RoutedEventArgs e)
+        {
+            var form = new SelectProjectionWindow();
+            form.ShowDialog();
+            SelectProjection = form.SelectProjection;
+            if (SelectProjection != null) MI_Kml.Visibility = Visibility.Visible;
+        }
+
+        private void MI_Kml_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectProjection == null) return;
+            if (wData != null)
+            {
+                oForms.SaveFileDialog wSFD = new oForms.SaveFileDialog();
+                if (wSFD.ShowDialog() == oForms.DialogResult.OK)
+                {
+                    string ph = wSFD.FileName;
+                    foreach (DataLayer l in wData)
+                    {
+                        var doc = l.GetKmlDocument(SelectProjection);
+                        KmlFile kml = KmlFile.Create(doc, false);
+                        using (var stream = File.OpenWrite(ph + "_" + l.Name + ".kml"))
+                        {
+                            kml.Save(stream);
+                        }
                     }
                 }
             }

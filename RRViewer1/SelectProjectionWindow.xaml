@@ -1,0 +1,28 @@
+﻿<Window x:Class="RRViewer1.SelectProjectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RRViewer1"
+        mc:Ignorable="d"
+        Title="Выбор Системы координат" Height="275.599" Width="628.4">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" Content="Код СК (Номер региона) :"/>
+        <TextBox x:Name="TB_SKName" Grid.Column="1" Grid.Row="0" Width="80"/>
+        <Label Grid.Column="2" Grid.Row="0" Content="Номер зоны :"/>
+        <TextBox x:Name="TB_Zone" Grid.Column="3" Grid.Row="0" Width="80" />
+        <Button Grid.Column="3" Grid.Row="1" Content="Установить" Click="Button_Click"/>
+        <TextBlock x:Name="TB_SelectProjection" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"/>
+    </Grid>
+</Window>

@@ -4,6 +4,11 @@ using System.Xml;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 //
+using DotSpatial.Projections;
+using SharpKml.Base;
+using SharpKml.Dom;
+using SharpKml.Engine;
+//
 using RosReestrImp.Rule;
 using RosReestrImp.Geometry;
 using RosReestrImp.Data;
@@ -88,7 +93,30 @@ namespace UnitTestProject1
         public void TestProjectionsLoad()
         {
             var projs = Projections.Load();
-            var sk = projs.GetProjectionInfo("01", 1);
+            var sk = projs.GetProjectionInfo("68", 1);
+            var WGS1984 = KnownCoordinateSystems.Geographic.World.WGS1984;
+            var xys = new double[] { 1206205.62d, 407690.08d };
+            var zs = new double[] { 0 };
+            Reproject.ReprojectPoints(xys, zs, sk, WGS1984, 0, 1);
+        }
+
+        [TestMethod]
+        public void TestKml1()
+        {
+            var point = new Point();
+            point.Coordinate = new Vector(-13.163959, -72.545992);
+
+            // This is the Element we are going to save to the Kml file.
+            var placemark = new Placemark();
+            placemark.Geometry = point;
+            placemark.Name = "Machu Picchu";
+
+            // This allows us to save and Element easily.
+            KmlFile kml = KmlFile.Create(placemark, false);
+            using (var stream = System.IO.File.OpenWrite("my placemark.kml"))
+            {
+                kml.Save(stream);
+            }
         }
     }
 }

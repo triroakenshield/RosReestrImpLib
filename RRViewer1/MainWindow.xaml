@@ -9,9 +9,11 @@
                 <MenuItem Header="Сохранить csv" Click="MenuItemSaveCSV_Click"/>
                 <MenuItem Header="Сохранить tab" Click="MenuItemSaveTAB_Click" />
                 <MenuItem Header="Сохранить mif" Click="MenuItemSaveMIF_Click" />
+                <MenuItem x:Name="MI_Kml" Header="Сохранить kml" Visibility="Hidden" Click="MI_Kml_Click"/>
                 <MenuItem Header="Закрыть" />
             </MenuItem>
-            <MenuItem Header="Схема"  />
+            <MenuItem Header="Схема"/>
+            <MenuItem x:Name="MI_Projection" Header="СК" Click="MI_Projection_Click"/>
         </Menu>
         <TabControl Name="TabControl1" />
     </DockPanel>

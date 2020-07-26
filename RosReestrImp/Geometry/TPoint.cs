@@ -57,6 +57,18 @@
         }
 
         ///<inheritdoc/>
+        public override double[] GetXYArray()
+        {
+              return new double[] { this.Coord.X, this.Coord.Y };
+        }
+
+        ///<inheritdoc/>
+        public override double[] GetZArray()
+        {
+            return new double[] { this.Coord.Z };
+        }
+
+        ///<inheritdoc/>
         public override TMBR GetMBR()
         {
             return new TMBR(this.Coord);
