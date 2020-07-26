@@ -1,46 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-//
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-//
-using Autodesk.AutoCAD.Runtime;
+
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.EditorInput;
-using AppServ = Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.Runtime;
 //
+using Autodesk.Gis.Map;
 using Autodesk.Gis.Map.ObjectData;
+using Autodesk.Gis.Map.Project;
+using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace RosReestrImp
 {
-    /// <summary>
-    /// Команды для AutoCAD Civil 3D
-    /// </summary>
+    /// <summary>Команды для AutoCAD Civil 3D</summary>
     public class MyCommands
     {
         //Autodesk.Gis.Map.ObjectData.Table crODTable;
 
-        /// <summary>
-        /// Создаём таблицу ObjectData.
-        /// </summary>
+        /// <summary>Создаём таблицу ObjectData.</summary>
         /// <param name="wRule"> LayerRule как источник описания таблицы </param>
         /// <returns> ObjectData.Table </returns>
-        public Autodesk.Gis.Map.ObjectData.Table CreateODTable(Rule.LayerRule wRule)
+        public Autodesk.Gis.Map.ObjectData.Table CreateOdTable(Rule.LayerRule wRule)
         {
-            Autodesk.Gis.Map.MapApplication mapApp = Autodesk.Gis.Map.HostMapApplicationServices.Application;
-            Autodesk.Gis.Map.Project.ProjectModel activeProject = mapApp.ActiveProject;
-            Autodesk.Gis.Map.ObjectData.Tables tableList = activeProject.ODTables;
+            MapApplication mapApp = HostMapApplicationServices.Application;
+            ProjectModel activeProject = mapApp.ActiveProject;
+            Tables tableList = activeProject.ODTables;
             //
             if (!tableList.GetTableNames().Contains(wRule.LName))
             {
                 FieldDefinitions fieldDefs = mapApp.ActiveProject.MapUtility.NewODFieldDefinitions();
-                foreach (Rule.FieldRule fr in wRule.FieldList)
+                foreach (var fr in from Rule.FieldRule fr in wRule.FieldList where !fr.IsGeom select fr)
                 {
-                    if (!fr.IsGeom)
-                    {
-                        fieldDefs.Add(fr.FName, "", Autodesk.Gis.Map.Constants.DataType.Character, 0); //!!1
-                    }
+                    fieldDefs.Add(fr.FName, "", Autodesk.Gis.Map.Constants.DataType.Character, 0);//!!1
                 }
                 tableList.Add(wRule.LName, fieldDefs, "", true);
             }
@@ -48,9 +41,7 @@ namespace RosReestrImp
             return tableList[wRule.LName];
         }
 
-        /// <summary>
-        /// Создаём Point2d из Geometry.TGeometry.MyPoint
-        /// </summary>
+        /// <summary>Создаём Point2d из Geometry.TGeometry.MyPoint</summary>
         /// <param name="wp"> Geometry.TGeometry.MyPoint </param>
         /// <returns> Point2d </returns>
         public Point2d ConvertPoint2d(Geometry.MyPoint wp)
@@ -58,9 +49,7 @@ namespace RosReestrImp
             return new Point2d(wp.X, wp.Y);
         }
 
-        /// <summary>
-        /// Создаём MPolygonLoop из Geometry.TLineString
-        /// </summary>
+        /// <summary>Создаём MPolygonLoop из Geometry.TLineString</summary>
         /// <param name="wLine"></param>
         /// <returns> MPolygonLoop </returns>
         public MPolygonLoop ConvertLineString(Geometry.TLineString wLine)
@@ -70,9 +59,7 @@ namespace RosReestrImp
             return res;
         }
 
-        /// <summary>
-        /// Создаём MPolygonLoopCollection из Geometry.TPolygon
-        /// </summary>
+        /// <summary>Создаём MPolygonLoopCollection из Geometry.TPolygon</summary>
         /// <param name="wPoly"> Geometry.TPolygon </param>
         /// <returns> MPolygonLoopCollection </returns>
         public MPolygonLoopCollection ConvertPolygon(Geometry.TPolygon wPoly)
@@ -82,9 +69,7 @@ namespace RosReestrImp
             return res;
         }
 
-        /// <summary>
-        /// Создаём DBPoint из Geometry.TPoint 
-        /// </summary>
+        /// <summary>Создаём DBPoint из Geometry.TPoint </summary>
         /// <param name="wp"> Geometry.TPoint </param>
         /// <returns> DBPoint </returns>
         public DBPoint MakePoint(Geometry.TPoint wp)
@@ -92,9 +77,7 @@ namespace RosReestrImp
             return new DBPoint(new Point3d(wp.Coord.X, wp.Coord.Y, wp.Coord.Z));
         }
 
-        /// <summary>
-        /// Создаём Polyline из Geometry.TLineString
-        /// </summary>
+        /// <summary>Создаём Polyline из Geometry.TLineString</summary>
         /// <param name="wl"> Geometry.TLineString </param>
         /// <returns> Polyline </returns>
         public Polyline MakePolyLine(Geometry.TLineString wl)
@@ -104,9 +87,7 @@ namespace RosReestrImp
             return nPoly;
         }
 
-        /// <summary>
-        /// Создаём MPolygon из Geometry.TPolygon
-        /// </summary>
+        /// <summary>Создаём MPolygon из Geometry.TPolygon</summary>
         /// <param name="wp"> Geometry.TPolygon </param>
         /// <returns> MPolygon </returns>
         public MPolygon MakePolygon(Geometry.TPolygon wp)
@@ -123,28 +104,25 @@ namespace RosReestrImp
             return mpoly;
         }
 
-        /// <summary>
-        /// Добавляем ObjectData-атрибуты к примитиву чертежа
-        /// </summary>
+        /// <summary>Добавляем ObjectData-атрибуты к примитиву чертежа</summary>
         /// <param name="wid"> ObjectId примитива </param>
         /// <param name="wr"> Данные атрибутов </param>
         /// <param name="wTbl"> Таблица ObjectData </param>
         public void AddAttr(ObjectId wid, Data.MyRecord wr, Autodesk.Gis.Map.ObjectData.Table wTbl)
         {
-            AppServ.Document acDoc = AppServ.Application.DocumentManager.MdiActiveDocument;
-            using (AppServ.DocumentLock acLckDoc = acDoc.LockDocument())
+            if (wTbl == null) return;
+            var acDoc = Application.DocumentManager.MdiActiveDocument;
+            using (acDoc.LockDocument())
             {
-                using (Transaction acTrans = acDoc.Database.TransactionManager.StartTransaction())
+                using (var acTrans = acDoc.Database.TransactionManager.StartTransaction())
                 {
-                    using (Record odRecord = Record.Create())
+                    using (var odRecord = Record.Create())
                     {
                         wTbl.InitRecord(odRecord);
-                        FieldDefinition fdef;
-                        Data.FieldValue fval;
-                        for (int i = 0; i < wTbl.FieldDefinitions.Count; i++)
+                        for (var i = 0; i < wTbl.FieldDefinitions.Count; i++)
                         {
-                            fdef = wTbl.FieldDefinitions[i];
-                            fval = wr.SearchField(fdef.Name);
+                            var fdef = wTbl.FieldDefinitions[i];
+                            var fval = wr.SearchField(fdef.Name);
                             if (fval != null)
                             {
                                 if (!fval.IsGeom)
@@ -155,14 +133,12 @@ namespace RosReestrImp
                         }
                         wTbl.AddRecord(odRecord, wid);
                         acTrans.Commit();
-                    }                     
+                    }
                 }
             }
         }
 
-        /// <summary>
-        /// Создаём AutoCAD-геометрию из TGeometry
-        /// </summary>
+        /// <summary>Создаём AutoCAD-геометрию из TGeometry</summary>
         /// <param name="wg"> геометрия </param>
         /// <returns></returns>
         public Entity MakeGeometry(Geometry.TGeometry wg)
@@ -183,19 +159,17 @@ namespace RosReestrImp
             }
         }
 
-        /// <summary>
-        /// Добавляем примитивы в БД чертежа
-        /// </summary>
-        /// <param name="wEntlist"> список примитивов </param>
-        public void DrawEntity(List<Entity> wEntlist)
+        /// <summary>Добавляем примитивы в БД чертежа</summary>
+        /// <param name="wEntList"> список примитивов </param>
+        public void DrawEntity(List<Entity> wEntList)
         {
-            AppServ.Document acDoc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            var acDoc = Application.DocumentManager.MdiActiveDocument;
             Database acCurDb = acDoc.Database;
             using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
             {
                 BlockTable acBlkTbl = (BlockTable)acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead);
                 BlockTableRecord acBlkTblRec = (BlockTableRecord)acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-                foreach (Entity ent in wEntlist)
+                foreach (Entity ent in wEntList)
                 {
                     acBlkTblRec.AppendEntity(ent);
                     acTrans.AddNewlyCreatedDBObject(ent, true);
@@ -204,19 +178,18 @@ namespace RosReestrImp
             }
         }
 
-        /// <summary>
-        /// Добавляем примитив в БД чертежа
-        /// </summary>
+        /// <summary>Добавляем примитив в БД чертежа</summary>
         /// <param name="ent"> примитив </param>
         /// <returns></returns>
         public ObjectId DrawEntity(Entity ent)
         {
-            AppServ.Document acDoc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            var acDoc = Application.DocumentManager.MdiActiveDocument;
             Database acCurDb = acDoc.Database;
-            using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+            using (var acTrans = acCurDb.TransactionManager.StartTransaction())
             {
                 BlockTable acBlkTbl = (BlockTable)acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead);
-                BlockTableRecord acBlkTblRec = (BlockTableRecord)acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                BlockTableRecord acBlkTblRec = (BlockTableRecord)acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], 
+                    OpenMode.ForWrite);
                 acBlkTblRec.AppendEntity(ent);
                 acTrans.AddNewlyCreatedDBObject(ent, true);
                 acTrans.Commit();
@@ -224,67 +197,42 @@ namespace RosReestrImp
             }
         }
 
-        /// <summary>
-        /// Рисуем слой
-        /// </summary>
+        /// <summary>Рисуем слой</summary>
         /// <param name="wl"> слой </param>
         public void DrawLayer(Data.DataLayer wl)
         {
-            //List<Entity> wEntlist = new List<Entity>();
             Autodesk.Gis.Map.ObjectData.Table wTbl = null;
-            if (wl.HasAttributes()) wTbl = CreateODTable(wl._Rule);
-            ObjectId wid;
-            Entity wEnt;
-            Geometry.TGeometry g;
-            foreach (Data.MyRecord wr in wl.Table)
+            if (wl.HasAttributes()) wTbl = CreateOdTable(wl._Rule);
+            foreach (var wr in wl.Table)
             {
-                g = wr.GetGeometry();
-                if (g != null)
-                {
-                    wEnt = MakeGeometry(g);
-                    wid = DrawEntity(wEnt);
-                    if (wl.HasAttributes()) AddAttr(wid, wr, wTbl);
-                }
-                //wEntlist.Add(wEnt);
+                var g = wr.GetGeometry();
+                if (g == null) continue;
+                if (wl.HasAttributes()) AddAttr(DrawEntity(MakeGeometry(g)), wr, wTbl);
             }
-            //DrawEntity(wEntlist);
         }
 
-        /// <summary>
-        /// Импорт xml росреестра, используется файл правил - rule.xml
-        /// </summary>
+        private string FilterString = "xml files (*.xml)|*.xml";
+
+        /// <summary>Импорт xml росреестра, используется файл правил - rule.xml</summary>
         [CommandMethod("ImportXML")]
-        public void ImportXML()
+        public void ImportXml()
         {
-            string RulePath = Assembly.GetExecutingAssembly().Location.Replace("RosReestrImp.dll", "rule.xml");
-            Rule.RuleManager wRM = new Rule.RuleManager(RulePath);
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "xml files (*.xml)|*.xml";
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                List<Data.DataLayer> res = wRM.LoadData(openFileDialog1.FileName);
-                if (res != null) res.ForEach(l => DrawLayer(l));
-            }
+            string rulePath = Assembly.GetExecutingAssembly().Location.Replace("RosReestrImp.dll", "rule.xml");
+            var wRm = new Rule.RuleManager(rulePath);
+            var openFileDialog1 = new OpenFileDialog { Filter = FilterString };
+            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+            wRm.LoadData(openFileDialog1.FileName).ForEach(DrawLayer);
         }
 
-        /// <summary>
-        /// Импорт xml росреестра, с запросом файла правил
-        /// </summary>
+        /// <summary>Импорт xml росреестра, с запросом файла правил</summary>
         [CommandMethod("ImportXMLwithRule")]
-        public void ImportXMLwithRule()
+        public void ImportXmLwithRule()
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "xml files (*.xml)|*.xml";
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                Rule.RuleManager wRM = new Rule.RuleManager(openFileDialog1.FileName);
-                if (openFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    List<Data.DataLayer> res = wRM.LoadData(openFileDialog1.FileName);
-                    if (res != null) res.ForEach(l => DrawLayer(l));
-                }
-            }
+            var openFileDialog1 = new OpenFileDialog { Filter = FilterString };
+            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+            var wRm = new Rule.RuleManager(openFileDialog1.FileName);
+            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+            wRm.LoadData(openFileDialog1.FileName).ForEach(DrawLayer);
         }
-
     }
 }

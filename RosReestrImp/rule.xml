@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ShemaList>
+	<Shema rootElem="KPT">	
+		<Layer Name = "ParcelPoints" LayerPath="//ns:Parcel/ns:EntitySpatial/ns3:SpatialElement" EntPath="ns3:SpelementUnit">
+			<FieldRule Name="geom" Geom="true" Path="ns3:Ordinate"> 
+			   <Point Xattr="@Y" Yattr="@X"/>
+			</FieldRule>
+			<FieldRule Name="SuNmb" Path="" Attr="SuNmb"/>	
+			<FieldRule Name="DeltaGeopoint" Path="ns3:Ordinate" Attr="DeltaGeopoint"/>		
+			<FieldRule Name="CadastralNumber" Path="ancestor::ns:Parcel" Attr="CadastralNumber"/>			
+		</Layer>		
+		<Layer Name = "BuildingPoints" LayerPath="//ns:Building/ns:EntitySpatial/ns3:SpatialElement" EntPath="ns3:SpelementUnit">
+			<FieldRule Name="geom" Geom="true" Path="ns3:Ordinate"> 
+			   <Point Xattr="@Y" Yattr="@X"/>
+			</FieldRule>
+			<FieldRule Name="SuNmb" Path="" Attr="SuNmb"/>	
+			<FieldRule Name="DeltaGeopoint" Path="ns3:Ordinate" Attr="DeltaGeopoint"/>		
+			<FieldRule Name="CadastralNumber" Path="ancestor::ns:Building" Attr="CadastralNumber"/>			
+		</Layer>	
+		<Layer Name = "ConstructionPoints" LayerPath="//ns:Construction/ns:EntitySpatial/ns3:SpatialElement" EntPath="ns3:SpelementUnit">
+			<FieldRule Name="geom" Geom="true" Path="ns3:Ordinate"> 
+			   <Point Xattr="@Y" Yattr="@X"/>
+			</FieldRule>
+			<FieldRule Name="SuNmb" Path="" Attr="SuNmb"/>	
+			<FieldRule Name="DeltaGeopoint" Path="ns3:Ordinate" Attr="DeltaGeopoint"/>		
+			<FieldRule Name="CadastralNumber" Path="ancestor::ns:Construction" Attr="CadastralNumber"/>			
+		</Layer>		
+		<Layer Name = "ZonePoints" LayerPath="//ns:Zone/ns:EntitySpatial/ns3:SpatialElement" EntPath="ns3:SpelementUnit">
+			<FieldRule Name="geom" Geom="true" Path="ns3:Ordinate"> 
+			   <Point Xattr="@Y" Yattr="@X"/>
+			</FieldRule>
+			<FieldRule Name="SuNmb" Path="" Attr="SuNmb"/>	
+			<FieldRule Name="DeltaGeopoint" Path="ns3:Ordinate" Attr="DeltaGeopoint"/>		
+			<FieldRule Name="AccountNumber" Path="ancestor::ns:Zone/ns:AccountNumber/text()" Attr=""/>
+		</Layer>	
+		<Layer Name = "Parcels" LayerPath="//ns:Parcels" EntPath="ns:Parcel">
+			<FieldRule Name="geom" Geom="true" Path=""> 
+		 	 <Polygon>
+			  <LineString Path="ns:EntitySpatial/ns3:SpatialElement">
+			   <Point Path="ns3:SpelementUnit/ns3:Ordinate" Xattr="@Y" Yattr="@X"/>
+			  </LineString>			
+			 </Polygon> 
+			</FieldRule>
+			<FieldRule Name="CadastralNumber" Path="" Attr="CadastralNumber"/>
+		</Layer>			
+		<Layer Name = "ObjectsRealty" LayerPath="//ns:ObjectsRealty//ns:EntitySpatial" EntPath="ns3:SpatialElement">
+			<FieldRule Name="geom" Geom="true" Path=""> 			 
+			  <LineString>
+			   <Point Path="ns3:SpelementUnit/ns3:Ordinate"  Xattr="@Y" Yattr="@X"/>
+			  </LineString>				 
+			</FieldRule>
+			<FieldRule Name="CCadastralNumber" Path="ancestor::ns:Construction" Attr="CadastralNumber"/>
+			<FieldRule Name="BCadastralNumber" Path="ancestor::ns:Building" Attr="CadastralNumber"/>			
+		</Layer>	
+		<Layer Name = "OMSPoints" LayerPath="//ns:OMSPoints" EntPath="ns:OMSPoint">
+			<FieldRule Name="geom" Geom="true" Path=""> 
+			   <Point Xattr="ns:OrdY/text()" Yattr="ns:OrdX/text()"/>
+			</FieldRule>
+			<FieldRule Name="PNmb" Path="ns:PNmb/text()" Attr=""/>
+		</Layer>			
+		<Layer Name = "SpatialData" LayerPath="//ns:SpatialData" EntPath="ns:EntitySpatial">
+			<FieldRule Name="geom" Geom="true" Path=""> 
+		 	 <Polygon>
+			  <LineString Path="ns3:SpatialElement">
+			   <Point Path="ns3:SpelementUnit/ns3:Ordinate" Xattr="@Y" Yattr="@X"/>
+			  </LineString>			
+			 </Polygon> 
+			</FieldRule>
+			<FieldRule Name="EntSys" Path="" Attr="EntSys"/>
+		</Layer>		
+		<Layer Name = "Zones" LayerPath="//ns:Zones" EntPath="ns:Zone">
+			<FieldRule Name="geom" Geom="true" Path=""> 
+		 	 <Polygon>
+			  <LineString Path="ns:EntitySpatial/ns3:SpatialElement">
+			   <Point Path="ns3:SpelementUnit/ns3:Ordinate" Xattr="@Y" Yattr="@X"/>
+			  </LineString>			
+			 </Polygon> 
+			</FieldRule>
+			<FieldRule Name="AccountNumber" Path="ns:AccountNumber/text()" Attr=""/>
+		</Layer>				
+	</Shema>	
+</ShemaList>

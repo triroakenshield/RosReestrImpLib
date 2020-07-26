@@ -124,7 +124,7 @@ namespace MITAB
         private List<string> GetFieldValues(MyRecord rec)
         {
             var res = new List<string>();
-            foreach (var f in rec.FileldList) if (!f.IsGeom) res.Add(f.GetString());
+            foreach (var f in rec.FieldList) if (!f.IsGeom) res.Add(f.GetString());
             return res;
         }
 

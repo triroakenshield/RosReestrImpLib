@@ -19,7 +19,7 @@ namespace RRViewer1
 
         public object GetColumn(int index)
         {
-            return index < this.owner.FileldList.Count ? this.owner.FileldList[index].ToString() : null;
+            return index < this.owner.FieldList.Count ? this.owner.FieldList[index].ToString() : null;
         }
 
         #region ICustomTypeDescriptor Members
@@ -57,10 +57,10 @@ namespace RRViewer1
         public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
             PropertyDescriptor[] prop;
-            int cols = owner.FileldList.Count;
+            int cols = owner.FieldList.Count;
             prop = new PropertyDescriptor[cols];
             for (int i = 0; i < cols; i++)
-                prop[i] = new MyFieldPropertyDescriptor(owner.FileldList[i]);
+                prop[i] = new MyFieldPropertyDescriptor(owner.FieldList[i]);
 
             return new PropertyDescriptorCollection(prop);
         }
