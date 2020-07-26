@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RosReestrImp.Rule;
 using RosReestrImp.Geometry;
 using RosReestrImp.Data;
+using RosReestrImp.Projections;
 
 namespace UnitTestProject1
 {
@@ -83,6 +84,11 @@ namespace UnitTestProject1
             var res = tSet.FirstOrDefault(i => (int)i == 4);
         }
 
-
+        [TestMethod]
+        public void TestProjectionsLoad()
+        {
+            var projs = Projections.Load();
+            var sk = projs.GetProjectionInfo("01", 1);
+        }
     }
 }
