@@ -11,6 +11,8 @@ namespace RosReestrImp.Data
         /// <summary>Правило загрузки данных</summary>
         public Rule.FieldRule Rule => this._Rule;
 
+        public string FName => this._Rule.FName;
+
         /// <summary>Значение поля</summary>
         public object Value;
 

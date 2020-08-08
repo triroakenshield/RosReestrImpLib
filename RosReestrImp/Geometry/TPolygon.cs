@@ -74,5 +74,27 @@ namespace RosReestrImp.Geometry
         {
             return this.Rings.Count > 0 && this.Rings.All(ls => ls.IsValid());
         }
+
+        public TLineString GetOuterBoundary()
+        {
+            var AllMBR = this.Rings.Select(r => r.GetMBR()).ToArray();
+            int res = -1;
+            for (int i = 0; i < this.Rings.Count; i++)
+            {
+                var tMBR = AllMBR[i];
+                for (int j=0; j < this.Rings.Count; j++)
+                {
+                    if (j == i) continue;
+                    if (!tMBR.Contains(AllMBR[j])) break;
+                    res = i;
+                }
+            }
+            return res == -1 ? null : this.Rings[res];
+        }
+
+        public TGeometryCollection AsCollection()
+        {
+            return new TGeometryCollection(this.Rings.Select(l=>(TGeometry)l).ToList());
+        }
     }
 }

@@ -134,8 +134,9 @@ namespace RRViewer1
                     string ph = wSFD.FileName;
                     foreach (DataLayer l in wData)
                     {
-                        var doc = l.GetKmlDocument(SelectProjection);
-                        KmlFile kml = KmlFile.Create(doc, false);
+                        //var doc = l.GetKmlDocument(SelectProjection);
+                        var kmlc = new KmlConverter(l, SelectProjection);
+                        KmlFile kml = KmlFile.Create(kmlc.GetKmlDocument(), false);
                         using (var stream = File.OpenWrite(ph + "_" + l.Name + ".kml"))
                         {
                             kml.Save(stream);

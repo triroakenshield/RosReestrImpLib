@@ -10,10 +10,10 @@ namespace RosReestrImp.Rule
         public string LName; 
 
         /// <summary>Путь слоя, атрибут LayerPath</summary>
-        internal string LayerPath; 
+        internal string LayerPath;
 
         /// <summary>Путь элементов слоя, атрибут EntPath</summary>
-        internal string Entpath; 
+        public string Entpath; 
 
         /// <summary>Список полей слоя</summary>
         public List<FieldRule> FieldList; 

@@ -71,5 +71,11 @@ namespace RosReestrImp.Geometry
             this.maxx = Math.Max(this.maxx, nmbr.maxx);
             this.maxy = Math.Max(this.maxy, nmbr.maxy);
         }
+
+        public bool Contains(TMBR r)
+        {
+            if (maxx < r.maxx || minx > r.minx || maxy < r.maxy || miny > r.miny) return false;
+            return true;
+        }
     }
 }

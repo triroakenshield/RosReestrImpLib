@@ -60,6 +60,11 @@ namespace RosReestrImp.Data
             return res;
         }
 
+        public string GetFieldsString()
+        {
+            return string.Join(";", this.FieldList.Where(f=>!f.IsGeom).Select(f => $"{f.FName}:{f.Value.ToString().Replace("\"", "\"\"")}"));
+        }
+
         /// <summary>Получение записи в виде строки, разделённой ";"</summary>
         /// <returns> строка с разделителем - ";" </returns>
         public override string ToString() // на удаление?
