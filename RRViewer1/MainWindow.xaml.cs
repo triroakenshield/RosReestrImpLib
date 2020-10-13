@@ -60,7 +60,6 @@ namespace RRViewer1
                         }
                         TabControl1.Items.Refresh();
                     }
-
                 }
                 catch (Exception exc)
                 {

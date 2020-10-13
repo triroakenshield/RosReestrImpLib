@@ -13,6 +13,7 @@ using RosReestrImp.Rule;
 using RosReestrImp.Geometry;
 using RosReestrImp.Data;
 using RosReestrImp.Projections;
+using System.IO;
 
 namespace UnitTestProject1
 {
@@ -119,7 +120,21 @@ namespace UnitTestProject1
             }
         }
 
-
+        [TestMethod]
+        public void TestReadBigXml()
+        {
+            string path = @"C:\work1\21_00_000000_2018-02-16_kpt10.xml";
+            var fstream = File.OpenRead(path);
+            StreamWriter sw = new StreamWriter(@"C:\work1\test1.txt");
+            for (var i=0; i<100;i++)
+            {
+                byte[] bb = new byte[256];
+                fstream.Read(bb, 0, 256);                     
+                sw.WriteLine(System.Text.Encoding.UTF8.GetString(bb));                
+            }
+            sw.Close();
+            fstream.Close();
+        }
 
     }
 }

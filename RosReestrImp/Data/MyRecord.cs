@@ -22,7 +22,7 @@ namespace RosReestrImp.Data
         {
             this._Rule = nRule;
             this.FieldList = new List<FieldValue>();
-            this._Rule.FieldList.ForEach(r => this.FieldList.Add(new FieldValue(r)));         
+            this._Rule.FieldList.ForEach(r => this.FieldList.Add(new FieldValue(r)));
         }
 
         internal void LoadData(XmlNode wNode, XmlNamespaceManager wNM)

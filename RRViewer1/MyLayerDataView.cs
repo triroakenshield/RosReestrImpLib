@@ -47,7 +47,7 @@ namespace RRViewer1
         }
 
         /// <inheritdoc />
-        public bool SupportsSorting => false;
+        public bool SupportsSorting => true;
 
         /// <inheritdoc />
         public bool IsSorted => false;

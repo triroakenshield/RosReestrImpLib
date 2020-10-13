@@ -9,7 +9,6 @@ namespace RRViewer1
     /// <summary>Обёртка записи для биндинга</summary>
     public class MyRecordView : ICustomTypeDescriptor
     {
-
         private readonly MyRecord _owner;
 
         /// <summary>Конструктор</summary>
@@ -42,7 +41,7 @@ namespace RRViewer1
         /// <inheritdoc />
         public string GetComponentName()
         {
-            return null;
+            return _owner.Rule.LName;
         }
 
         /// <inheritdoc />
