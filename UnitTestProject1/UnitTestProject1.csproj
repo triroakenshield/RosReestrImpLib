@@ -72,6 +72,10 @@
       <Project>{fd2f1e85-228f-4f56-9f41-878c48c3724c}</Project>
       <Name>RosReestrImp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RRViewer1\RRViewer1.csproj">
+      <Project>{2c3fe1e1-4876-42e5-93a2-bba9827ee2dd}</Project>
+      <Name>RRViewer1</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

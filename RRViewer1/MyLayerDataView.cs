@@ -11,6 +11,7 @@ namespace RRViewer1
     {
         //private readonly DataLayer _data;
         private readonly List<MyRecordView> _rows;
+        private readonly List<MyRecordView> _sortedRows;
 
         /// <inheritdoc />
         public event ListChangedEventHandler ListChanged;
@@ -20,6 +21,7 @@ namespace RRViewer1
         public MyLayerDataView(DataLayer l)
         {
             this._rows = l.Table.Select(r=>new MyRecordView(r)).ToList();
+            this._sortedRows = new List<MyRecordView>();
         }
         
         /// <inheritdoc />
@@ -34,7 +36,10 @@ namespace RRViewer1
         /// <inheritdoc />
         public void ApplySort(PropertyDescriptor property, ListSortDirection direction)
         {
-
+            this._sortedRows.Clear();
+            this._sortedRows.AddRange(this._rows);
+            this._sortedRows.Sort((x, y) => property.GetValue(y).ToString().CompareTo(property.GetValue(x).ToString()));
+            this.IsSorted = true;
         }
 
         /// <inheritdoc />
@@ -50,7 +55,7 @@ namespace RRViewer1
         public bool SupportsSorting => true;
 
         /// <inheritdoc />
-        public bool IsSorted => false;
+        public bool IsSorted { get; set; } = false;
 
         /// <inheritdoc />
         public bool AllowRemove => false;
@@ -59,15 +64,15 @@ namespace RRViewer1
         public bool SupportsSearching => false;
 
         /// <inheritdoc />
-        public ListSortDirection SortDirection => new ListSortDirection();
+        public ListSortDirection SortDirection { get; set; }
         
         /// <inheritdoc />
-        public bool SupportsChangeNotification => true;
+        public bool SupportsChangeNotification => false;
 
         /// <inheritdoc />
         public void RemoveSort()
         {
-
+            IsSorted = false;
         }
 
         /// <inheritdoc />
@@ -77,7 +82,7 @@ namespace RRViewer1
         }
 
         /// <inheritdoc />
-        public bool AllowEdit => true;
+        public bool AllowEdit => false;
 
         /// <inheritdoc />
         public void RemoveIndex(PropertyDescriptor property)
@@ -89,7 +94,11 @@ namespace RRViewer1
         public bool IsReadOnly => true;
 
         /// <inheritdoc />
-        public object this[int index] { get => _rows[index]; set => throw new NotSupportedException(); }
+        public object this[int index] 
+        { 
+            get => IsSorted ? _sortedRows[index] : _rows[index];
+            set => throw new NotSupportedException(); 
+        }
 
         /// <inheritdoc />
         public void RemoveAt(int index)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 //
+using RosReestrImp.Rule;
 using RosReestrImp.Data;
 
 namespace RRViewer1
@@ -8,17 +9,24 @@ namespace RRViewer1
     /// <summary>Обёртка для значения</summary>
     public class MyFieldPropertyDescriptor : PropertyDescriptor
     {
-        private readonly FieldValue _owner;
+        private readonly FieldRule _rule = null;
+        private readonly FieldValue _owner = null;
+
+        public MyFieldPropertyDescriptor(FieldRule nOwnerRule) : base(nOwnerRule.FName, null)
+        {
+            this._rule = nOwnerRule;
+        }
 
         /// <summary>Конструктор</summary>
         /// <param name="nOwner">значение</param>
         public MyFieldPropertyDescriptor(FieldValue nOwner) : base(nOwner.Rule.FName, null)
         {
             this._owner = nOwner;
+            this._rule = _owner.Rule;
         }
 
         /// <inheritdoc />
-        public override string DisplayName => _owner.Rule.FName;
+        public override string DisplayName => this._rule.FName;
 
         /// <inheritdoc />
         public override Type ComponentType => typeof(MyRecordView); //!!!
@@ -32,7 +40,7 @@ namespace RRViewer1
         /// <inheritdoc />
         public override object GetValue(object component)
         {
-            return _owner.GetString();
+            return _owner?.GetString() ?? "";
         }
 
         /// <inheritdoc />

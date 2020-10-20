@@ -15,6 +15,8 @@ using RosReestrImp.Data;
 using RosReestrImp.Projections;
 using System.IO;
 
+using RRViewer1;
+
 namespace UnitTestProject1
 {
     [TestClass]
@@ -24,8 +26,15 @@ namespace UnitTestProject1
         [TestMethod]
         public void LoadData1()
         {
-            RuleManager wRM = new RuleManager("Shema\\testList2.xml");
+            RuleManager wRM = new RuleManager("Shema\\testList3.xml");
             List<DataLayer> res = wRM.LoadData("doc9415874.xml");
+            var dl1 = new MyLayerDataView(res[0]);
+            var r1 = dl1[0] as MyRecordView;
+            var dl2 = new MyLayerDataView(res[1]);
+            var r2 = dl2[0] as MyRecordView;
+            var cname = r1.GetComponentName();
+            var tt1 = r1.GetType();
+            var tt2 = r2.GetType();
             Assert.IsTrue(true, "good");
         }
 

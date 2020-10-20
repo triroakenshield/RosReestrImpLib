@@ -30,10 +30,23 @@ namespace RRViewer1
             wRM = new RuleManager("rule.xml");
         }
 
+        private void dgrid_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            var table = sender as DataGrid;
+            var itemsSource = ((MyLayerDataView)table.ItemsSource);
+
+            if (itemsSource.Count > 0)
+            {
+                var instance = (MyRecordView)((MyLayerDataView)table.ItemsSource)[0];
+                MyRecordTypeDescriptionProvider.SetProperties(instance);
+            }
+        }
+
         private void FillTbl(DataGrid wDTable, DataLayer l)
         {
             wDTable.ItemsSource = new MyLayerDataView(l);
             wDTable.ColumnWidth = 100;
+            wDTable.Sorting += dgrid_Sorting;
         }
 
         private void MenuItemOpenFile_Click(object sender, RoutedEventArgs e)

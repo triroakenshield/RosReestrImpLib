@@ -83,6 +83,7 @@
     </ApplicationDefinition>
     <Compile Include="kml\KmlConverter.cs" />
     <Compile Include="kml\KmlStaticConverter.cs" />
+    <Compile Include="MyRecordTypeDescriptionProvider.cs" />
     <Compile Include="SelectProjectionWindow.xaml.cs">
       <DependentUpon>SelectProjectionWindow.xaml</DependentUpon>
     </Compile>

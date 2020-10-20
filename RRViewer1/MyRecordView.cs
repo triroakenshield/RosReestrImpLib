@@ -2,20 +2,24 @@
 using System.ComponentModel;
 using System.Linq;
 //
+using RosReestrImp.Rule;
 using RosReestrImp.Data;
 
 namespace RRViewer1
 {
     /// <summary>Обёртка записи для биндинга</summary>
+    [TypeDescriptionProvider(typeof(MyRecordTypeDescriptionProvider))]
     public class MyRecordView : ICustomTypeDescriptor
     {
-        private readonly MyRecord _owner;
+        private readonly LayerRule _rule = null;
+        private readonly MyRecord _owner = null;
 
         /// <summary>Конструктор</summary>
         /// <param name="nOwner">запись</param>
         public MyRecordView(MyRecord nOwner)
         {
             this._owner = nOwner;
+            this._rule = _owner.Rule;
         }
         
         #region ICustomTypeDescriptor Members
@@ -41,7 +45,7 @@ namespace RRViewer1
         /// <inheritdoc />
         public string GetComponentName()
         {
-            return _owner.Rule.LName;
+            return this._rule.LName;
         }
 
         /// <inheritdoc />
@@ -59,8 +63,11 @@ namespace RRViewer1
         /// <inheritdoc />
         public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
-            return new PropertyDescriptorCollection(_owner.FieldList
-                .Select(f => new MyFieldPropertyDescriptor(f)).ToArray<PropertyDescriptor>());
+            if (_owner != null)
+            {
+                return new PropertyDescriptorCollection(_owner.FieldList.Select(f => new MyFieldPropertyDescriptor(f)).ToArray<PropertyDescriptor>());
+            }
+            else return new PropertyDescriptorCollection(_rule.FieldList.Select(f => new MyFieldPropertyDescriptor(f)).ToArray<PropertyDescriptor>());
         }
 
         /// <inheritdoc />
