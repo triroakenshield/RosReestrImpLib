@@ -40,6 +40,7 @@ namespace RRViewer1
         /// <inheritdoc />
         public override object GetValue(object component)
         {
+            if (component is MyRecordView rec) return rec.GetValue(_rule);
             return _owner?.GetString() ?? "";
         }
 

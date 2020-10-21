@@ -11,7 +11,7 @@ namespace RRViewer1
     {
         //private readonly DataLayer _data;
         private readonly List<MyRecordView> _rows;
-        private readonly List<MyRecordView> _sortedRows;
+        private List<MyRecordView> _sortedRows;
 
         /// <inheritdoc />
         public event ListChangedEventHandler ListChanged;
@@ -38,7 +38,11 @@ namespace RRViewer1
         {
             this._sortedRows.Clear();
             this._sortedRows.AddRange(this._rows);
-            this._sortedRows.Sort((x, y) => property.GetValue(y).ToString().CompareTo(property.GetValue(x).ToString()));
+            this._sortedRows.Sort((x, y) => property.GetValue(x).ToString()
+                .CompareTo(property.GetValue(y).ToString()));
+
+            if (direction == ListSortDirection.Descending) this._sortedRows.Reverse();
+
             this.IsSorted = true;
         }
 

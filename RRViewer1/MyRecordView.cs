@@ -21,7 +21,12 @@ namespace RRViewer1
             this._owner = nOwner;
             this._rule = _owner.Rule;
         }
-        
+
+        public string GetValue(FieldRule rule)
+        {
+            return _owner.FieldList.FirstOrDefault(f=>f.Rule.FName == rule.FName).GetString();
+        }
+
         #region ICustomTypeDescriptor Members
 
         /// <inheritdoc />
