@@ -105,7 +105,7 @@ namespace RRViewer1
                     string ph = wSFD.FileName;
                     foreach (DataLayer l in wData)
                     {
-                        MiLayer.CreateTAB(ph + "_" + l.Name + ".tab", l);
+                        MiLayer.CreateTab(ph + "_" + l.Name + ".tab", l);
                     }
                 }
             }
@@ -121,7 +121,7 @@ namespace RRViewer1
                     string ph = wSFD.FileName;
                     foreach (DataLayer l in wData)
                     {
-                        MiLayer.CreateMIF(ph + "_" + l.Name + ".mif", l);
+                        MiLayer.CreateMif(ph + "_" + l.Name + ".mif", l);
                     }
                 }
             }

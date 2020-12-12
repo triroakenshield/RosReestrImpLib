@@ -2,8 +2,11 @@
 
 using System;
 using System.Runtime.InteropServices;
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+// ReSharper disable IdentifierTypo
+// ReSharper disable CheckNamespace
 
-// ReSharper disable once CheckNamespace
 namespace MITAB
 {
     // feature type values

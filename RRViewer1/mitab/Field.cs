@@ -1,4 +1,6 @@
 ﻿using System;
+// ReSharper disable IdentifierTypo
+// ReSharper disable CheckNamespace
 
 namespace MITAB
 {
@@ -53,7 +55,7 @@ namespace MITAB
             int indexed, int unique)
         {
             IntPtr fieldId = MiApi.mitab_c_add_field(layer.Handle,
-                fieldName, (int)fieldType, width, precision, indexed, unique); ;
+                fieldName, (int)fieldType, width, precision, indexed, unique);
             this.Layer = layer;
             this.Index = fieldId.ToInt32();
             this.Name = fieldName;

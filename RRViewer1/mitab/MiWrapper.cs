@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+// ReSharper disable IdentifierTypo
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable once CheckNamespace
 namespace MITAB
@@ -51,7 +53,6 @@ namespace MITAB
     {
         //public readonly int Count;
 
-        /// <summary></summary>
         protected int eIdx = -1;
         
         private readonly IObjectProvider _objProvider;
@@ -87,7 +88,7 @@ namespace MITAB
     public abstract class EnumImpl : IEnumerable, IObjectProvider 
     {
         /// поле для <see cref="Count"/>
-        protected internal int _count = 0;
+        protected internal int _count;
 
         //public int count { get { return this._count; } }
 
@@ -190,7 +191,7 @@ namespace MITAB
         protected internal Feature _feature;
 
         /// <summary>The feature these parts belong to.</summary>
-        public Feature Feature { get { return this._feature; } }
+        public Feature Feature => this._feature;
 
         /// <summary>Конструктор</summary>
         /// <param name="feature"></param>
@@ -198,9 +199,9 @@ namespace MITAB
         protected internal Parts(Feature feature, List<List<Vertex>> nParts) : base(nParts.Count)
         {
             this._feature = feature;
-            for (int i=0; i < this.Count; i++)
+            for (var i=0; i < this.Count; i++)
             {
-                new Part(feature, i, nParts[i]);
+                var part = new Part(feature, i, nParts[i]);
             }
         }
 

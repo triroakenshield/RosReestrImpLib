@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 using RosReestrImp.Data;
 using RosReestrImp.Geometry;
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 
 namespace MITAB
 {
     /// <summary>Слой tab/mif</summary>
-    public class MiLayer
+    public sealed class MiLayer
     {
         /// <summary>Следующий ключ</summary>
-        protected internal int next_id = 1;
+        internal int next_id = 1;
 
         /// <summary>Хэндл</summary>
-        protected internal IntPtr _handle;
+        internal IntPtr _handle;
 
         /// <summary>Поля</summary>
-        protected internal Fields _fields;
+        internal Fields _fields;
 
         /// <summary>Сущности</summary>
-        protected internal Features _features;
+        internal Features _features;
 
         /// <summary>Имя файла</summary>
-        protected internal string _fileName;
+        internal string _fileName;
 
         /// <summary>Границы поля</summary>
-        protected internal TMBR _bounds;
+        internal TMBR _bounds;
 
         /// <summary>Handle used to manipulate the object in the C API</summary>
         public IntPtr Handle => this._handle;
@@ -43,7 +45,7 @@ namespace MITAB
         /// <summary>Конструктор</summary>
         /// <param name="handle">Хэндл</param>
         /// <param name="fileName">Имя файла</param>
-        protected internal MiLayer(IntPtr handle, string fileName)
+        internal MiLayer(IntPtr handle, string fileName)
         {
             this._handle = handle;
             this._fields = CreateFields();
@@ -53,7 +55,7 @@ namespace MITAB
 
         /// <summary>Конструктор</summary>
         /// <param name="fileName">Имя файла</param>
-        protected internal MiLayer(string fileName)
+        internal MiLayer(string fileName)
         {
             this._handle = MiApi.mitab_c_open(fileName);
             if (this.Handle == IntPtr.Zero)
@@ -65,51 +67,38 @@ namespace MITAB
 
         private List<List<Vertex>> GetParts(TGeometry geom)
         {
-            List<List<Vertex>> res = new List<List<Vertex>>();
+            var res = new List<List<Vertex>>();
             List<Vertex> plist;
             switch (geom.GetGeometryType())
             {
                 case GeometryType.Point:
-                    TPoint p = geom as TPoint;
-                    res.Add(new List<Vertex>() { new Vertex(p.Coord.X, p.Coord.Y) });
+                    if (geom is TPoint p) res.Add(new List<Vertex>() {new Vertex(p.Coord.X, p.Coord.Y)});
                     break;
                 case GeometryType.LineString:
-                    TLineString ls = geom as TLineString;
                     plist = new List<Vertex>();
-                    foreach (MyPoint np in ls.Coords)
-                    {
-                        plist.Add(new Vertex(np.X, np.Y));
-                    }
+                    if (geom is TLineString ls) plist.AddRange(ls.Coords
+                        .Select(np => new Vertex(np.X, np.Y)));
+
                     res.Add(plist);
                     break;
                 case GeometryType.Polygon:
-                    TPolygon poly = geom as TPolygon;
-                    foreach (TLineString ring in poly.Rings)
-                    {
-                        plist = new List<Vertex>();
-                        foreach (MyPoint np in ring.Coords)
+                    if (geom is TPolygon poly)
+                        foreach (var ring in poly.Rings)
                         {
-                            plist.Add(new Vertex(np.X, np.Y));
-                        }
-                        res.Add(plist);
-                    }
-                    break;
-                case GeometryType.MultiPolygon:
-                    TMultiPolygon mpoly = geom as TMultiPolygon;
-                    TPolygon spoly;
-                    foreach (TGeometry sg in mpoly.Geometries)
-                    {
-                        spoly = sg as TPolygon;
-                        foreach (TLineString ring in spoly.Rings)
-                        {
-                            plist = new List<Vertex>();
-                            foreach (MyPoint np in ring.Coords)
-                            {
-                                plist.Add(new Vertex(np.X, np.Y));
-                            }
+                            plist = ring.Coords.Select(np => new Vertex(np.X, np.Y)).ToList();
                             res.Add(plist);
                         }
-                    }
+
+                    break;
+                case GeometryType.MultiPolygon:
+                    if (geom is TMultiPolygon mPoly)
+                        foreach (var ring in mPoly.Geometries.OfType<TPolygon>()
+                            .SelectMany(sPoly => sPoly.Rings))
+                        {
+                            plist = ring.Coords.Select(np => new Vertex(np.X, np.Y)).ToList();
+                            res.Add(plist);
+                        }
+
                     break;
                 case GeometryType.No:
                     break;
@@ -133,31 +122,31 @@ namespace MITAB
         /// <returns></returns>
         public Feature AddFeature(MyRecord rec)
         {
-            TGeometry geom = rec.GetGeometry();
-            FeatureType type = FeatureType.TABFC_NoGeom;
-            if (geom != null)
+            var geom = rec.GetGeometry();
+            var type = FeatureType.TABFC_NoGeom;
+            if (geom == null)
+                return this.AddFeature(type, new List<List<Vertex>>(),
+                    GetFieldValues(rec), null);
+            switch (geom.GetGeometryType())
             {
-                switch (geom.GetGeometryType())
-                {
-                    case GeometryType.Point:
-                        type = FeatureType.TABFC_Point;
-                        break;
-                    case GeometryType.LineString:
-                        type = FeatureType.TABFC_Polyline;
-                        break;
-                    case GeometryType.Polygon:
-                    case GeometryType.MultiPolygon:
-                        type = FeatureType.TABFC_Region;
-                        break;
-                    case GeometryType.No:
-                        break;
-                    case GeometryType.GeometryCollection:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-                if (geom.IsValid()) return this.AddFeature(type, this.GetParts(geom), GetFieldValues(rec), null);
+                case GeometryType.Point:
+                    type = FeatureType.TABFC_Point;
+                    break;
+                case GeometryType.LineString:
+                    type = FeatureType.TABFC_Polyline;
+                    break;
+                case GeometryType.Polygon:
+                case GeometryType.MultiPolygon:
+                    type = FeatureType.TABFC_Region;
+                    break;
+                case GeometryType.No:
+                    break;
+                case GeometryType.GeometryCollection:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+            if (geom.IsValid()) return this.AddFeature(type, this.GetParts(geom), GetFieldValues(rec), null);
             return type == FeatureType.TABFC_NoGeom ? this.AddFeature(type, new List<List<Vertex>>(), 
                 GetFieldValues(rec), null) : null;
         }
@@ -175,7 +164,7 @@ namespace MITAB
         /// <param name="tabFileName">Имя файла</param>
         /// <param name="lay">Слой данных</param>
         /// <returns></returns>
-        public static MiLayer CreateTAB(string tabFileName, DataLayer lay)
+        public static MiLayer CreateTab(string tabFileName, DataLayer lay)
         {
             var bounds = lay.GetMBR();
             var res = new MiLayer(MiApi.mitab_c_create(tabFileName, "tab", "NonEarth Units \"m\"", 
@@ -190,7 +179,7 @@ namespace MITAB
         /// <param name="tabFileName">Имя файла</param>
         /// <param name="lay">Слой данных</param>
         /// <returns></returns>
-        public static MiLayer CreateMIF(string tabFileName, DataLayer lay)
+        public static MiLayer CreateMif(string tabFileName, DataLayer lay)
         {
             var bounds = lay.GetMBR();
             var res = new MiLayer(MiApi.mitab_c_create(tabFileName, "mif", "NonEarth Units \"m\"", 
@@ -202,14 +191,14 @@ namespace MITAB
 
         /// <summary>Override this to support descendants of the Fields class.</summary>
         /// <returns>This layers fields</returns>
-        protected internal virtual Fields CreateFields()
+        internal Fields CreateFields()
         {
             return new Fields(this);
         }
 
         /// <summary>Override this to support descendants of the Feature class.</summary>
         /// <returns>This layers features</returns>
-        protected internal virtual Features CreateFeatures()
+        internal Features CreateFeatures()
         {
             return new Features(this);
         }
@@ -225,17 +214,19 @@ namespace MITAB
         /// <summary>Создать tab-файл</summary>
         /// <param name="tabFileName">Имя файла</param>
         /// <returns></returns>
-        public static MiLayer CreateTAB(string tabFileName)
+        public static MiLayer CreateTab(string tabFileName)
         {
-            return new MiLayer(MiApi.mitab_c_create(tabFileName, "tab", null, 0, 0, 0, 0), tabFileName);
+            return new MiLayer(MiApi.mitab_c_create(tabFileName, "tab", null,
+                0, 0, 0, 0), tabFileName);
         }
 
         /// <summary>Создать mif-файл</summary>
         /// <param name="tabFileName">Имя файла</param>
         /// <returns></returns>
-        public static MiLayer CreateMIF(string tabFileName)
+        public static MiLayer CreateMif(string tabFileName)
         {
-            return new MiLayer(MiApi.mitab_c_create(tabFileName, "mif", null, 0, 0, 0, 0), tabFileName);
+            return new MiLayer(MiApi.mitab_c_create(tabFileName, "mif", null,
+                0, 0, 0, 0), tabFileName);
         }
 
         /// <summary>Добавить поле</summary>

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+// ReSharper disable CheckNamespace
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace MITAB
 {
     /// <summary>Represents a single feature beloning to a layer.</summary>
-    public class Feature : IDisposable
+    public sealed class Feature : IDisposable
     {
         /// <summary>Handle used to manipulate the object in the C API.</summary>
         public readonly IntPtr Handle;
@@ -25,7 +29,7 @@ namespace MITAB
         /// <summary>Конструктор</summary>
         /// <param name="layer">Слой</param>
         /// <param name="featureId">Ключ</param>
-        protected internal Feature(MiLayer layer, int featureId)
+        internal Feature(MiLayer layer, int featureId)
         {
             this.Id = featureId;
             this.Layer = layer;
@@ -41,8 +45,8 @@ namespace MITAB
         /// <param name="nParts">Список частей</param>
         /// <param name="nFieldValues">Список значений полей</param>
         /// <param name="nStyle">Стили</param>
-        protected internal Feature(MiLayer layer, int nid, FeatureType type, List<List<Vertex>> nParts, 
-            IReadOnlyList<string> nFieldValues, Dictionary<string, string> nStyle)
+        internal Feature(MiLayer layer, int nid, FeatureType type, List<List<Vertex>> nParts, 
+            IReadOnlyList<string> nFieldValues, IReadOnlyDictionary<string, string> nStyle)
         {
             this.Id = nid;
             this.Handle = MiApi.mitab_c_create_feature(layer.Handle, (int)type);
@@ -67,7 +71,7 @@ namespace MITAB
 
         /// <summary>Override this to support descendants of the Parts class.</summary>
         /// <returns>This layers fields</returns>
-        protected internal virtual Parts CreateParts(Feature feature)
+        internal Parts CreateParts(Feature feature)
         {
             return new Parts(this);
         }
@@ -103,9 +107,9 @@ namespace MITAB
 
         private void GetTextDisplay(Dictionary<string, string> rDict)
         {
-            rDict.Add("text_angle", MiApi.mitab_c_get_text_angle(this.Handle).ToString());
-            rDict.Add("text_height", MiApi.mitab_c_get_text_height(this.Handle).ToString());
-            rDict.Add("text_width", MiApi.mitab_c_get_text_width(this.Handle).ToString());
+            rDict.Add("text_angle", MiApi.mitab_c_get_text_angle(this.Handle).ToString(CultureInfo.InvariantCulture));
+            rDict.Add("text_height", MiApi.mitab_c_get_text_height(this.Handle).ToString(CultureInfo.InvariantCulture));
+            rDict.Add("text_width", MiApi.mitab_c_get_text_width(this.Handle).ToString(CultureInfo.InvariantCulture));
             rDict.Add("text_fgcolor", MiApi.mitab_c_get_text_fgcolor(this.Handle).ToString());
             rDict.Add("text_bgcolor", MiApi.mitab_c_get_text_bgcolor(this.Handle).ToString());
             rDict.Add("text_justification", MiApi.mitab_c_get_text_justification(this.Handle).ToString());
@@ -169,41 +173,41 @@ namespace MITAB
 
         private void SetSymbol(IReadOnlyDictionary<string, string> rDict)
         {
-            int symbol_no = this.GetIntPr(rDict, "symbol_no", 1), 
-                symbol_size = this.GetIntPr(rDict, "symbol_size", 15), 
-                symbol_color = this.GetIntPr(rDict, "symbol_color", 0);
-            MiApi.mitab_c_set_symbol(this.Handle, symbol_no, symbol_size, symbol_color);
+            int symbolNo = this.GetIntPr(rDict, "symbol_no", 1), 
+                symbolSize = this.GetIntPr(rDict, "symbol_size", 15), 
+                symbolColor = this.GetIntPr(rDict, "symbol_color", 0);
+            MiApi.mitab_c_set_symbol(this.Handle, symbolNo, symbolSize, symbolColor);
         }
 
         private void SetPen(IReadOnlyDictionary<string, string> rDict)
         {
-            int pen_pattern = this.GetIntPr(rDict, "pen_pattern", 1),
-                pen_width = this.GetIntPr(rDict, "pen_width", 1),
-                pen_color = this.GetIntPr(rDict, "pen_color", 0);
-            MiApi.mitab_c_set_pen(this.Handle, pen_width, pen_pattern, pen_color);
+            int penPattern = this.GetIntPr(rDict, "pen_pattern", 1),
+                penWidth = this.GetIntPr(rDict, "pen_width", 1),
+                penColor = this.GetIntPr(rDict, "pen_color", 0);
+            MiApi.mitab_c_set_pen(this.Handle, penWidth, penPattern, penColor);
         }
 
         private void SetBrush(IReadOnlyDictionary<string, string> rDict)
         {
-            int brush_fgcolor = this.GetIntPr(rDict, "brush_fgcolor", 0),
-                brush_bgcolor = this.GetIntPr(rDict, "brush_bgcolor", 0),
-                brush_pattern = this.GetIntPr(rDict, "brush_pattern", 1),
-                brush_transparent = this.GetIntPr(rDict, "brush_transparent", 0);
-            MiApi.mitab_c_set_brush(this.Handle, brush_fgcolor, brush_bgcolor, brush_pattern, brush_transparent);
+            int brushFgcolor = this.GetIntPr(rDict, "brush_fgcolor", 0),
+                brushBgcolor = this.GetIntPr(rDict, "brush_bgcolor", 0),
+                brushPattern = this.GetIntPr(rDict, "brush_pattern", 1),
+                brushTransparent = this.GetIntPr(rDict, "brush_transparent", 0);
+            MiApi.mitab_c_set_brush(this.Handle, brushFgcolor, brushBgcolor, brushPattern, brushTransparent);
         }
 
         private void SetTextDisplay(IReadOnlyDictionary<string, string> rDict)
         {
-            double text_angle = this.GetDoublePr(rDict, "text_angle", 0),
-                text_height = this.GetDoublePr(rDict, "text_height", 1),
-                text_width = this.GetDoublePr(rDict, "text_width", 1);
-            int text_fgcolor = this.GetIntPr(rDict, "text_fgcolor", 0),
-                text_bgcolor = this.GetIntPr(rDict, "text_bgcolor", 0),
-                text_justification = this.GetIntPr(rDict, "text_justification", 0),
-                text_spacing = this.GetIntPr(rDict, "text_spacing", 0),
-                text_linetype = this.GetIntPr(rDict, "text_linetype", 0);
-            MiApi.mitab_c_set_text_display(this.Handle, text_angle, text_height, text_width,
-                text_fgcolor, text_bgcolor, text_justification, text_spacing, text_linetype);
+            double textAngle = this.GetDoublePr(rDict, "text_angle", 0),
+                textHeight = this.GetDoublePr(rDict, "text_height", 1),
+                textWidth = this.GetDoublePr(rDict, "text_width", 1);
+            int textFgcolor = this.GetIntPr(rDict, "text_fgcolor", 0),
+                textBgcolor = this.GetIntPr(rDict, "text_bgcolor", 0),
+                textJustification = this.GetIntPr(rDict, "text_justification", 0),
+                textSpacing = this.GetIntPr(rDict, "text_spacing", 0),
+                textLinetype = this.GetIntPr(rDict, "text_linetype", 0);
+            MiApi.mitab_c_set_text_display(this.Handle, textAngle, textHeight, textWidth,
+                textFgcolor, textBgcolor, textJustification, textSpacing, textLinetype);
         }
 
         /// <summary>Установка значений стилей</summary>
@@ -270,16 +274,15 @@ namespace MITAB
             return new Feature(this.Layer, MiApi.mitab_c_next_feature_id(Layer.Handle, this.Id));
         }
 
-        private bool disposed = false;
+        private bool _disposed;
 
-        /// <inheritdoc />
+        /// <summary></summary>
+        /// <param name="disposing"></param>
         public void Dispose(bool disposing)
         {
-            if (disposing && !disposed)
-            {
-                MiApi.mitab_c_destroy_feature(this.Handle);
-                disposed = true;
-            }
+            if (!disposing || _disposed) return;
+            MiApi.mitab_c_destroy_feature(this.Handle);
+            _disposed = true;
         }
 
         /// <inheritdoc />

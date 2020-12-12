@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable InconsistentNaming
+// ReSharper disable IdentifierTypo
+// ReSharper disable CheckNamespace
 
 namespace MITAB
 {
