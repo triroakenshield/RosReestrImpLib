@@ -9,9 +9,11 @@ namespace RRViewer1
     /// <summary>Обёртка для значения</summary>
     public class MyFieldPropertyDescriptor : PropertyDescriptor
     {
-        private readonly FieldRule _rule = null;
-        private readonly FieldValue _owner = null;
+        private readonly FieldRule _rule;
+        private readonly FieldValue _owner;
 
+        /// <summary></summary>
+        /// <param name="nOwnerRule"></param>
         public MyFieldPropertyDescriptor(FieldRule nOwnerRule) : base(nOwnerRule.FName, null)
         {
             this._rule = nOwnerRule;

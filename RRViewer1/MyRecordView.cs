@@ -11,8 +11,8 @@ namespace RRViewer1
     [TypeDescriptionProvider(typeof(MyRecordTypeDescriptionProvider))]
     public class MyRecordView : ICustomTypeDescriptor
     {
-        private readonly LayerRule _rule = null;
-        private readonly MyRecord _owner = null;
+        private readonly LayerRule _rule;
+        private readonly MyRecord _owner;
 
         /// <summary>Конструктор</summary>
         /// <param name="nOwner">запись</param>
@@ -22,9 +22,12 @@ namespace RRViewer1
             this._rule = _owner.Rule;
         }
 
+        /// <summary></summary>
+        /// <param name="rule"></param>
+        /// <returns></returns>
         public string GetValue(FieldRule rule)
         {
-            return _owner.FieldList.FirstOrDefault(f=>f.Rule.FName == rule.FName).GetString();
+            return _owner.FieldList.FirstOrDefault(f=>f.Rule.FName == rule.FName)?.GetString();
         }
 
         #region ICustomTypeDescriptor Members

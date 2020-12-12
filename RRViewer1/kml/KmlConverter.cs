@@ -13,22 +13,27 @@ namespace RRViewer1.kml
     /// <summary>Конвертер в kml</summary>
     public class KmlConverter
     {
-        readonly static ProjectionInfo WGS1984 = KnownCoordinateSystems.Geographic.World.WGS1984;
+        static readonly ProjectionInfo Wgs1984 = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-        private ProjectionInfo Projection;
-        private DataLayer Layer;
+        private readonly ProjectionInfo _projection;
+        private readonly DataLayer _layer;
 
+        /// <summary></summary>
+        /// <param name="layer"></param>
+        /// <param name="projection"></param>
         public KmlConverter(DataLayer layer, ProjectionInfo projection)
         {
-            Projection = projection;
-            Layer = layer;
+            _projection = projection;
+            _layer = layer;
         }
 
+        /// <summary></summary>
+        /// <returns></returns>
         public Document GetKmlDocument()
         {
             var document = new Document();
 
-            foreach (var record in Layer.Table)
+            foreach (var record in _layer.Table)
             {
                 document.AddFeature(GetKml(record));
             }
@@ -64,7 +69,7 @@ namespace RRViewer1.kml
         {
             var xys = geometry.GetXYArray();
             var zs = geometry.GetZArray();
-            Reproject.ReprojectPoints(xys, zs, Projection, WGS1984, 0, zs.Length);
+            Reproject.ReprojectPoints(xys, zs, _projection, Wgs1984, 0, zs.Length);
             return (xys, zs);
         }
 
