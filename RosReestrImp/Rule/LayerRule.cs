@@ -41,7 +41,7 @@ namespace RosReestrImp.Rule
         /// <returns> список имён полей слоя </returns>
         public string[] GetColumnNames()
         {
-            string[] res = new string[this.FieldList.Count];
+            var res = new string[this.FieldList.Count];
             for (var i = 0; i < this.FieldList.Count; i++)
             {
                 res[i] = this.FieldList[i].FName;

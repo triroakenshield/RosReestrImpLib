@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+// ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Geometry
 {
     /// <summary>Абстрактная коллекция геометрии</summary>
     public class TGeometryCollection : TGeometry
     {
-
-        ///<inheritdoc/>
+        /// <summary></summary>
         public new static readonly string Type = "GEOMETRYCOLLECTION";
 
         /// <summary>Список</summary>

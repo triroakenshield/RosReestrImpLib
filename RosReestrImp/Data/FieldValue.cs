@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+// ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Data
 {
@@ -59,7 +60,7 @@ namespace RosReestrImp.Data
             }
             catch (System.Xml.XPath.XPathException e) 
             {
-                throw new Data.DataLoadException("Ошибка XPath при загрузке поля", e);
+                throw new DataLoadException("Ошибка XPath при загрузке поля", e);
             }
         }
         

@@ -1,9 +1,10 @@
-﻿namespace RosReestrImp.Geometry
+﻿// ReSharper disable InconsistentNaming
+namespace RosReestrImp.Geometry
 {
     /// <summary>Внутренний формат для представления геометрии - точки</summary>
     public class TPoint : TGeometry
     {
-        ///<inheritdoc/>
+        /// <summary></summary>
         public new static readonly string Type = "POINT";
 
         /// <summary>Координаты точки (<see cref="MyPoint"/>)</summary>
@@ -59,13 +60,13 @@
         ///<inheritdoc/>
         public override double[] GetXYArray()
         {
-              return new double[] { this.Coord.X, this.Coord.Y };
+              return new[] { this.Coord.X, this.Coord.Y };
         }
 
         ///<inheritdoc/>
         public override double[] GetZArray()
         {
-            return new double[] { this.Coord.Z };
+            return new[] { this.Coord.Z };
         }
 
         ///<inheritdoc/>

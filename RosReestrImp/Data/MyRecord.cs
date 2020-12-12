@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml;
 //
 using RosReestrImp.Geometry;
+// ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Data
 {
@@ -13,16 +14,16 @@ namespace RosReestrImp.Data
         internal Rule.LayerRule _Rule;
 
         /// <summary>Правило загрузки данных</summary>
-        public Rule.LayerRule Rule => this._Rule;
+        public Rule.LayerRule Rule => _Rule;
 
         /// <summary>Список полей</summary>
         public List<FieldValue> FieldList;
 
         internal MyRecord(Rule.LayerRule nRule)
         {
-            this._Rule = nRule;
-            this.FieldList = new List<FieldValue>();
-            this._Rule.FieldList.ForEach(r => this.FieldList.Add(new FieldValue(r)));
+            _Rule = nRule;
+            FieldList = new List<FieldValue>();
+            _Rule.FieldList.ForEach(r => FieldList.Add(new FieldValue(r)));
         }
 
         internal void LoadData(XmlNode wNode, XmlNamespaceManager wNM)
@@ -32,23 +33,23 @@ namespace RosReestrImp.Data
 
         /// <summary>Получение геометрии записи</summary>
         /// <returns> Геометрия </returns>
-        public Geometry.TGeometry GetGeometry()
+        public TGeometry GetGeometry()
         {
-            if (this.FieldList.Exists(x => x.IsGeom))
+            if (FieldList.Exists(x => x.IsGeom))
             {
-                FieldValue res = this.FieldList.First(x => x.IsGeom);
-                return (Geometry.TGeometry)res.Value;
+                var res = FieldList.First(x => x.IsGeom);
+                return (TGeometry)res.Value;
             }
             else return null; 
         }
         
         /// <summary>Поиск значения поля, по его имени</summary>
-        /// <param name="fname"> Имя поля </param>
+        /// <param name="fName"> Имя поля </param>
         /// <returns> Значение поля </returns>
-        public FieldValue SearchField(string fname)
+        public FieldValue SearchField(string fName)
         {
-            return this.FieldList.Exists(x => x.Rule.FName == fname) 
-                ? this.FieldList.First(x => x.Rule.FName == fname) : null;
+            return FieldList.Exists(x => x.Rule.FName == fName) 
+                ? FieldList.First(x => x.Rule.FName == fName) : null;
         }
 
         /// <summary>Получение записи в виде списка значений (строк) </summary>
@@ -60,6 +61,8 @@ namespace RosReestrImp.Data
             return res;
         }
 
+        /// <summary></summary>
+        /// <returns></returns>
         public string GetFieldsString()
         {
             return string.Join(";", this.FieldList.Where(f=>!f.IsGeom).Select(f => $"{f.FName}:{f.Value.ToString().Replace("\"", "\"\"")}"));
@@ -76,7 +79,7 @@ namespace RosReestrImp.Data
         /// <returns></returns>
         public TMBR GetMBR()
         {
-            TGeometry geom = this.GetGeometry();
+            var geom = this.GetGeometry();
             return geom?.GetMBR();
         }
     }

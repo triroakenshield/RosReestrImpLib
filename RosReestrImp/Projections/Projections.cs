@@ -1,23 +1,17 @@
-﻿using System.IO;
+﻿using DotSpatial.Projections;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-//
-using DotSpatial.Projections;
+using System.IO;
 
 namespace RosReestrImp.Projections
 {
+    /// <summary></summary>
     public class Projections
     {
-        Dictionary<(string code, int zone), string> ProjectionsDescription = new Dictionary<(string code, int zone), string>();
+        readonly Dictionary<(string code, int zone), string> _projectionsDescription = new Dictionary<(string code, int zone), string>();
 
-        public Projections()
-        {
-
-        }
-
+        /// <summary></summary>
+        /// <returns></returns>
         public static Projections Load()
         {
             var res = new Projections();
@@ -26,17 +20,20 @@ namespace RosReestrImp.Projections
             {
                 var args = line.Split(';');
                 var key = (args[0], int.Parse(args[1]));
-                if (!res.ProjectionsDescription.ContainsKey(key)) 
-                    res.ProjectionsDescription.Add((args[0], int.Parse(args[1])), args[2]);
+                if (!res._projectionsDescription.ContainsKey(key)) 
+                    res._projectionsDescription.Add((args[0], int.Parse(args[1])), args[2]);
             }
             return res;
         }
 
+        /// <summary></summary>
+        /// <param name="code"></param>
+        /// <param name="zone"></param>
+        /// <returns></returns>
         public ProjectionInfo GetProjectionInfo(string code, int zone)
         {
             var key = (code, zone);
-            if (ProjectionsDescription.ContainsKey(key)) return ProjectionInfo.FromProj4String(ProjectionsDescription[key]);
-            else return null;                    
+            return _projectionsDescription.ContainsKey(key) ? ProjectionInfo.FromProj4String(_projectionsDescription[key]) : null;
         }
     }
 }

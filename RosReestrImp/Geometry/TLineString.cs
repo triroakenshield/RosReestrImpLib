@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+// ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Geometry
 {
@@ -10,7 +11,7 @@ namespace RosReestrImp.Geometry
         public new static readonly string Type = "LINESTRING";
 
         /// <summary>Список координат</summary>
-        public List<MyPoint> Coords = null;
+        public List<MyPoint> Coords;
 
         /// <summary>Создание линии из списка координат</summary>
         /// <param name="nCoords"> Список координат </param>

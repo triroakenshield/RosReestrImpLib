@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+// ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Geometry
 {
     /// <summary>Мултиполигон</summary>
     public class TMultiPolygon : TGeometryCollection
     {
-        ///<inheritdoc/>
+        /// <summary></summary>
         public new static readonly string Type = "MULTIPOLYGON";
 
         /// <summary>Конструктор из списка</summary>

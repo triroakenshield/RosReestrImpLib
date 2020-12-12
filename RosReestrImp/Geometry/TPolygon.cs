@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+// ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Geometry
 {
     /// <summary> Внутренний формат для представления геометрии - полигона </summary>
     public class TPolygon : TGeometry
     {
-        ///<inheritdoc/>
+        /// <summary></summary>
         public new static readonly string Type = "POLYGON";
 
         /// <summary>Список замкнутых контуров - колец</summary>

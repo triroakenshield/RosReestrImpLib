@@ -131,14 +131,14 @@ namespace RosReestrImp.Rule
                 XmlNode xmlNode2 = wNode.SelectSingleNode(this._gr.XPath, wNm);
                 if (xmlNode2 != null)
                 {
-                    var WorkStr = xmlNode2.Value;
-                    x = double.Parse(WorkStr, System.Globalization.CultureInfo.InvariantCulture);
+                    var workStr = xmlNode2.Value;
+                    x = double.Parse(workStr, System.Globalization.CultureInfo.InvariantCulture);
                     //WorkStr = wNode.Attributes.GetNamedItem(this.GR.YPath).Value;
                     xmlNode2 = wNode.SelectSingleNode(this._gr.YPath, wNm);
                     if (xmlNode2 != null)
                     {
-                        WorkStr = xmlNode2.Value;
-                        y = double.Parse(WorkStr, System.Globalization.CultureInfo.InvariantCulture);
+                        workStr = xmlNode2.Value;
+                        y = double.Parse(workStr, System.Globalization.CultureInfo.InvariantCulture);
                     }
                 }
                 if (x == -1 || y == -1) throw new Data.DataLoadException("Ошибка чтения координат точки");
@@ -152,15 +152,15 @@ namespace RosReestrImp.Rule
 
         /// <summary>Загрузка данных линии</summary>
         /// <param name="wNode"> Узел с данными </param>
-        /// <param name="wNM"> Список пространств имён файла данных </param>
+        /// <param name="wNm"> Список пространств имён файла данных </param>
         /// <returns> Линия </returns>
         /// <exception cref="Data.DataLoadException"> Ошибка XPath в LineString </exception>
-        private Geometry.TLineString LoadLineString(XmlNode wNode, XmlNamespaceManager wNM)
+        private Geometry.TLineString LoadLineString(XmlNode wNode, XmlNamespaceManager wNm)
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(this._gr.PointPath, wNM);
-                List<Geometry.TPoint> coords = (from XmlNode n in crNodes select this.LoadPoint(n, wNM)).ToList();
+                XmlNodeList crNodes = wNode.SelectNodes(this._gr.PointPath, wNm);
+                List<Geometry.TPoint> coords = (from XmlNode n in crNodes select this.LoadPoint(n, wNm)).ToList();
                 return new Geometry.TLineString(coords);
             }
             catch (System.Xml.XPath.XPathException e)
@@ -171,16 +171,16 @@ namespace RosReestrImp.Rule
 
         /// <summary>Загрузка данных полигона</summary>
         /// <param name="wNode"> Узел с данными </param>
-        /// <param name="wNM"> Список пространств имён файла данных </param>
+        /// <param name="wNm"> Список пространств имён файла данных </param>
         /// <returns> Полигон </returns>
         /// <exception cref="Data.DataLoadException"> Ошибка XPath в Polygon </exception>
-        private Geometry.TPolygon LoadPolygon(XmlNode wNode, XmlNamespaceManager wNM)
+        private Geometry.TPolygon LoadPolygon(XmlNode wNode, XmlNamespaceManager wNm)
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(this._gr.LineStringPath, wNM);
-                List<Geometry.TLineString> Rings = (from XmlNode n in crNodes select this.LoadLineString(n, wNM)).ToList();
-                return new Geometry.TPolygon(Rings);
+                XmlNodeList crNodes = wNode.SelectNodes(this._gr.LineStringPath, wNm);
+                List<Geometry.TLineString> rings = (from XmlNode n in crNodes select this.LoadLineString(n, wNm)).ToList();
+                return new Geometry.TPolygon(rings);
             }
             catch (System.Xml.XPath.XPathException e)
             {
@@ -188,12 +188,12 @@ namespace RosReestrImp.Rule
             }
         }
 
-        private Geometry.TMultiPolygon LoadMultiPolygon(XmlNode wNode, XmlNamespaceManager wNM)
+        private Geometry.TMultiPolygon LoadMultiPolygon(XmlNode wNode, XmlNamespaceManager wNm)
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(this._gr.PolygonPath, wNM);
-                List<Geometry.TPolygon> nPolygons = (from XmlNode n in crNodes select this.LoadPolygon(n, wNM)).ToList();
+                XmlNodeList crNodes = wNode.SelectNodes(this._gr.PolygonPath, wNm);
+                List<Geometry.TPolygon> nPolygons = (from XmlNode n in crNodes select this.LoadPolygon(n, wNm)).ToList();
                 return new Geometry.TMultiPolygon(nPolygons);
             }
             catch (System.Xml.XPath.XPathException e)
@@ -204,23 +204,23 @@ namespace RosReestrImp.Rule
 
         /// <summary>Загрузка данных геометрии</summary>
         /// <param name="wNode"> Узел с данными </param>
-        /// <param name="wNM"> Список пространств имён файла данных </param>
+        /// <param name="wNm"> Список пространств имён файла данных </param>
         /// <returns> Геометрия </returns>
-        internal Geometry.TGeometry LoadGeometry(XmlNode wNode, XmlNamespaceManager wNM)
+        internal Geometry.TGeometry LoadGeometry(XmlNode wNode, XmlNamespaceManager wNm)
         {
             switch (this.GetGeomType())
             {
                 case Geometry.GeometryType.Point:
-                    return this.LoadPoint(wNode, wNM);
+                    return this.LoadPoint(wNode, wNm);
 
                 case Geometry.GeometryType.LineString:
-                    return this.LoadLineString(wNode, wNM);
+                    return this.LoadLineString(wNode, wNm);
 
                 case Geometry.GeometryType.Polygon:
-                    return this.LoadPolygon(wNode, wNM);
+                    return this.LoadPolygon(wNode, wNm);
 
                 case Geometry.GeometryType.MultiPolygon:
-                    return this.LoadMultiPolygon(wNode, wNM);
+                    return this.LoadMultiPolygon(wNode, wNm);
 
                 default:
                     return null;

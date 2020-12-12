@@ -3,6 +3,7 @@ using System.Text;
 using System.Xml;
 //
 using RosReestrImp.Geometry;
+// ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Data
 {
@@ -12,7 +13,7 @@ namespace RosReestrImp.Data
         internal Rule.LayerRule _Rule;
 
         /// <summary>Правило загрузки данных</summary>
-        public Rule.LayerRule Rule => this._Rule;
+        public Rule.LayerRule Rule => _Rule;
 
         /// <summary>Таблица данных (записей)</summary>
         public List<MyRecord> Table;
@@ -58,29 +59,25 @@ namespace RosReestrImp.Data
         {            
             try
             {
-                XmlNamespaceManager wNM = this.LoadNamespace(wDoc);
-                XmlNodeList layersXmlNodeList = wDoc.DocumentElement?.SelectNodes(this._Rule.LayerPath, wNM);
-                if (layersXmlNodeList != null)
+                var wNm = LoadNamespace(wDoc);
+                var layersXmlNodeList = wDoc.DocumentElement?.SelectNodes(_Rule.LayerPath, wNm);
+                if (layersXmlNodeList == null) return this.Table;
+                foreach (XmlNode n in layersXmlNodeList)
                 {
-                    foreach (XmlNode n in layersXmlNodeList)
+                    var layerXmlNodeList = n.SelectNodes(this._Rule.Entpath, wNm);
+                    if (layerXmlNodeList == null) continue;
+                    foreach (XmlNode nn in layerXmlNodeList)
                     {
-                        var layerXmlNodeList = n.SelectNodes(this._Rule.Entpath, wNM);
-                        if (layerXmlNodeList != null)
-                        {
-                            foreach (XmlNode nn in layerXmlNodeList)
-                            {
-                                var wRec = new MyRecord(this._Rule);
-                                wRec.LoadData(nn, wNM);
-                                this.Table.Add(wRec);
-                            }
-                        }
+                        var wRec = new MyRecord(this._Rule);
+                        wRec.LoadData(nn, wNm);
+                        this.Table.Add(wRec);
                     }
                 }
                 return this.Table;
             }
             catch (System.Xml.XPath.XPathException e)
             {
-                throw new Data.DataLoadException("Ошибка XPath при загрузке слоя " + this.Name, e);
+                throw new DataLoadException("Ошибка XPath при загрузке слоя " + this.Name, e);
             }           
         }
 
@@ -122,7 +119,7 @@ namespace RosReestrImp.Data
         public TMBR GetMBR()
         {
             TMBR res = null;
-            foreach (MyRecord r in this.Table)
+            foreach (var r in this.Table)
             {
                 var newMbr = r.GetMBR();
                 if (newMbr == null) continue;
