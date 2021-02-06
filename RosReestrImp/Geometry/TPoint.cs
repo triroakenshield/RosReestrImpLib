@@ -4,7 +4,7 @@ namespace RosReestrImp.Geometry
     /// <summary>Внутренний формат для представления геометрии - точки</summary>
     public class TPoint : TGeometry
     {
-        /// <summary></summary>
+        /// <summary>Имя типа</summary>
         public new static readonly string Type = "POINT";
 
         /// <summary>Координаты точки (<see cref="MyPoint"/>)</summary>
@@ -16,9 +16,9 @@ namespace RosReestrImp.Geometry
         /// <param name="nZ"> Координата Z </param>
         public TPoint(double nX, double nY, double nZ)
         {
-            this.Coord.X = nX;
-            this.Coord.Y = nY;
-            this.Coord.Z = nZ;
+            Coord.X = nX;
+            Coord.Y = nY;
+            Coord.Z = nZ;
         }
 
         /// <summary>Создание 2D точки (Z = 0)</summary>
@@ -26,9 +26,9 @@ namespace RosReestrImp.Geometry
         /// <param name="nY"> Координата Y </param>
         public TPoint(double nX, double nY)
         {
-            this.Coord.X = nX;
-            this.Coord.Y = nY;
-            this.Coord.Z = 0;
+            Coord.X = nX;
+            Coord.Y = nY;
+            Coord.Z = 0;
         }
 
         ///<inheritdoc/>
@@ -47,7 +47,7 @@ namespace RosReestrImp.Geometry
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
         public override string ToWKT2D()
         {
-            return this.IsEmpty() ? $"{TPoint.Type} {TGeometry.Emp}" : $"{TPoint.Type}({this.ToShortWKT2D()})";
+            return IsEmpty() ? $"{TPoint.Type} {TGeometry.Emp}" : $"{TPoint.Type}({ToShortWKT2D()})";
         }
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.Point</summary>
@@ -60,19 +60,19 @@ namespace RosReestrImp.Geometry
         ///<inheritdoc/>
         public override double[] GetXYArray()
         {
-              return new[] { this.Coord.X, this.Coord.Y };
+              return new[] { Coord.X, Coord.Y };
         }
 
         ///<inheritdoc/>
         public override double[] GetZArray()
         {
-            return new[] { this.Coord.Z };
+            return new[] { Coord.Z };
         }
 
         ///<inheritdoc/>
         public override TMBR GetMBR()
         {
-            return new TMBR(this.Coord);
+            return new TMBR(Coord);
         }
 
         ///<inheritdoc/>

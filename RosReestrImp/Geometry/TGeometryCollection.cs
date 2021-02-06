@@ -16,22 +16,21 @@ namespace RosReestrImp.Geometry
         /// <summary>Конструктор</summary>
         public TGeometryCollection()
         {
-            this.Geometries = new List<TGeometry>();
+            Geometries = new List<TGeometry>();
         }
 
         /// <summary>Конструктор из списка</summary>
         /// <param name="nGeometries"></param>
         public TGeometryCollection(List<TGeometry> nGeometries)
         {
-            this.Geometries = nGeometries.GetRange(0, nGeometries.Count);
+            Geometries = nGeometries.GetRange(0, nGeometries.Count);
         }
 
         ///<inheritdoc/>
         public override bool IsEmpty()
         {
-            if (this.Geometries == null) return true;
-            if (this.Geometries.Count > 0) return false;
-            return true;
+            if (Geometries == null) return true;
+            return Geometries.Count <= 0;
         }
 
         ///<inheritdoc/>
@@ -56,7 +55,7 @@ namespace RosReestrImp.Geometry
         public override TMBR GetMBR()
         {
             TMBR res = null;
-            foreach (TGeometry p in this.Geometries)
+            foreach (var p in Geometries)
             {
                 if (res == null) res = p.GetMBR();
                 else res.AddMBR(p.GetMBR());
@@ -67,22 +66,21 @@ namespace RosReestrImp.Geometry
         ///<inheritdoc/>
         public override bool IsValid()
         {
-            if (this.Geometries == null) return false;
-            if (this.Geometries.Count > 0) return this.Geometries.All(ls => ls.IsValid());
-            return false;
+            if (Geometries == null) return false;
+            return Geometries.Count > 0 && Geometries.All(ls => ls.IsValid());
         }
 
         ///<inheritdoc/>
         public override string ToShortWKT2D()
         {
-            return string.Join(", ", this.Geometries.Select(p => $"({p.ToShortWKT2D()})"));
+            return string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
         }
 
         ///<inheritdoc/>
         public override string ToWKT2D()
         {
-            return this.IsEmpty() ? $"{TGeometryCollection.Type} {TGeometry.Emp}" 
-                : $"{TGeometryCollection.Type}({this.ToShortWKT2D()})";
+            return IsEmpty() ? $"{TGeometryCollection.Type} {TGeometry.Emp}" 
+                : $"{TGeometryCollection.Type}({ToShortWKT2D()})";
         }
     }
 }

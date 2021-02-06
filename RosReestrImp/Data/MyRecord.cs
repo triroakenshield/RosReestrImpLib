@@ -28,7 +28,7 @@ namespace RosReestrImp.Data
 
         internal void LoadData(XmlNode wNode, XmlNamespaceManager wNM)
         {
-            this.FieldList.ForEach(f => f.LoadData(wNode, wNM));
+            FieldList.ForEach(f => f.LoadData(wNode, wNM));
         }
 
         /// <summary>Получение геометрии записи</summary>
@@ -40,7 +40,7 @@ namespace RosReestrImp.Data
                 var res = FieldList.First(x => x.IsGeom);
                 return (TGeometry)res.Value;
             }
-            else return null; 
+            return null; 
         }
         
         /// <summary>Поиск значения поля, по его имени</summary>
@@ -57,7 +57,7 @@ namespace RosReestrImp.Data
         public List<String> ToList()
         {
             var res = new List<String>();
-            this.FieldList.ForEach(f => res.Add(f.GetString()));
+            FieldList.ForEach(f => res.Add(f.GetString()));
             return res;
         }
 
@@ -65,22 +65,22 @@ namespace RosReestrImp.Data
         /// <returns></returns>
         public string GetFieldsString()
         {
-            return string.Join(";", this.FieldList.Where(f=>!f.IsGeom).Select(f => $"{f.FName}:{f.Value.ToString().Replace("\"", "\"\"")}"));
+            return string.Join(";", FieldList.Where(f=>!f.IsGeom)
+                .Select(f => $"{f.FName}:{f.Value.ToString().Replace("\"", "\"\"")}"));
         }
 
         /// <summary>Получение записи в виде строки, разделённой ";"</summary>
         /// <returns> строка с разделителем - ";" </returns>
         public override string ToString() // на удаление?
         {
-            return string.Join(";", this.FieldList.Select(f => f.GetCSV()));
+            return string.Join(";", FieldList.Select(f => f.GetCSV()));
         }
 
         /// <summary>Получить MBR записи</summary>
         /// <returns></returns>
         public TMBR GetMBR()
         {
-            var geom = this.GetGeometry();
-            return geom?.GetMBR();
+            return GetGeometry()?.GetMBR();
         }
     }
 }

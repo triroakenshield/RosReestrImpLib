@@ -36,9 +36,9 @@ namespace RosReestrImp.Geometry
         /// <param name="nZ"> Координата Z </param>
         public MyPoint(double nX, double nY, double nZ)
         {
-            this.X = nX;
-            this.Y = nY;
-            this.Z = nZ;
+            X = nX;
+            Y = nY;
+            Z = nZ;
         }
 
         /// <summary>Создание 2D точки (Z = 0)</summary>
@@ -46,18 +46,18 @@ namespace RosReestrImp.Geometry
         /// <param name="nY"> Координата Y </param>
         public MyPoint(double nX, double nY)
         {
-            this.X = nX;
-            this.Y = nY;
-            this.Z = 0;
+            X = nX;
+            Y = nY;
+            Z = 0;
         }
 
         /// <summary>Копирование точки</summary>
         /// <param name="op"> исходная точка </param>
         public MyPoint(MyPoint op)
         {
-            this.X = op.X;
-            this.Y = op.Y;
-            this.Z = op.Z;
+            X = op.X;
+            Y = op.Y;
+            Z = op.Z;
         }
 
         /// <summary>Получение wkt-строки с 2d геометрией</summary>
@@ -77,7 +77,7 @@ namespace RosReestrImp.Geometry
         /// <summary>Пустое значение</summary>
         public static readonly string Emp = "EMPTY";
 
-        /// <summary>Признак пусттой геометрии</summary>
+        /// <summary>Признак пустой геометрии</summary>
         /// <returns></returns>
         public abstract bool IsEmpty();
 

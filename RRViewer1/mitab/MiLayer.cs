@@ -182,6 +182,7 @@ namespace MITAB
         public static MiLayer CreateMif(string tabFileName, DataLayer lay)
         {
             var bounds = lay.GetMBR();
+            if (bounds == null) return null;
             var res = new MiLayer(MiApi.mitab_c_create(tabFileName, "mif", "NonEarth Units \"m\"", 
                 bounds.maxy, bounds.miny, bounds.minx, bounds.maxx), tabFileName);
             res.AddLayer(lay);

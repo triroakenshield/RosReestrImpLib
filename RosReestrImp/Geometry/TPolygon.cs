@@ -17,26 +17,26 @@ namespace RosReestrImp.Geometry
         /// <param name="nRings"> Список контуров </param>
         public TPolygon(List<TLineString> nRings)
         {
-            this.Rings = nRings.GetRange(0, nRings.Count);
+            Rings = nRings.GetRange(0, nRings.Count);
         }
 
         ///<inheritdoc/>
         public override bool IsEmpty()
         {
-            return this.Rings.Count == 0;
+            return Rings.Count == 0;
         }
 
         ///<inheritdoc/>
         public override string ToShortWKT2D()
         {
-            return string.Join(", ", this.Rings.Select(p => $"({p.RingToShortWKT2D()})"));
+            return string.Join(", ", Rings.Select(p => $"({p.RingToShortWKT2D()})"));
         }
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - Polygon((x0 y0, x1 y1, ..., xn yn, x0 y0), ..., (...))</summary>
         /// <returns></returns>
         public override string ToWKT2D()
         {
-            return this.IsEmpty() ? $"{TPolygon.Type} {TGeometry.Emp}" : $"{TPolygon.Type}({this.ToShortWKT2D()})";
+            return IsEmpty() ? $"{TPolygon.Type} {TGeometry.Emp}" : $"{TPolygon.Type}({ToShortWKT2D()})";
         }
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.Polygon</summary>
@@ -62,7 +62,7 @@ namespace RosReestrImp.Geometry
         public override TMBR GetMBR()
         {
             TMBR res = null;
-            foreach (TLineString p in this.Rings)
+            foreach (var p in Rings)
             {
                 if (res == null) res = p.GetMBR();
                 else { res.AddMBR(p.GetMBR()); }
@@ -73,29 +73,29 @@ namespace RosReestrImp.Geometry
         ///<inheritdoc/>
         public override bool IsValid()
         {
-            return this.Rings.Count > 0 && this.Rings.All(ls => ls.IsValid());
+            return Rings.Count > 0 && Rings.All(ls => ls.IsValid());
         }
 
         public TLineString GetOuterBoundary()
         {
-            var AllMBR = this.Rings.Select(r => r.GetMBR()).ToArray();
-            int res = -1;
-            for (int i = 0; i < this.Rings.Count; i++)
+            var AllMBR = Rings.Select(r => r.GetMBR()).ToArray();
+            var res = -1;
+            for (var i = 0; i < Rings.Count; i++)
             {
                 var tMBR = AllMBR[i];
-                for (int j=0; j < this.Rings.Count; j++)
+                for (var j=0; j < Rings.Count; j++)
                 {
                     if (j == i) continue;
                     if (!tMBR.Contains(AllMBR[j])) break;
                     res = i;
                 }
             }
-            return res == -1 ? null : this.Rings[res];
+            return res == -1 ? null : Rings[res];
         }
 
         public TGeometryCollection AsCollection()
         {
-            return new TGeometryCollection(this.Rings.Select(l=>(TGeometry)l).ToList());
+            return new TGeometryCollection(Rings.Select(l=>(TGeometry)l).ToList());
         }
     }
 }

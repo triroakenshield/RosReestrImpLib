@@ -17,48 +17,48 @@ namespace RosReestrImp.Geometry
         /// <param name="nCoords"> Список координат </param>
         public TLineString(List<MyPoint> nCoords)
         {
-            this.Coords = nCoords.GetRange(0, nCoords.Count);
+            Coords = nCoords.GetRange(0, nCoords.Count);
         }
 
         /// <summary>Создание линии из списка точек</summary>
         /// <param name="nCoords"> Список точек </param>
         public TLineString(List<TPoint> nCoords)
         {
-            this.Coords = new List<MyPoint>();
-            nCoords.ForEach(p => this.Coords.Add(new MyPoint(p.Coord)));
+            Coords = new List<MyPoint>();
+            nCoords.ForEach(p => Coords.Add(new MyPoint(p.Coord)));
         }
 
         ///<inheritdoc/>
         public override bool IsEmpty()
         {
-            return this.Coords.Count == 0;
+            return Coords.Count == 0;
         }
 
         ///<inheritdoc/>
         public override string ToShortWKT2D()
         {
-            return string.Join(", ", this.Coords.Select(p => p.ToWKT2D()));
+            return string.Join(", ", Coords.Select(p => p.ToWKT2D()));
         }
 
         /// <summary>Получение короткой wkt-строки (2D) для кольца (без типа)</summary>
         /// <returns></returns>
         public string RingToShortWKT2D()
         {
-            return $"{ToShortWKT2D()}, {this.Coords[0].ToWKT2D()}";
+            return $"{ToShortWKT2D()}, {Coords[0].ToWKT2D()}";
         }
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0])  </summary>
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
         public override string ToWKT2D()
         {
-            return this.IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({this.ToShortWKT2D()})";
+            return IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({ToShortWKT2D()})";
         }
 
         /// <summary>Получение wkt-строки (2D) для кольца</summary>
         /// <returns></returns>
         public string RingToWKT2D()
         {
-            return this.IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({this.RingToShortWKT2D()})";
+            return IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({RingToShortWKT2D()})";
         }
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.LineString</summary>
@@ -71,11 +71,11 @@ namespace RosReestrImp.Geometry
         ///<inheritdoc/>
         public override double[] GetXYArray()
         {
-            double[] arr = new double[this.Coords.Count*2];
-            for (var i = 0; i < this.Coords.Count; i++)
+            var arr = new double[Coords.Count*2];
+            for (var i = 0; i < Coords.Count; i++)
             {
-                arr[i * 2] = this.Coords[i].X;
-                arr[i * 2 + 1] = this.Coords[i].Y;
+                arr[i * 2] = Coords[i].X;
+                arr[i * 2 + 1] = Coords[i].Y;
             }
             return arr;
         }
@@ -83,10 +83,10 @@ namespace RosReestrImp.Geometry
         ///<inheritdoc/>
         public override double[] GetZArray()
         {
-            double[] arr = new double[this.Coords.Count];
-            for (var i = 0; i < this.Coords.Count; i++)
+            var arr = new double[Coords.Count];
+            for (var i = 0; i < Coords.Count; i++)
             {
-                arr[i] = this.Coords[i].Z;
+                arr[i] = Coords[i].Z;
             }
             return arr;
         }
@@ -95,7 +95,7 @@ namespace RosReestrImp.Geometry
         public override TMBR GetMBR()
         {
             TMBR res = null;
-            foreach (MyPoint p in this.Coords)
+            foreach (var p in Coords)
             {
                 if (res == null) res = new TMBR(p);
                 else res.AddPoint(p); 
@@ -106,7 +106,7 @@ namespace RosReestrImp.Geometry
         ///<inheritdoc/>
         public override bool IsValid()
         {
-            return this.Coords.Count > 1;
+            return Coords.Count > 1;
         }
     }
 }

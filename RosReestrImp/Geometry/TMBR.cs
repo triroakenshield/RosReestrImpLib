@@ -26,20 +26,20 @@ namespace RosReestrImp.Geometry
         /// <param name="y2"></param>
         public TMBR(double x1, double y1, double x2, double y2)
         {
-            this.minx = Math.Min(x1, x2);
-            this.miny = Math.Min(y1, y2);
-            this.maxx = Math.Max(x1, x2);
-            this.maxy = Math.Max(y1, y2);
+            minx = Math.Min(x1, x2);
+            miny = Math.Min(y1, y2);
+            maxx = Math.Max(x1, x2);
+            maxy = Math.Max(y1, y2);
         }
 
         /// <summary>Конструктор из точки</summary>
         /// <param name="p1"></param>
         public TMBR(MyPoint p1)
         {
-            this.minx = p1.X;
-            this.miny = p1.Y;
-            this.maxx = p1.X;
-            this.maxy = p1.Y;
+            minx = p1.X;
+            miny = p1.Y;
+            maxx = p1.X;
+            maxy = p1.Y;
         }
 
         /// <summary>Конструктор по двум точкам</summary>
@@ -47,20 +47,20 @@ namespace RosReestrImp.Geometry
         /// <param name="p2"></param>
         public TMBR(MyPoint p1, MyPoint p2)
         {
-            this.minx = Math.Min(p1.X, p2.X);
-            this.miny = Math.Min(p1.Y, p2.Y);
-            this.maxx = Math.Max(p1.X, p2.X);
-            this.maxy = Math.Max(p1.Y, p2.Y);
+            minx = Math.Min(p1.X, p2.X);
+            miny = Math.Min(p1.Y, p2.Y);
+            maxx = Math.Max(p1.X, p2.X);
+            maxy = Math.Max(p1.Y, p2.Y);
         }
 
         /// <summary>Добавить точку</summary>
         /// <param name="p"></param>
         public void AddPoint(MyPoint p)
         {
-            this.minx = Math.Min(this.minx, p.X);
-            this.miny = Math.Min(this.miny, p.Y);
-            this.maxx = Math.Max(this.maxx, p.X);
-            this.maxy = Math.Max(this.maxy, p.Y);
+            minx = Math.Min(minx, p.X);
+            miny = Math.Min(miny, p.Y);
+            maxx = Math.Max(maxx, p.X);
+            maxy = Math.Max(maxy, p.Y);
         }
 
         /// <summary>Добавить MBR</summary>
@@ -68,16 +68,15 @@ namespace RosReestrImp.Geometry
         public void AddMBR(TMBR nmbr)
         {
             if (nmbr == null) return;
-            this.minx = Math.Min(this.minx, nmbr.minx);
-            this.miny = Math.Min(this.miny, nmbr.miny);
-            this.maxx = Math.Max(this.maxx, nmbr.maxx);
-            this.maxy = Math.Max(this.maxy, nmbr.maxy);
+            minx = Math.Min(minx, nmbr.minx);
+            miny = Math.Min(miny, nmbr.miny);
+            maxx = Math.Max(maxx, nmbr.maxx);
+            maxy = Math.Max(maxy, nmbr.maxy);
         }
 
         public bool Contains(TMBR r)
         {
-            if (maxx < r.maxx || minx > r.minx || maxy < r.maxy || miny > r.miny) return false;
-            return true;
+            return !(maxx < r.maxx) && !(minx > r.minx) && !(maxy < r.maxy) && !(miny > r.miny);
         }
     }
 }

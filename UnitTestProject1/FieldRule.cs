@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 //
 using RosReestrImp.Rule;
-using RosReestrImp.Geometry;
-using RosReestrImp.Data;
 
 namespace UnitTestProject1
 {
@@ -19,7 +12,7 @@ namespace UnitTestProject1
         {
             try
             {
-                RuleManager wRM = new RuleManager("Shema\\emptyFieldRule.xml");
+                var workRuleManager = new RuleManager("Shema\\emptyFieldRule.xml");
             }
             catch (RuleLoadException e)
             {
@@ -32,7 +25,7 @@ namespace UnitTestProject1
         {
             try
             {
-                RuleManager wRM = new RuleManager("Shema\\emptyPolygon.xml");
+                var workRuleManager = new RuleManager("Shema\\emptyPolygon.xml");
             }
             catch (RuleLoadException e)
             {
