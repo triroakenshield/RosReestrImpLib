@@ -16,7 +16,7 @@ namespace MITAB
         public readonly Feature Feature;
 
         /// <summary>Вершины</summary>
-        public Vertices Vertices => this._vertices;
+        public Vertices Vertices => _vertices;
 
         /// <summary>Индекс</summary>
         public readonly int Index;
@@ -27,10 +27,10 @@ namespace MITAB
         /// <param name="nVertices">Список вершин</param>
         internal Part(Feature feature, int partIdx, List<Vertex> nVertices)
         {
-            this.Index = partIdx;
-            this.Feature = feature;            
-            this.SetPoints(nVertices);
-            this._vertices = CreateVertices(this);
+            Index = partIdx;
+            Feature = feature;            
+            SetPoints(nVertices);
+            _vertices = CreateVertices(this);
         }
 
         /// <summary>Конструктор</summary>
@@ -38,39 +38,32 @@ namespace MITAB
         /// <param name="partIdx">Номер части</param>
         internal Part(Feature feature, int partIdx)
         {
-            this.Index = partIdx;
-            this.Feature = feature;
-            this._vertices = CreateVertices(this);
+            Index = partIdx;
+            Feature = feature;
+            _vertices = CreateVertices(this);
         }
 
         /// <summary>Override this to support descendants of the Vertices class.</summary>
         /// <returns>This parts vertices.</returns>
-        internal Vertices CreateVertices(Part part)
-        {
-            return new Vertices(this);
-        }
+        internal Vertices CreateVertices(Part part) => new Vertices(this);
 
         /// <summary>Установка значений координат вершин</summary>
         /// <param name="nVertices">Список новых значений вершин</param>
         internal void SetPoints(List<Vertex> nVertices)
         {
-            int count = nVertices.Count;
-            double[] x = new double[count];
-            double[] y = new double[count];
-            Vertex v;
-            for (int i=0; i < count; i++)
+            var count = nVertices.Count;
+            var x = new double[count];
+            var y = new double[count];
+            for (var i = 0; i < count; i++)
             {
-                v = nVertices[i];
+                var v = nVertices[i];
                 x[i] = v.X;
                 y[i] = v.Y;
             }
-            MiApi.mitab_c_set_points(this.Feature.Handle, this.Index, count, x, y);
+            MiApi.mitab_c_set_points(Feature.Handle, Index, count, x, y);
         }
 
         /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"Part: {Index}\nVertices:\n{this.Vertices}";
-        }
+        public override string ToString() => $"Part: {Index}\nVertices:\n{Vertices}";
     }
 }

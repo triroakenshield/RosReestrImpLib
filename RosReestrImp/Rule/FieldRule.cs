@@ -68,25 +68,25 @@ namespace RosReestrImp.Rule
                     switch (ch.LocalName)
                     {
                         case "Point":
-                            this._gr.PointPath = this.GetElAttr(ch, "Path");
-                            this._gr.XPath = this.GetElAttr(ch, "Xattr");
-                            this._gr.YPath = this.GetElAttr(ch, "Yattr");
+                            _gr.PointPath = GetElAttr(ch, "Path");
+                            _gr.XPath = GetElAttr(ch, "Xattr");
+                            _gr.YPath = GetElAttr(ch, "Yattr");
                             if (_gr.Type == Geometry.GeometryType.No) _gr.Type = Geometry.GeometryType.Point;
                             ex = false;
                             break;
                         case "LineString":
-                            this._gr.LineStringPath = this.GetElAttr(ch, "Path");
+                            _gr.LineStringPath = GetElAttr(ch, "Path");
                             ch = (XmlElement)ch.FirstChild;
                             if (_gr.Type == Geometry.GeometryType.No) _gr.Type = Geometry.GeometryType.LineString;
                             break;
                         case "Polygon":
-                            this._gr.PolygonPath = this.GetElAttr(ch, "Path");
+                            _gr.PolygonPath = GetElAttr(ch, "Path");
                             ch = (XmlElement)ch.FirstChild;
                             if (_gr.Type == Geometry.GeometryType.No) _gr.Type = Geometry.GeometryType.Polygon;
                             break;
                         case "MultiPolygon":
                             ch = (XmlElement)ch.FirstChild;
-                            this._gr.Type = Geometry.GeometryType.MultiPolygon;
+                            _gr.Type = Geometry.GeometryType.MultiPolygon;
                             break;
                     }
                 } while (ex);
@@ -98,13 +98,13 @@ namespace RosReestrImp.Rule
         /// <param name="wEl"> Описание правил </param>
         internal FieldRule(XmlElement wEl)
         {
-            this.FName = this.GetElAttr(wEl, "Name");
-            if (this.FName != string.Empty)
+            FName = GetElAttr(wEl, "Name");
+            if (FName != string.Empty)
             {
-                this.FPath = this.GetElAttr(wEl, "Path");
-                this.FAttr = this.GetElAttr(wEl, "Attr");
-                if (this.GetElAttr(wEl, "Geom").ToLower() == "true") { this.IsGeom = true; }
-                if (this.IsGeom) this.LoadGeomRule((XmlElement)wEl.FirstChild);
+                FPath = GetElAttr(wEl, "Path");
+                FAttr = GetElAttr(wEl, "Attr");
+                if (GetElAttr(wEl, "Geom").ToLower() == "true") { IsGeom = true; }
+                if (IsGeom) LoadGeomRule((XmlElement)wEl.FirstChild);
             }
             else throw new RuleLoadException("Нет имени поля");
         }
@@ -113,7 +113,7 @@ namespace RosReestrImp.Rule
         /// <returns> тип геометрии </returns>
         public Geometry.GeometryType GetGeomType()
         {
-            return this._gr.Type;
+            return _gr.Type;
         }
 
         /// <summary>Загрузка данных точки</summary>
@@ -128,13 +128,13 @@ namespace RosReestrImp.Rule
             {
                 double x = -1, y = -1;
                 //WorkStr = wNode.Attributes.GetNamedItem(this.GR.XPath).Value;
-                XmlNode xmlNode2 = wNode.SelectSingleNode(this._gr.XPath, wNm);
+                XmlNode xmlNode2 = wNode.SelectSingleNode(_gr.XPath, wNm);
                 if (xmlNode2 != null)
                 {
                     var workStr = xmlNode2.Value;
                     x = double.Parse(workStr, System.Globalization.CultureInfo.InvariantCulture);
                     //WorkStr = wNode.Attributes.GetNamedItem(this.GR.YPath).Value;
-                    xmlNode2 = wNode.SelectSingleNode(this._gr.YPath, wNm);
+                    xmlNode2 = wNode.SelectSingleNode(_gr.YPath, wNm);
                     if (xmlNode2 != null)
                     {
                         workStr = xmlNode2.Value;
@@ -159,8 +159,8 @@ namespace RosReestrImp.Rule
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(this._gr.PointPath, wNm);
-                List<Geometry.TPoint> coords = (from XmlNode n in crNodes select this.LoadPoint(n, wNm)).ToList();
+                XmlNodeList crNodes = wNode.SelectNodes(_gr.PointPath, wNm);
+                var coords = (from XmlNode n in crNodes select LoadPoint(n, wNm)).ToList();
                 return new Geometry.TLineString(coords);
             }
             catch (System.Xml.XPath.XPathException e)
@@ -178,8 +178,8 @@ namespace RosReestrImp.Rule
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(this._gr.LineStringPath, wNm);
-                List<Geometry.TLineString> rings = (from XmlNode n in crNodes select this.LoadLineString(n, wNm)).ToList();
+                XmlNodeList crNodes = wNode.SelectNodes(_gr.LineStringPath, wNm);
+                var rings = (from XmlNode n in crNodes select LoadLineString(n, wNm)).ToList();
                 return new Geometry.TPolygon(rings);
             }
             catch (System.Xml.XPath.XPathException e)
@@ -192,8 +192,8 @@ namespace RosReestrImp.Rule
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(this._gr.PolygonPath, wNm);
-                List<Geometry.TPolygon> nPolygons = (from XmlNode n in crNodes select this.LoadPolygon(n, wNm)).ToList();
+                XmlNodeList crNodes = wNode.SelectNodes(_gr.PolygonPath, wNm);
+                var nPolygons = (from XmlNode n in crNodes select LoadPolygon(n, wNm)).ToList();
                 return new Geometry.TMultiPolygon(nPolygons);
             }
             catch (System.Xml.XPath.XPathException e)
@@ -208,19 +208,19 @@ namespace RosReestrImp.Rule
         /// <returns> Геометрия </returns>
         internal Geometry.TGeometry LoadGeometry(XmlNode wNode, XmlNamespaceManager wNm)
         {
-            switch (this.GetGeomType())
+            switch (GetGeomType())
             {
                 case Geometry.GeometryType.Point:
-                    return this.LoadPoint(wNode, wNm);
+                    return LoadPoint(wNode, wNm);
 
                 case Geometry.GeometryType.LineString:
-                    return this.LoadLineString(wNode, wNm);
+                    return LoadLineString(wNode, wNm);
 
                 case Geometry.GeometryType.Polygon:
-                    return this.LoadPolygon(wNode, wNm);
+                    return LoadPolygon(wNode, wNm);
 
                 case Geometry.GeometryType.MultiPolygon:
-                    return this.LoadMultiPolygon(wNode, wNm);
+                    return LoadMultiPolygon(wNode, wNm);
 
                 default:
                     return null;

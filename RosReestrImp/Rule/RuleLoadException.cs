@@ -6,15 +6,15 @@ namespace RosReestrImp.Rule
     public class RuleLoadException : Exception
     {
         /// <summary>Ошибка загрузки схемы</summary>
-        public RuleLoadException() { }
+        public RuleLoadException() {}
 
         /// <summary>Ошибка загрузки схемы</summary>
         /// <param name="message">сообщение</param>
-        public RuleLoadException(string message) : base(message) { }
+        public RuleLoadException(string message) : base(message) {}
 
         /// <summary>Ошибка загрузки схемы</summary>
         /// <param name="message">сообщение</param>
         /// <param name="inner">внешняя ошибка</param>
-        public RuleLoadException(string message, Exception inner) : base(message, inner) { }
+        public RuleLoadException(string message, Exception inner) : base(message, inner) {}
     }
 }

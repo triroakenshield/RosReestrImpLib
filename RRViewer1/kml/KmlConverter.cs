@@ -122,7 +122,7 @@ namespace RRViewer1.kml
                 if (ring != outher)
                 {
                     var inner = new InnerBoundary() { LinearRing = GetRingKml(ring) };
-                    kml.InnerBoundary.Append<InnerBoundary>(inner);
+                    var innerBoundaries = kml.InnerBoundary.Append<InnerBoundary>(inner);
                 }
             }
             return kml;

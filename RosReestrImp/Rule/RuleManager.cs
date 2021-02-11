@@ -11,8 +11,8 @@ namespace RosReestrImp.Rule
         private List<ShemaRule> _ShemaList;
         
         /// <summary>Конструктор</summary>
-        /// <param name="wDoc"> xml-файл правил </param>
-        /// <exception cref="RuleLoadException"> Ошибка xml-файла правил </exception>
+        /// <param name="wDoc">xml-файл правил</param>
+        /// <exception cref="RuleLoadException">Ошибка xml-файла правил</exception>
         public RuleManager(XmlDocument wDoc)
         {
             _ShemaList = new List<ShemaRule>();
@@ -28,14 +28,14 @@ namespace RosReestrImp.Rule
         }
         
         /// <summary>Загрузка xml-файла</summary>
-        /// <param name="filename"> имя файла </param>
-        /// <returns> XmlDocument </returns>
-        /// <exception cref="RuleLoadException"> Ошибка открытия xml-файла </exception>
+        /// <param name="filename">имя файла</param>
+        /// <returns>XmlDocument</returns>
+        /// <exception cref="RuleLoadException">Ошибка открытия xml-файла</exception>
         private static XmlDocument LoadXml(string filename) 
         {
             try
             {
-                XmlDocument wDoc = new XmlDocument();
+                var wDoc = new XmlDocument();
                 wDoc.Load(filename);
                 return wDoc;
             }
@@ -43,11 +43,9 @@ namespace RosReestrImp.Rule
         }
 
         /// <summary>Конструктор</summary>
-        /// <param name="filename"> xml-файл правил </param>
-        /// <exception cref="RuleLoadException"> Ошибка xml-файла правил </exception>
-        public RuleManager(string filename) : this(LoadXml(filename))        
-        {
-        }
+        /// <param name="filename">xml-файл правил</param>
+        /// <exception cref="RuleLoadException">Ошибка xml-файла правил</exception>
+        public RuleManager(string filename) : this(LoadXml(filename)) {}
 
         /// <summary>Поиск схемы по имени</summary>
         /// <param name="docName"> имя схемы </param>
@@ -61,21 +59,21 @@ namespace RosReestrImp.Rule
         }
 
         /// <summary>Загрузка данных из файла</summary>
-        /// <param name="filename"> xml-файл с данными </param>
-        /// <returns> Список данных слоёв </returns>
+        /// <param name="filename">xml-файл с данными</param>
+        /// <returns>Список данных слоёв</returns>
         public List<Data.DataLayer> LoadData(string filename)
         {
             return LoadData(LoadXml(filename));
         }
 
         /// <summary>Загрузка данных из файла</summary>
-        /// <param name="wDoc"> xml-файл с данными </param>
-        /// <returns> Список данных слоёв </returns>
+        /// <param name="wDoc">xml-файл с данными</param>
+        /// <returns>Список данных слоёв</returns>
         public List<Data.DataLayer> LoadData(XmlDocument wDoc)
         {
             if (wDoc.DocumentElement == null) return null;
-            string docName = wDoc.DocumentElement.Name;
-            ShemaRule wSRule = FindShema(docName);
+            var docName = wDoc.DocumentElement.Name;
+            var wSRule = FindShema(docName);
             return wSRule?.LoadData(wDoc);
         }
     }

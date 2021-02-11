@@ -23,28 +23,26 @@ namespace RosReestrImp.Rule
             return wEl.HasAttribute(attrName) ? wEl.GetAttribute(attrName) : "";
         }
 
-        /// <summary></summary>
-        /// <param name="wEl"></param>
         internal LayerRule(XmlElement wEl)
         {
-                this.LName = this.GetElAttr(wEl, "Name");
-                this.LayerPath = this.GetElAttr(wEl, "LayerPath");
-                this.Entpath = this.GetElAttr(wEl, "EntPath");
-                this.FieldList = new List<FieldRule>();
+                LName = GetElAttr(wEl, "Name");
+                LayerPath = GetElAttr(wEl, "LayerPath");
+                Entpath = GetElAttr(wEl, "EntPath");
+                FieldList = new List<FieldRule>();
                 foreach (XmlElement ch in wEl.ChildNodes)
                 {
-                    this.FieldList.Add(new FieldRule(ch));
+                    FieldList.Add(new FieldRule(ch));
                 }
         }
 
         /// <summary>Получение списка имён полей слоя</summary>
-        /// <returns> список имён полей слоя </returns>
+        /// <returns>список имён полей слоя</returns>
         public string[] GetColumnNames()
         {
-            var res = new string[this.FieldList.Count];
-            for (var i = 0; i < this.FieldList.Count; i++)
+            var res = new string[FieldList.Count];
+            for (var i = 0; i < FieldList.Count; i++)
             {
-                res[i] = this.FieldList[i].FName;
+                res[i] = FieldList[i].FName;
             }
             return res;
         }

@@ -9,7 +9,6 @@ using Autodesk.AutoCAD.Runtime;
 //
 using Autodesk.Gis.Map;
 using Autodesk.Gis.Map.ObjectData;
-using Autodesk.Gis.Map.Project;
 using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace RosReestrImp
@@ -17,20 +16,18 @@ namespace RosReestrImp
     /// <summary>Команды для AutoCAD Civil 3D</summary>
     public class MyCommands
     {
-        //Autodesk.Gis.Map.ObjectData.Table crODTable;
-
         /// <summary>Создаём таблицу ObjectData.</summary>
         /// <param name="wRule"> LayerRule как источник описания таблицы </param>
         /// <returns> ObjectData.Table </returns>
         public Autodesk.Gis.Map.ObjectData.Table CreateOdTable(Rule.LayerRule wRule)
         {
-            MapApplication mapApp = HostMapApplicationServices.Application;
-            ProjectModel activeProject = mapApp.ActiveProject;
-            Tables tableList = activeProject.ODTables;
+            var mapApp = HostMapApplicationServices.Application;
+            var activeProject = mapApp.ActiveProject;
+            var tableList = activeProject.ODTables;
             //
             if (!tableList.GetTableNames().Contains(wRule.LName))
             {
-                FieldDefinitions fieldDefs = mapApp.ActiveProject.MapUtility.NewODFieldDefinitions();
+                var fieldDefs = mapApp.ActiveProject.MapUtility.NewODFieldDefinitions();
                 foreach (var fr in from Rule.FieldRule fr in wRule.FieldList where !fr.IsGeom select fr)
                 {
                     fieldDefs.Add(fr.FName, "", Autodesk.Gis.Map.Constants.DataType.Character, 0);//!!1
@@ -54,7 +51,7 @@ namespace RosReestrImp
         /// <returns> MPolygonLoop </returns>
         public MPolygonLoop ConvertLineString(Geometry.TLineString wLine)
         {
-            MPolygonLoop res = new MPolygonLoop();
+            var res = new MPolygonLoop();
             wLine.Coords.ForEach(tp => res.Add(new BulgeVertex(ConvertPoint2d(tp), 0)));
             return res;
         }
@@ -64,7 +61,7 @@ namespace RosReestrImp
         /// <returns> MPolygonLoopCollection </returns>
         public MPolygonLoopCollection ConvertPolygon(Geometry.TPolygon wPoly)
         {
-            MPolygonLoopCollection res = new MPolygonLoopCollection();
+            var res = new MPolygonLoopCollection();
             wPoly.Rings.ForEach(wl => res.Add(ConvertLineString(wl)));
             return res;
         }
@@ -82,7 +79,7 @@ namespace RosReestrImp
         /// <returns> Polyline </returns>
         public Polyline MakePolyLine(Geometry.TLineString wl)
         {
-            Polyline nPoly = new Polyline();
+            var nPoly = new Polyline();
             wl.Coords.ForEach(wp => nPoly.AddVertexAt(0, new Point2d(wp.X, wp.Y), 0, 0, 0));
             return nPoly;
         }
@@ -92,8 +89,8 @@ namespace RosReestrImp
         /// <returns> MPolygon </returns>
         public MPolygon MakePolygon(Geometry.TPolygon wp)
         {
-            MPolygon mpoly = new MPolygon();
-            MPolygonLoopCollection acPolyColl = ConvertPolygon(wp);
+            var mpoly = new MPolygon();
+            var acPolyColl = ConvertPolygon(wp);
             foreach (MPolygonLoop loop in acPolyColl)
             {
                 mpoly.AppendMPolygonLoop(loop, false, 0);
@@ -164,12 +161,12 @@ namespace RosReestrImp
         public void DrawEntity(List<Entity> wEntList)
         {
             var acDoc = Application.DocumentManager.MdiActiveDocument;
-            Database acCurDb = acDoc.Database;
-            using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+            var acCurDb = acDoc.Database;
+            using (var acTrans = acCurDb.TransactionManager.StartTransaction())
             {
-                BlockTable acBlkTbl = (BlockTable)acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead);
-                BlockTableRecord acBlkTblRec = (BlockTableRecord)acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-                foreach (Entity ent in wEntList)
+                var acBlkTbl = (BlockTable)acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead);
+                var acBlkTblRec = (BlockTableRecord)acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                foreach (var ent in wEntList)
                 {
                     acBlkTblRec.AppendEntity(ent);
                     acTrans.AddNewlyCreatedDBObject(ent, true);
@@ -184,7 +181,7 @@ namespace RosReestrImp
         public ObjectId DrawEntity(Entity ent)
         {
             var acDoc = Application.DocumentManager.MdiActiveDocument;
-            Database acCurDb = acDoc.Database;
+            var acCurDb = acDoc.Database;
             using (var acTrans = acCurDb.TransactionManager.StartTransaction())
             {
                 BlockTable acBlkTbl = (BlockTable)acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead);
@@ -217,7 +214,7 @@ namespace RosReestrImp
         [CommandMethod("ImportXML")]
         public void ImportXml()
         {
-            string rulePath = Assembly.GetExecutingAssembly().Location.Replace("RosReestrImp.dll", "rule.xml");
+            var rulePath = Assembly.GetExecutingAssembly().Location.Replace("RosReestrImp.dll", "rule.xml");
             var wRm = new Rule.RuleManager(rulePath);
             var openFileDialog1 = new OpenFileDialog { Filter = FilterString };
             if (openFileDialog1.ShowDialog() != DialogResult.OK) return;

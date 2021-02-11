@@ -1,5 +1,4 @@
-﻿using System;
-// ReSharper disable IdentifierTypo
+﻿// ReSharper disable IdentifierTypo
 // ReSharper disable CheckNamespace
 
 namespace MITAB
@@ -35,12 +34,12 @@ namespace MITAB
         /// <param name="i">Индекс</param>
         protected internal Field(MiLayer layer, int i)
         {
-            this.Layer = layer;
-            this.Index = i;
-            this.Name = MiApi.mitab_c_get_field_name(layer.Handle, i);
-            this.Type = MiApi.mitab_c_get_field_type(layer.Handle, i);
-            this.Precision = (short)MiApi.mitab_c_get_field_precision(layer.Handle, i);
-            this.Width = MiApi.mitab_c_get_field_width(layer.Handle, i);
+            Layer = layer;
+            Index = i;
+            Name = MiApi.mitab_c_get_field_name(layer.Handle, i);
+            Type = MiApi.mitab_c_get_field_type(layer.Handle, i);
+            Precision = (short)MiApi.mitab_c_get_field_precision(layer.Handle, i);
+            Width = MiApi.mitab_c_get_field_width(layer.Handle, i);
         }
 
         /// <summary>Конструктор</summary>
@@ -54,36 +53,27 @@ namespace MITAB
         protected internal Field(MiLayer layer, string fieldName, FieldType fieldType, int width, int precision, 
             int indexed, int unique)
         {
-            IntPtr fieldId = MiApi.mitab_c_add_field(layer.Handle,
+            var fieldId = MiApi.mitab_c_add_field(layer.Handle,
                 fieldName, (int)fieldType, width, precision, indexed, unique);
-            this.Layer = layer;
-            this.Index = fieldId.ToInt32();
-            this.Name = fieldName;
-            this.Type = fieldType;
-            this.Precision = (short)precision;
-            this.Width = width;
+            Layer = layer;
+            Index = fieldId.ToInt32();
+            Name = fieldName;
+            Type = fieldType;
+            Precision = (short)precision;
+            Width = width;
         }
 
         /// <summary>Returns a string representation of this fields value for the given feature.</summary>
         /// <param name="feature">The feature to find the fields value for.</param>
         /// <returns>A string representation of this fields value for the given feature</returns>
-        public string GetValueAsString(Feature feature)
-        {
-            return MiApi.mitab_c_get_field_as_string(feature.Handle, this.Index);
-        }
+        public string GetValueAsString(Feature feature) => MiApi.mitab_c_get_field_as_string(feature.Handle, Index);
 
         /// <summary>Returns a double representation of this fields value for the given feature.</summary>
         /// <param name="feature">The feature to find the fields value for.</param>
         /// <returns>A double representation of this fields value for the given feature</returns>
-        public double GetValueAsDouble(Feature feature)
-        {
-            return MiApi.mitab_c_get_field_as_double(feature.Handle, this.Index);
-        }
+        public double GetValueAsDouble(Feature feature) => MiApi.mitab_c_get_field_as_double(feature.Handle, Index);
 
         /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"{this.Name}, {this.Type}";
-        }
+        public override string ToString() => $"{Name}, {Type}";
     }
 }

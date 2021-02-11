@@ -31,13 +31,13 @@ namespace MITAB
         internal TMBR _bounds;
 
         /// <summary>Handle used to manipulate the object in the C API</summary>
-        public IntPtr Handle => this._handle;
+        public IntPtr Handle => _handle;
 
         /// <summary>Поля</summary>
-        public Fields Fields => this._fields;
+        public Fields Fields => _fields;
 
         /// <summary>Сущности</summary>
-        public Features Features => this._features;
+        public Features Features => _features;
 
         /// <summary>Имя файла</summary>
         public string FileName { get { return _fileName; } }
@@ -47,22 +47,22 @@ namespace MITAB
         /// <param name="fileName">Имя файла</param>
         internal MiLayer(IntPtr handle, string fileName)
         {
-            this._handle = handle;
-            this._fields = CreateFields();
-            this._features = CreateFeatures();
-            this._fileName = fileName;
+            _handle = handle;
+            _fields = CreateFields();
+            _features = CreateFeatures();
+            _fileName = fileName;
         }
 
         /// <summary>Конструктор</summary>
         /// <param name="fileName">Имя файла</param>
         internal MiLayer(string fileName)
         {
-            this._handle = MiApi.mitab_c_open(fileName);
-            if (this.Handle == IntPtr.Zero)
+            _handle = MiApi.mitab_c_open(fileName);
+            if (Handle == IntPtr.Zero)
                 throw new FileNotFoundException("File " + fileName + " not found", fileName);
-            this._fields = CreateFields();
-            this._features = CreateFeatures();
-            this._fileName = fileName;
+            _fields = CreateFields();
+            _features = CreateFeatures();
+            _fileName = fileName;
         }
 
         private List<List<Vertex>> GetParts(TGeometry geom)
@@ -125,7 +125,7 @@ namespace MITAB
             var geom = rec.GetGeometry();
             var type = FeatureType.TABFC_NoGeom;
             if (geom == null)
-                return this.AddFeature(type, new List<List<Vertex>>(),
+                return AddFeature(type, new List<List<Vertex>>(),
                     GetFieldValues(rec), null);
             switch (geom.GetGeometryType())
             {
@@ -146,8 +146,8 @@ namespace MITAB
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if (geom.IsValid()) return this.AddFeature(type, this.GetParts(geom), GetFieldValues(rec), null);
-            return type == FeatureType.TABFC_NoGeom ? this.AddFeature(type, new List<List<Vertex>>(), 
+            if (geom.IsValid()) return AddFeature(type, GetParts(geom), GetFieldValues(rec), null);
+            return type == FeatureType.TABFC_NoGeom ? AddFeature(type, new List<List<Vertex>>(), 
                 GetFieldValues(rec), null) : null;
         }
 
@@ -155,9 +155,9 @@ namespace MITAB
         {
             foreach (var fr in lay.Rule.FieldList)
             {
-                if (!fr.IsGeom) this.AddField(fr.FName, FieldType.TABFT_Char, 250, 0, 0, 0);
+                if (!fr.IsGeom) AddField(fr.FName, FieldType.TABFT_Char, 250, 0, 0, 0);
             }
-            foreach (var rec in lay.Table) this.AddFeature(rec);
+            foreach (var rec in lay.Table) AddFeature(rec);
         }
 
         /// <summary>Создать tab-файл</summary>
@@ -193,25 +193,16 @@ namespace MITAB
 
         /// <summary>Override this to support descendants of the Fields class.</summary>
         /// <returns>This layers fields</returns>
-        internal Fields CreateFields()
-        {
-            return new Fields(this);
-        }
+        internal Fields CreateFields() => new Fields(this);
 
         /// <summary>Override this to support descendants of the Feature class.</summary>
         /// <returns>This layers features</returns>
-        internal Features CreateFeatures()
-        {
-            return new Features(this);
-        }
+        internal Features CreateFeatures() => new Features(this);
 
         /// <summary>Factory method to return the layer with a given name.</summary>
         /// <param name="tabFileName"></param>
         /// <returns></returns>
-        public static MiLayer GetByName(string tabFileName)
-        {
-            return new MiLayer(tabFileName);
-        }
+        public static MiLayer GetByName(string tabFileName) => new MiLayer(tabFileName);
 
         /// <summary>Создать tab-файл</summary>
         /// <param name="tabFileName">Имя файла</param>
@@ -240,7 +231,7 @@ namespace MITAB
         /// <param name="unique"></param>
         public void AddField(string fieldName, FieldType fieldType, int width, int precision, int indexed, int unique)
         {
-            this.Fields.AddField(this, fieldName, fieldType, width, precision, indexed, unique);
+            Fields.AddField(this, fieldName, fieldType, width, precision, indexed, unique);
         }
 
         /// <summary>Добавить сущность</summary>
@@ -252,22 +243,19 @@ namespace MITAB
         public Feature AddFeature(FeatureType type, List<List<Vertex>> nParts, List<string> nFieldValues, 
             Dictionary<string, string> nStyle)
         {
-            return this.Features.AddFeature(type, this.next_id++, nParts, nFieldValues, nStyle);
+            return Features.AddFeature(type, next_id++, nParts, nFieldValues, nStyle);
         }
 
         /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"Layer: {this.FileName}";
-        }
+        public override string ToString() => $"Layer: {FileName}";
 
         /// <summary>Writes this layers features to the given textwriter</summary>
         /// <param name="writer">Destintation for the layers features</param>
         public void ToText(TextWriter writer)
         {
             writer.WriteLine(this);
-            writer.WriteLine($"{this.Fields}\n");
-            writer.WriteLine(this.Features);
+            writer.WriteLine($"{Fields}\n");
+            writer.WriteLine(Features);
         }
 
         /// <summary>Writes this layers features as a text file.</summary>
@@ -280,7 +268,7 @@ namespace MITAB
         /// <summary>Закрыть файл</summary>
         public void Close()
         {
-            MiApi.mitab_c_close(this.Handle);
+            MiApi.mitab_c_close(Handle);
         }
     }
 }

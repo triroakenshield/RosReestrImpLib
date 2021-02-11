@@ -61,7 +61,7 @@ namespace MITAB
         /// <param name="objProvider"></param>
         internal IndexedEnum(IObjectProvider objProvider) 
         {
-            this._objProvider = objProvider;
+            _objProvider = objProvider;
         }
 
         /// <inheritdoc />
@@ -74,10 +74,7 @@ namespace MITAB
         public object Current => _objProvider.GetObj(eIdx);
 
         /// <inheritdoc />
-        public virtual bool MoveNext() 
-        {
-            return (++eIdx < _objProvider.Count);
-        }
+        public virtual bool MoveNext() => (++eIdx < _objProvider.Count);
     }
 
     /// <summary>Partial implementation of <see cref="IEnumerable"/> over an indexed (array like) structure.</summary>
@@ -94,15 +91,13 @@ namespace MITAB
 
         /// <summary>Конструктор</summary>
         /// <param name="count"></param>
-        protected EnumImpl(int count) { this._count = count; }
+        protected EnumImpl(int count) { _count = count; }
 
         /// <inheritdoc />
-        public int Count => this._count;
+        public int Count => _count;
 
         /// <inheritdoc />
-        public virtual IEnumerator GetEnumerator() {
-            return new IndexedEnum(this);
-        }
+        public virtual IEnumerator GetEnumerator() => new IndexedEnum(this);
 
         /// <inheritdoc />
         public abstract object GetObj(int idx);
@@ -122,14 +117,14 @@ namespace MITAB
         /// <param name="y"></param>
         public Vertex(double x, double y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
 
         /// <inheritdoc />
         public override string ToString() 
         {
-            return $"{this.X}, {this.Y}";
+            return $"{X}, {Y}";
         }
     }
 
@@ -149,15 +144,12 @@ namespace MITAB
         /// <param name="part">родительский элемент</param>
         protected internal Vertices(Part part): base(MiApi.mitab_c_get_vertex_count(part.Feature.Handle, part.Index)) 
         {
-            this.Part = part;
+            Part = part;
         }
 
         /// <summary>Override this to support descendants of the Vertex class.</summary>
         /// <returns>A vertex with the given X,Y coordinates</returns>
-        protected internal virtual Vertex CreateVertex(double x, double y) 
-        {
-            return new Vertex(x ,y);
-        }
+        protected internal virtual Vertex CreateVertex(double x, double y) => new Vertex(x, y);
 
         /// <summary>Получение точки по индексу</summary>
         /// <param name="index">индекс точки</param>
@@ -168,12 +160,12 @@ namespace MITAB
                 MiApi.mitab_c_get_vertex_y(Part.Feature.Handle, Part.Index, index)) : null;
 
         /// <inheritdoc />
-        public override object GetObj(int idx) { return this[idx]; }
+        public override object GetObj(int idx) => this[idx]; 
 
         /// <inheritdoc />
         public override string ToString() 
         {
-            StringBuilder str = new StringBuilder();
+            var str = new StringBuilder();
             foreach (Vertex v in this) str.Append($"{v}\t");
             return str.ToString();
         }
@@ -191,17 +183,17 @@ namespace MITAB
         protected internal Feature _feature;
 
         /// <summary>The feature these parts belong to.</summary>
-        public Feature Feature => this._feature;
+        public Feature Feature => _feature;
 
         /// <summary>Конструктор</summary>
         /// <param name="feature"></param>
         /// <param name="nParts"></param>
         protected internal Parts(Feature feature, List<List<Vertex>> nParts) : base(nParts.Count)
         {
-            this._feature = feature;
-            for (var i=0; i < this.Count; i++)
+            _feature = feature;
+            for (var i=0; i < Count; i++)
             {
-                var part = new Part(feature, i, nParts[i]);
+                var _ = new Part(feature, i, nParts[i]);
             }
         }
 
@@ -209,15 +201,12 @@ namespace MITAB
         /// <param name="feature"></param>
         protected internal Parts(Feature feature):base(MiApi.mitab_c_get_parts(feature.Handle)) 
         {
-            this._feature = feature;
+            _feature = feature;
         }
 
         /// <summary>Override this to support descendants of the Part class.</summary>
         /// <returns>A part with the given index</returns>
-        protected internal virtual Part CreatePart(int partIdx) 
-        {
-            return new Part(this.Feature, partIdx);
-        }
+        protected internal virtual Part CreatePart(int partIdx) => new Part(Feature, partIdx);
 
         /// <summary>Получение часть сущности</summary>
         /// <param name="index"></param>
@@ -225,12 +214,13 @@ namespace MITAB
         public Part this[int index] => index < Count ? CreatePart(index) : null;
 
         /// <inheritdoc />
-        public override object GetObj(int idx) { return this[idx]; }
+        public override object GetObj(int idx) => this[idx]; 
 
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString() 
+        {
             var str = new StringBuilder();
-            str.Append($"Part Count: {this.Count}\n");
+            str.Append($"Part Count: {Count}\n");
             foreach (Part part in this) str.Append($"{part}\n");
             return str.ToString();
         }
@@ -249,14 +239,11 @@ namespace MITAB
         /// <param name="layer"></param>
         internal FeaturesEnum(IObjectProvider objProvider, MiLayer layer) : base(objProvider) 
         {
-            this._layer = layer;
+            _layer = layer;
         }
 
         /// <inheritdoc />
-        public override bool MoveNext() 
-        {
-            return (eIdx = MiApi.mitab_c_next_feature_id(_layer.Handle, eIdx)) != -1;
-        }
+        public override bool MoveNext() => (eIdx = MiApi.mitab_c_next_feature_id(_layer.Handle, eIdx)) != -1;
     }
 
     /// <summary>Contains the set of features belonging to a single layer.</summary>
@@ -273,7 +260,7 @@ namespace MITAB
         /// <param name="layer"></param>
         protected internal Features(MiLayer layer) : base(MiApi.mitab_c_get_feature_count(layer.Handle)) 
         {
-            this.Layer = layer;
+            Layer = layer;
         }
 
         /// <summary>Добавление сущности</summary>
@@ -286,15 +273,12 @@ namespace MITAB
         public Feature AddFeature(FeatureType type, int nid, List<List<Vertex>> nParts, List<String> nFieldValues, 
             Dictionary<string, string> nStyle)
         {
-            return new Feature(this.Layer, nid, type, nParts, nFieldValues, nStyle);
+            return new Feature(Layer, nid, type, nParts, nFieldValues, nStyle);
         }
 
         /// <summary>Override this to support descendants of the <see cref="Feature"/> class.</summary>
         /// <returns>This layers fields</returns>
-        protected internal virtual Feature CreateFeature(int index) 
-        {
-            return new Feature(this.Layer, index);
-        }
+        protected internal virtual Feature CreateFeature(int index) => new Feature(Layer, index);
 
         /// <summary>Получение сущности</summary>
         /// <param name="index"></param>
@@ -303,22 +287,13 @@ namespace MITAB
 
         /// <summary>Получение первой сущности в коллекции</summary>
         /// <returns></returns>
-        public Feature GetFirst() 
-        {
-            return this[MiApi.mitab_c_next_feature_id(Layer.Handle, -1)];
-        }
+        public Feature GetFirst() => this[MiApi.mitab_c_next_feature_id(Layer.Handle, -1)];
 
         /// <inheritdoc />
-        public override object GetObj(int idx) 
-        {
-            return this[idx];
-        }
+        public override object GetObj(int idx) => this[idx];
 
         /// <inheritdoc />
-        public override IEnumerator GetEnumerator() 
-        {
-            return new FeaturesEnum(this, Layer);
-        }
+        public override IEnumerator GetEnumerator() => new FeaturesEnum(this, Layer);
 
         /// <inheritdoc />
         public override string ToString() {

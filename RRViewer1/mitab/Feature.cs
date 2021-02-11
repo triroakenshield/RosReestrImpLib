@@ -31,11 +31,11 @@ namespace MITAB
         /// <param name="featureId">Ключ</param>
         internal Feature(MiLayer layer, int featureId)
         {
-            this.Id = featureId;
-            this.Layer = layer;
-            this.Handle = MiApi.mitab_c_read_feature(layer.Handle, featureId);
-            this.Type = MiApi.mitab_c_get_type(Handle);
-            this.Parts = CreateParts(this);
+            Id = featureId;
+            Layer = layer;
+            Handle = MiApi.mitab_c_read_feature(layer.Handle, featureId);
+            Type = MiApi.mitab_c_get_type(Handle);
+            Parts = CreateParts(this);
         }
 
         /// <summary>Конструктор</summary>
@@ -48,23 +48,23 @@ namespace MITAB
         internal Feature(MiLayer layer, int nid, FeatureType type, List<List<Vertex>> nParts, 
             IReadOnlyList<string> nFieldValues, IReadOnlyDictionary<string, string> nStyle)
         {
-            this.Id = nid;
-            this.Handle = MiApi.mitab_c_create_feature(layer.Handle, (int)type);
-            this.Layer = layer;
-            this.Type = type;
-            this.Parts = new Parts(this, nParts);
-            if (nStyle != null) this.SetStyle(nStyle);
+            Id = nid;
+            Handle = MiApi.mitab_c_create_feature(layer.Handle, (int)type);
+            Layer = layer;
+            Type = type;
+            Parts = new Parts(this, nParts);
+            if (nStyle != null) SetStyle(nStyle);
             if (nFieldValues != null)
             {
-                for (int i=0; i < nFieldValues.Count; i++)
+                for (var i = 0; i < nFieldValues.Count; i++)
                 {
-                    MiApi.mitab_c_set_field(this.Handle, i, nFieldValues[i]);
+                    MiApi.mitab_c_set_field(Handle, i, nFieldValues[i]);
                 }
             }
-            var res = MiApi.mitab_c_write_feature(layer.Handle, this.Handle);
+            var res = MiApi.mitab_c_write_feature(layer.Handle, Handle);
             if (res.ToInt32() == 1)
             {
-                MiApi.mitab_c_destroy_feature(this.Handle);
+                MiApi.mitab_c_destroy_feature(Handle);
             }
             else throw new Exception("Ошибка создания Feature");//
         }
@@ -79,78 +79,78 @@ namespace MITAB
         /// <summary>Returns text associated with this feature</summary>
         /// <remarks>This will return an empty string, unless this features type is
         /// TABFC_Text.</remarks>
-        public string Text => (this.Type == FeatureType.TABFC_Text) ? MiApi.mitab_c_get_text(this.Handle) : "";
+        public string Text => (Type == FeatureType.TABFC_Text) ? MiApi.mitab_c_get_text(Handle) : "";
 
         private void GetSymbol(Dictionary<string, string> rDict)
         {
             if (rDict == null) throw new ArgumentNullException(nameof(rDict));
-            rDict.Add("symbol_no", MiApi.mitab_c_get_symbol_no(this.Handle).ToString());
-            rDict.Add("symbol_size", MiApi.mitab_c_get_symbol_size(this.Handle).ToString());
-            rDict.Add("symbol_color", MiApi.mitab_c_get_symbol_color(this.Handle).ToString());
+            rDict.Add("symbol_no", MiApi.mitab_c_get_symbol_no(Handle).ToString());
+            rDict.Add("symbol_size", MiApi.mitab_c_get_symbol_size(Handle).ToString());
+            rDict.Add("symbol_color", MiApi.mitab_c_get_symbol_color(Handle).ToString());
         }
 
         private void GetPen(Dictionary<string, string> rDict)
         {
             if (rDict == null) throw new ArgumentNullException(nameof(rDict));
-            rDict.Add("pen_pattern", MiApi.mitab_c_get_pen_pattern(this.Handle).ToString());
-            rDict.Add("pen_width", MiApi.mitab_c_get_pen_width(this.Handle).ToString());
-            rDict.Add("pen_color", MiApi.mitab_c_get_pen_color(this.Handle).ToString());
+            rDict.Add("pen_pattern", MiApi.mitab_c_get_pen_pattern(Handle).ToString());
+            rDict.Add("pen_width", MiApi.mitab_c_get_pen_width(Handle).ToString());
+            rDict.Add("pen_color", MiApi.mitab_c_get_pen_color(Handle).ToString());
         }
 
         private void GetBrush(Dictionary<string, string> rDict)
         {
-            rDict.Add("brush_fgcolor", MiApi.mitab_c_get_brush_fgcolor(this.Handle).ToString());
-            rDict.Add("brush_bgcolor", MiApi.mitab_c_get_brush_bgcolor(this.Handle).ToString());
-            rDict.Add("brush_pattern", MiApi.mitab_c_get_brush_pattern(this.Handle).ToString());
-            rDict.Add("brush_transparent", MiApi.mitab_c_get_brush_transparent(this.Handle).ToString());
+            rDict.Add("brush_fgcolor", MiApi.mitab_c_get_brush_fgcolor(Handle).ToString());
+            rDict.Add("brush_bgcolor", MiApi.mitab_c_get_brush_bgcolor(Handle).ToString());
+            rDict.Add("brush_pattern", MiApi.mitab_c_get_brush_pattern(Handle).ToString());
+            rDict.Add("brush_transparent", MiApi.mitab_c_get_brush_transparent(Handle).ToString());
         }
 
         private void GetTextDisplay(Dictionary<string, string> rDict)
         {
-            rDict.Add("text_angle", MiApi.mitab_c_get_text_angle(this.Handle).ToString(CultureInfo.InvariantCulture));
-            rDict.Add("text_height", MiApi.mitab_c_get_text_height(this.Handle).ToString(CultureInfo.InvariantCulture));
-            rDict.Add("text_width", MiApi.mitab_c_get_text_width(this.Handle).ToString(CultureInfo.InvariantCulture));
-            rDict.Add("text_fgcolor", MiApi.mitab_c_get_text_fgcolor(this.Handle).ToString());
-            rDict.Add("text_bgcolor", MiApi.mitab_c_get_text_bgcolor(this.Handle).ToString());
-            rDict.Add("text_justification", MiApi.mitab_c_get_text_justification(this.Handle).ToString());
-            rDict.Add("text_spacing", MiApi.mitab_c_get_text_spacing(this.Handle).ToString());
-            rDict.Add("text_linetype", MiApi.mitab_c_get_text_linetype(this.Handle).ToString());
+            rDict.Add("text_angle", MiApi.mitab_c_get_text_angle(Handle).ToString(CultureInfo.InvariantCulture));
+            rDict.Add("text_height", MiApi.mitab_c_get_text_height(Handle).ToString(CultureInfo.InvariantCulture));
+            rDict.Add("text_width", MiApi.mitab_c_get_text_width(Handle).ToString(CultureInfo.InvariantCulture));
+            rDict.Add("text_fgcolor", MiApi.mitab_c_get_text_fgcolor(Handle).ToString());
+            rDict.Add("text_bgcolor", MiApi.mitab_c_get_text_bgcolor(Handle).ToString());
+            rDict.Add("text_justification", MiApi.mitab_c_get_text_justification(Handle).ToString());
+            rDict.Add("text_spacing", MiApi.mitab_c_get_text_spacing(Handle).ToString());
+            rDict.Add("text_linetype", MiApi.mitab_c_get_text_linetype(Handle).ToString());
         }
 
         /// <summary>Получить стили</summary>
         /// <returns></returns>
         public Dictionary<string, string> GetStyle()
         {
-            Dictionary<string, string> rDict = new Dictionary<string, string>();
-            switch (this.Type)
+            var rDict = new Dictionary<string, string>();
+            switch (Type)
             {
                 case FeatureType.TABFC_Point:
                 case FeatureType.TABFC_MultiPoint:
-                    this.GetSymbol(rDict);
+                    GetSymbol(rDict);
                     break;
                 case FeatureType.TABFC_FontPoint:
-                    this.GetSymbol(rDict);
-                    rDict.Add("font", MiApi.mitab_c_get_font(this.Handle));
+                    GetSymbol(rDict);
+                    rDict.Add("font", MiApi.mitab_c_get_font(Handle));
                     break;
                 case FeatureType.TABFC_Text:
-                    rDict.Add("text", MiApi.mitab_c_get_text(this.Handle));
-                    rDict.Add("font", MiApi.mitab_c_get_font(this.Handle));
-                    this.GetTextDisplay(rDict);
+                    rDict.Add("text", MiApi.mitab_c_get_text(Handle));
+                    rDict.Add("font", MiApi.mitab_c_get_font(Handle));
+                    GetTextDisplay(rDict);
                     break;
                 case FeatureType.TABFC_Polyline:
-                    this.GetPen(rDict);
+                    GetPen(rDict);
                     break;
                 case FeatureType.TABFC_Ellipse:
-                    this.GetBrush(rDict);
-                    this.GetPen(rDict);
+                    GetBrush(rDict);
+                    GetPen(rDict);
                     break;
                 case FeatureType.TABFC_Region:
-                    this.GetBrush(rDict);
-                    this.GetPen(rDict);
+                    GetBrush(rDict);
+                    GetPen(rDict);
                     break;
                 case FeatureType.TABFC_Rectangle:
-                    this.GetBrush(rDict);
-                    this.GetPen(rDict);
+                    GetBrush(rDict);
+                    GetPen(rDict);
                     break;
             }
             return rDict;
@@ -173,40 +173,40 @@ namespace MITAB
 
         private void SetSymbol(IReadOnlyDictionary<string, string> rDict)
         {
-            int symbolNo = this.GetIntPr(rDict, "symbol_no", 1), 
-                symbolSize = this.GetIntPr(rDict, "symbol_size", 15), 
-                symbolColor = this.GetIntPr(rDict, "symbol_color", 0);
-            MiApi.mitab_c_set_symbol(this.Handle, symbolNo, symbolSize, symbolColor);
+            int symbolNo = GetIntPr(rDict, "symbol_no", 1), 
+                symbolSize = GetIntPr(rDict, "symbol_size", 15), 
+                symbolColor = GetIntPr(rDict, "symbol_color", 0);
+            MiApi.mitab_c_set_symbol(Handle, symbolNo, symbolSize, symbolColor);
         }
 
         private void SetPen(IReadOnlyDictionary<string, string> rDict)
         {
-            int penPattern = this.GetIntPr(rDict, "pen_pattern", 1),
-                penWidth = this.GetIntPr(rDict, "pen_width", 1),
-                penColor = this.GetIntPr(rDict, "pen_color", 0);
-            MiApi.mitab_c_set_pen(this.Handle, penWidth, penPattern, penColor);
+            int penPattern = GetIntPr(rDict, "pen_pattern", 1),
+                penWidth = GetIntPr(rDict, "pen_width", 1),
+                penColor = GetIntPr(rDict, "pen_color", 0);
+            MiApi.mitab_c_set_pen(Handle, penWidth, penPattern, penColor);
         }
 
         private void SetBrush(IReadOnlyDictionary<string, string> rDict)
         {
-            int brushFgcolor = this.GetIntPr(rDict, "brush_fgcolor", 0),
-                brushBgcolor = this.GetIntPr(rDict, "brush_bgcolor", 0),
-                brushPattern = this.GetIntPr(rDict, "brush_pattern", 1),
-                brushTransparent = this.GetIntPr(rDict, "brush_transparent", 0);
-            MiApi.mitab_c_set_brush(this.Handle, brushFgcolor, brushBgcolor, brushPattern, brushTransparent);
+            int brushFgcolor = GetIntPr(rDict, "brush_fgcolor", 0),
+                brushBgcolor = GetIntPr(rDict, "brush_bgcolor", 0),
+                brushPattern = GetIntPr(rDict, "brush_pattern", 1),
+                brushTransparent = GetIntPr(rDict, "brush_transparent", 0);
+            MiApi.mitab_c_set_brush(Handle, brushFgcolor, brushBgcolor, brushPattern, brushTransparent);
         }
 
         private void SetTextDisplay(IReadOnlyDictionary<string, string> rDict)
         {
-            double textAngle = this.GetDoublePr(rDict, "text_angle", 0),
-                textHeight = this.GetDoublePr(rDict, "text_height", 1),
-                textWidth = this.GetDoublePr(rDict, "text_width", 1);
-            int textFgcolor = this.GetIntPr(rDict, "text_fgcolor", 0),
-                textBgcolor = this.GetIntPr(rDict, "text_bgcolor", 0),
-                textJustification = this.GetIntPr(rDict, "text_justification", 0),
-                textSpacing = this.GetIntPr(rDict, "text_spacing", 0),
-                textLinetype = this.GetIntPr(rDict, "text_linetype", 0);
-            MiApi.mitab_c_set_text_display(this.Handle, textAngle, textHeight, textWidth,
+            double textAngle = GetDoublePr(rDict, "text_angle", 0),
+                textHeight = GetDoublePr(rDict, "text_height", 1),
+                textWidth = GetDoublePr(rDict, "text_width", 1);
+            int textFgcolor = GetIntPr(rDict, "text_fgcolor", 0),
+                textBgcolor = GetIntPr(rDict, "text_bgcolor", 0),
+                textJustification = GetIntPr(rDict, "text_justification", 0),
+                textSpacing = GetIntPr(rDict, "text_spacing", 0),
+                textLinetype = GetIntPr(rDict, "text_linetype", 0);
+            MiApi.mitab_c_set_text_display(Handle, textAngle, textHeight, textWidth,
                 textFgcolor, textBgcolor, textJustification, textSpacing, textLinetype);
         }
 
@@ -214,35 +214,35 @@ namespace MITAB
         /// <param name="rDict"></param>
         public void SetStyle(IReadOnlyDictionary<string, string> rDict)
         {
-            switch (this.Type)
+            switch (Type)
             {
                 case FeatureType.TABFC_Point:
                 case FeatureType.TABFC_MultiPoint:
-                    this.SetSymbol(rDict);
+                    SetSymbol(rDict);
                     break;
                 case FeatureType.TABFC_FontPoint:
-                    this.SetSymbol(rDict);
-                    MiApi.mitab_c_set_font(this.Handle, this.GetStringPr(rDict, "font", "Arial"));
+                    SetSymbol(rDict);
+                    MiApi.mitab_c_set_font(Handle, GetStringPr(rDict, "font", "Arial"));
                     break;
                 case FeatureType.TABFC_Text:
-                    MiApi.mitab_c_set_text(this.Handle, this.GetStringPr(rDict, "text", "text"));
-                    MiApi.mitab_c_set_font(this.Handle, this.GetStringPr(rDict, "font", "Arial"));
-                    this.SetTextDisplay(rDict);
+                    MiApi.mitab_c_set_text(Handle, GetStringPr(rDict, "text", "text"));
+                    MiApi.mitab_c_set_font(Handle, GetStringPr(rDict, "font", "Arial"));
+                    SetTextDisplay(rDict);
                     break;
                 case FeatureType.TABFC_Polyline:
-                    this.SetPen(rDict);
+                    SetPen(rDict);
                     break;
                 case FeatureType.TABFC_Ellipse:
-                    this.SetBrush(rDict);
-                    this.SetPen(rDict);
+                    SetBrush(rDict);
+                    SetPen(rDict);
                     break;
                 case FeatureType.TABFC_Region:
-                    this.SetBrush(rDict);
-                    this.SetPen(rDict);
+                    SetBrush(rDict);
+                    SetPen(rDict);
                     break;
                 case FeatureType.TABFC_Rectangle:
-                    this.SetBrush(rDict);
-                    this.SetPen(rDict);
+                    SetBrush(rDict);
+                    SetPen(rDict);
                     break;
                 case FeatureType.TABFC_NoGeom:
                     break;
@@ -258,12 +258,12 @@ namespace MITAB
         /// <inheritdoc />
         public override string ToString()
         {
-            StringBuilder str = new StringBuilder();
+            var str = new StringBuilder();
             str.Append($"Feature: {Id}\nFields:\n");
-            foreach (Field field in this.Layer.Fields) str.Append($"{field.GetValueAsString(this).Trim()}\t");
-            str.Append($"\n{this.Parts}\n");
-            Dictionary<string, string> prs = this.GetStyle();
-            foreach (KeyValuePair<string, string> pr in prs) str.AppendLine($"{pr.Key}: {pr.Value}");
+            foreach (Field field in Layer.Fields) str.Append($"{field.GetValueAsString(this).Trim()}\t");
+            str.Append($"\n{Parts}\n");
+            var prs = GetStyle();
+            foreach (var pr in prs) str.AppendLine($"{pr.Key}: {pr.Value}");
             return str.ToString();
         }
 
@@ -271,17 +271,17 @@ namespace MITAB
         /// <returns>A following feature in the file.</returns>
         public Feature GetNext()
         {
-            return new Feature(this.Layer, MiApi.mitab_c_next_feature_id(Layer.Handle, this.Id));
+            return new Feature(Layer, MiApi.mitab_c_next_feature_id(Layer.Handle, Id));
         }
 
         private bool _disposed;
 
-        /// <summary></summary>
+        /// <summary>Освобождаем ресурсы</summary>
         /// <param name="disposing"></param>
         public void Dispose(bool disposing)
         {
             if (!disposing || _disposed) return;
-            MiApi.mitab_c_destroy_feature(this.Handle);
+            MiApi.mitab_c_destroy_feature(Handle);
             _disposed = true;
         }
 

@@ -6,24 +6,24 @@ namespace RosReestrImp.Rule
     /// <summary>Правила схемы, элемент Shema</summary>
     internal class ShemaRule
     {
-        /// <summary> Имя схемы</summary>
+        /// <summary>Имя схемы</summary>
         internal string RootElem;
 
         /// <summary>Список слоёв (правил)</summary>
         internal List<LayerRule> LayerList;
 
         /// <summary>Загружаем правила схемы</summary>
-        /// <param name="wEl"> Элемент Shema xml-файла правил </param>
-        /// <exception cref="RuleLoadException"> Ошибка xml-файла правил </exception>
+        /// <param name="wEl">Элемент Shema xml-файла правил</param>
+        /// <exception cref="RuleLoadException">Ошибка xml-файла правил</exception>
         internal ShemaRule(XmlElement wEl)
         {
             if (wEl.HasAttribute("rootElem"))
             {
-                this.RootElem = wEl.GetAttribute("rootElem");
-                this.LayerList = new List<LayerRule>();
+                RootElem = wEl.GetAttribute("rootElem");
+                LayerList = new List<LayerRule>();
                 foreach (XmlElement ch in wEl.ChildNodes)
                 {
-                    this.LayerList.Add(new LayerRule(ch));
+                    LayerList.Add(new LayerRule(ch));
                 }
             }
             else { throw new RuleLoadException("У Shema нет rootElem"); }
@@ -35,7 +35,7 @@ namespace RosReestrImp.Rule
         /// <returns></returns>
         internal Data.DataLayer LoadData(XmlDocument wDoc, LayerRule wRule)
         {
-            Data.DataLayer res = new Data.DataLayer(wRule);
+            var res = new Data.DataLayer(wRule);
             res.LoadData(wDoc);
             return res;
         }
@@ -46,7 +46,7 @@ namespace RosReestrImp.Rule
         internal List<Data.DataLayer> LoadData(XmlDocument wDoc)
         {
             var res = new List<Data.DataLayer>();
-            this.LayerList.ForEach(r => res.Add(this.LoadData(wDoc, r)));
+            LayerList.ForEach(r => res.Add(LoadData(wDoc, r)));
             return res;
         }
     }

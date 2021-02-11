@@ -5,12 +5,12 @@ using System.IO;
 
 namespace RosReestrImp.Projections
 {
-    /// <summary></summary>
+    /// <summary>Проекции</summary>
     public class Projections
     {
         readonly Dictionary<(string code, int zone), string> _projectionsDescription = new Dictionary<(string code, int zone), string>();
 
-        /// <summary></summary>
+        /// <summary>Загружаем</summary>
         /// <returns></returns>
         public static Projections Load()
         {
@@ -26,7 +26,7 @@ namespace RosReestrImp.Projections
             return res;
         }
 
-        /// <summary></summary>
+        /// <summary>Получить описание проекции</summary>
         /// <param name="code"></param>
         /// <param name="zone"></param>
         /// <returns></returns>

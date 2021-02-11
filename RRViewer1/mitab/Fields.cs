@@ -20,15 +20,12 @@ namespace MITAB
         /// <param name="layer">Слой</param>
         internal Fields(MiLayer layer) : base(MiApi.mitab_c_get_field_count(layer.Handle))
         {
-            for (int i = 0; i < Count; i++) _fields.Add(CreateField(layer, i));
+            for (var i = 0; i < Count; i++) _fields.Add(CreateField(layer, i));
         }
 
         /// <summary>Override this to support descendants of the Field class.</summary>
         /// <returns>A Field, with the given index, belonging to the given Layer</returns>
-        internal Field CreateField(MiLayer layer, int index)
-        {
-            return new Field(layer, index);
-        }
+        internal Field CreateField(MiLayer layer, int index) => new Field(layer, index);
 
         /// <summary>Добавить поле</summary>
         /// <param name="layer">Слой</param>
@@ -50,10 +47,7 @@ namespace MITAB
         public Field this[int index] => index < Count ? _fields[index] : null;
 
         /// <inheritdoc />
-        public override object GetObj(int idx)
-        {
-            return this[idx];
-        }
+        public override object GetObj(int idx) => this[idx];
 
         /// <inheritdoc />
         public override string ToString()
