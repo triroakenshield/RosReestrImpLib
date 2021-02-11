@@ -18,8 +18,8 @@ namespace RRViewer1
         /// <param name="nOwner">запись</param>
         public MyRecordView(MyRecord nOwner)
         {
-            this._owner = nOwner;
-            this._rule = _owner.Rule;
+            _owner = nOwner;
+            _rule = _owner.Rule;
         }
 
         /// <summary></summary>
@@ -53,7 +53,7 @@ namespace RRViewer1
         /// <inheritdoc />
         public string GetComponentName()
         {
-            return this._rule.LName;
+            return _rule.LName;
         }
 
         /// <inheritdoc />
@@ -105,7 +105,7 @@ namespace RRViewer1
         /// <inheritdoc />
         public string GetClassName()
         {
-            return this.GetType().Name;
+            return GetType().Name;
         }
 
         #endregion

@@ -26,19 +26,19 @@ namespace RosReestrImp.Geometry
             Geometries = nGeometries.GetRange(0, nGeometries.Count);
         }
 
-        public new bool IsEmpty() 
+        public override bool IsEmpty() 
         {
             if (Geometries == null) return true;
             return Geometries.Count <= 0;
         }
 
-        public new GeometryType GetGeometryType() => GeometryType.GeometryCollection;
+        public override GeometryType GetGeometryType() => GeometryType.GeometryCollection;
 
-        public new double[] GetXYArray() => null;
+        public override double[] GetXYArray() => null;
 
-        public new double[] GetZArray() => null;
+        public override double[] GetZArray() => null;
 
-        public new TMBR GetMBR()
+        public override TMBR GetMBR()
         {
             TMBR res = null;
             foreach (var p in Geometries)
@@ -49,15 +49,15 @@ namespace RosReestrImp.Geometry
             return res;
         }
 
-        public new bool IsValid()
+        public override bool IsValid()
         {
             if (Geometries == null) return false;
             return Geometries.Count > 0 && Geometries.All(ls => ls.IsValid());
         }
 
-        public new string ToShortWKT2D() => string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
+        public override string ToShortWKT2D() => string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
 
-        public new string ToWKT2D()
+        public override string ToWKT2D()
         {
             return IsEmpty() ? $"{TGeometryCollection.Type} {TGeometry.Emp}" 
                 : $"{TGeometryCollection.Type}({ToShortWKT2D()})";

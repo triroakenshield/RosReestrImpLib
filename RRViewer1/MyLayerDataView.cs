@@ -20,8 +20,8 @@ namespace RRViewer1
         /// <param name="l">Слой</param>
         public MyLayerDataView(DataLayer l)
         {
-            this._rows = l.Table.Select(r=>new MyRecordView(r)).ToList();
-            this._sortedRows = new List<MyRecordView>();
+            _rows = l.Table.Select(r=>new MyRecordView(r)).ToList();
+            _sortedRows = new List<MyRecordView>();
         }
         
         /// <inheritdoc />
@@ -34,14 +34,14 @@ namespace RRViewer1
         /// <inheritdoc />
         public void ApplySort(PropertyDescriptor property, ListSortDirection direction)
         {
-            this._sortedRows.Clear();
-            this._sortedRows.AddRange(this._rows);
-            this._sortedRows.Sort((x, y) => string
+            _sortedRows.Clear();
+            _sortedRows.AddRange(_rows);
+            _sortedRows.Sort((x, y) => string
                 .Compare(property.GetValue(x)?.ToString(), property.GetValue(y)?.ToString(), StringComparison.Ordinal));
 
-            if (direction == ListSortDirection.Descending) this._sortedRows.Reverse();
+            if (direction == ListSortDirection.Descending) _sortedRows.Reverse();
 
-            this.IsSorted = true;
+            IsSorted = true;
         }
 
         /// <inheritdoc />

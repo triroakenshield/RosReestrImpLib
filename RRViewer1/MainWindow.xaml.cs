@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 //
@@ -55,8 +56,7 @@ namespace RRViewer1
                 if (_workData == null) return;
                 foreach (var l in _workData)
                 {
-                    var wTab = new TabItem();
-                    wTab.Header = l.Name;
+                    var wTab = new TabItem {Header = l.Name};
                     var wDTable = new DataGrid();
                     //wDTable.ItemsSource = l.Table;
                     FillTbl(wDTable, l);
@@ -71,43 +71,38 @@ namespace RRViewer1
             }
         }
 
+        private string GetSaveFilePath()
+        {
+            var workSaveFileDialog = new oForms.SaveFileDialog();
+            return workSaveFileDialog.ShowDialog() != oForms.DialogResult.OK ? workSaveFileDialog.FileName : null;
+        }
+
         private void MenuItemSaveCSV_Click(object sender, RoutedEventArgs e)
         {
             if (_workData == null) return;
-            oForms.SaveFileDialog workSaveFileDialog = new oForms.SaveFileDialog();
-            if (workSaveFileDialog.ShowDialog() == oForms.DialogResult.OK)
-            {
-                var ph = workSaveFileDialog.FileName;
-                //ph = System.IO.Path.GetFullPath(ph) + "\\" + System.IO.Path.GetFileNameWithoutExtension(ph);
-                _workData.ForEach(l => File.WriteAllText(ph + "_" + l.Name + ".csv", l.GetCSV()));
-            }
+            var ph = GetSaveFilePath();
+            if (ph != null) _workData.ForEach(l => File.WriteAllText(ph + "_" + l.Name + ".csv", l.GetCSV()));
         }
 
         private void MenuItemSaveTAB_Click(object sender, RoutedEventArgs e)
         {
             if (_workData == null) return;
-            oForms.SaveFileDialog workSaveFileDialog = new oForms.SaveFileDialog();
-            if (workSaveFileDialog.ShowDialog() == oForms.DialogResult.OK)
+            var ph = GetSaveFilePath();
+            if (ph == null) return;
+            foreach (var l in _workData.Where(l => l.HasGeometry() && l.HasAttributes()))
             {
-                var ph = workSaveFileDialog.FileName;
-                foreach (DataLayer l in _workData)
-                {
-                    MiLayer.CreateTab(ph + "_" + l.Name + ".tab", l);
-                }
+                MiLayer.CreateTab(ph + "_" + l.Name + ".tab", l);
             }
         }
 
         private void MenuItemSaveMIF_Click(object sender, RoutedEventArgs e)
         {
             if (_workData == null) return;
-            oForms.SaveFileDialog workSaveFileDialog = new oForms.SaveFileDialog();
-            if (workSaveFileDialog.ShowDialog() == oForms.DialogResult.OK)
+            var ph = GetSaveFilePath();
+            if (ph == null) return;
+            foreach (var l in _workData.Where(l => l.HasGeometry() && l.HasAttributes()))
             {
-                var ph = workSaveFileDialog.FileName;
-                foreach (DataLayer l in _workData)
-                {
-                    MiLayer.CreateMif(ph + "_" + l.Name + ".mif", l);
-                }
+                MiLayer.CreateMif(ph + "_" + l.Name + ".mif", l);
             }
         }
 
@@ -123,19 +118,17 @@ namespace RRViewer1
         {
             if (_selectProjection == null) return;
             if (_workData == null) return;
-            var workSaveFileDialog = new oForms.SaveFileDialog();
-            if (workSaveFileDialog.ShowDialog() == oForms.DialogResult.OK)
+            var ph = GetSaveFilePath();
+            if (ph == null) return;
+            foreach (var l in _workData)
             {
-                var ph = workSaveFileDialog.FileName;
-                foreach (DataLayer l in _workData)
+                if (!l.HasGeometry()) continue;
+                //var doc = l.GetKmlDocument(SelectProjection);
+                var kmlConverter = new KmlConverter(l, _selectProjection);
+                var kml = KmlFile.Create(kmlConverter.GetKmlDocument(), false);
+                using (var stream = File.OpenWrite(ph + "_" + l.Name + ".kml"))
                 {
-                    //var doc = l.GetKmlDocument(SelectProjection);
-                    var kmlConverter = new KmlConverter(l, _selectProjection);
-                    var kml = KmlFile.Create(kmlConverter.GetKmlDocument(), false);
-                    using (var stream = File.OpenWrite(ph + "_" + l.Name + ".kml"))
-                    {
-                        kml.Save(stream);
-                    }
+                    kml.Save(stream);
                 }
             }
         }

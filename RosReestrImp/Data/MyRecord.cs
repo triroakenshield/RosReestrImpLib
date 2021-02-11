@@ -39,6 +39,12 @@ namespace RosReestrImp.Data
             return (TGeometry)res.Value;
         }
 
+        public bool HasGeometry()
+        {
+            var geom = GetGeometry();
+            return geom != null && !geom.IsEmpty();
+        }
+
         /// <summary>Поиск значения поля, по его имени</summary>
         /// <param name="fName">Имя поля</param>
         /// <returns>Значение поля</returns>

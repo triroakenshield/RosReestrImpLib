@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
@@ -85,10 +86,9 @@ namespace RosReestrImp.Data
 
         /// <summary>Проверяем наличия поля с не геометрией</summary>
         /// <returns></returns>
-        public bool HasAttributes()
-        {
-            return _Rule.FieldList.Exists(f => !f.IsGeom);
-        }
+        public bool HasAttributes() => _Rule.FieldList.Exists(f => !f.IsGeom);
+
+        public bool HasGeometry() => Table.Any(r => r.HasGeometry());
 
         /// <summary>Получение таблицы значений слоя (список списков)</summary>
         /// <returns>Таблица значений слоя</returns>

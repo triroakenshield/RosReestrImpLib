@@ -31,24 +31,24 @@ namespace RosReestrImp.Geometry
             Coord.Z = 0;
         }
 
-        public new bool IsEmpty() => false;
+        public override bool IsEmpty() => false;
 
-        public new string ToShortWKT2D() => Coord.ToWKT2D();
+        public override string ToShortWKT2D() => Coord.ToWKT2D();
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - POINT(X Y)</summary>
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
-        public new string ToWKT2D() => IsEmpty() ? $"{TPoint.Type} {TGeometry.Emp}" : $"{TPoint.Type}({ToShortWKT2D()})";
+        public override string ToWKT2D() => IsEmpty() ? $"{TPoint.Type} {TGeometry.Emp}" : $"{TPoint.Type}({ToShortWKT2D()})";
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.Point</summary>
         /// <returns> TGeometry.GeometryType.Point </returns>
-        public new GeometryType GetGeometryType() => GeometryType.Point;
+        public override GeometryType GetGeometryType() => GeometryType.Point;
 
-        public new double[] GetXYArray() => new[] { Coord.X, Coord.Y };
+        public override double[] GetXYArray() => new[] { Coord.X, Coord.Y };
 
-        public new double[] GetZArray() => new[] { Coord.Z };
+        public override double[] GetZArray() => new[] { Coord.Z };
 
-        public new TMBR GetMBR() => new TMBR(Coord);
+        public override TMBR GetMBR() => new TMBR(Coord);
 
-        public new bool IsValid() => true;
+        public override bool IsValid() => true;
     }
 }

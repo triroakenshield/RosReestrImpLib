@@ -79,34 +79,34 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Признак пустой геометрии</summary>
         /// <returns></returns>
-        public bool IsEmpty() => true;
+        public virtual bool IsEmpty() => true;
 
         /// <summary>Получение короткой wkt-строки с 2d геометрией</summary>
         /// <returns></returns>
-        public string ToShortWKT2D() => $"{TGeometry.Type} {TGeometry.Emp}";
+        public virtual string ToShortWKT2D() => $"{TGeometry.Type} {TGeometry.Emp}";
 
         /// <summary>Получение геометрии в виде wkt-строки (2D)</summary>
         /// <returns> wkt-строка (2D) </returns>
-        public string ToWKT2D() => ToShortWKT2D();
+        public virtual string ToWKT2D() => ToShortWKT2D();
 
         /// <summary>Получение типа геометрии</summary>
         /// <returns> <see cref="TGeometry"/>.<see cref="GeometryType"/> </returns>
-        public GeometryType GetGeometryType() => GeometryType.No;
+        public virtual GeometryType GetGeometryType() => GeometryType.No;
 
         /// <summary>Получить архив координат xy</summary>
         /// <returns></returns>
-        public double[] GetXYArray() => null;
+        public virtual double[] GetXYArray() => null;
 
         /// <summary>Получить архив координат z</summary>
         /// <returns></returns>
-        public double[] GetZArray() => null;
+        public virtual double[] GetZArray() => null;
 
         /// <summary>Получить MBR для геометрии</summary>
         /// <returns></returns>
-        public TMBR GetMBR() => null;
+        public virtual TMBR GetMBR() => null;
 
         /// <summary>Признак правильности геометрии</summary>
         /// <returns></returns>
-        public bool IsValid() => true;
+        public virtual bool IsValid() => true;
     }
 }

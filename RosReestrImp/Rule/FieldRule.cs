@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Xml.XPath;
+using System.Globalization;
 
 namespace RosReestrImp.Rule
 {
@@ -61,8 +62,8 @@ namespace RosReestrImp.Rule
         {
             try
             {
-                XmlElement ch = wEl;
-                bool ex = true;
+                var ch = wEl;
+                var ex = true;
                 do
                 {
                     switch (ch.LocalName)
@@ -128,61 +129,61 @@ namespace RosReestrImp.Rule
             {
                 double x = -1, y = -1;
                 //WorkStr = wNode.Attributes.GetNamedItem(this.GR.XPath).Value;
-                XmlNode xmlNode2 = wNode.SelectSingleNode(_gr.XPath, wNm);
+                var xmlNode2 = wNode.SelectSingleNode(_gr.XPath, wNm);
                 if (xmlNode2 != null)
                 {
                     var workStr = xmlNode2.Value;
-                    x = double.Parse(workStr, System.Globalization.CultureInfo.InvariantCulture);
+                    x = double.Parse(workStr, CultureInfo.InvariantCulture);
                     //WorkStr = wNode.Attributes.GetNamedItem(this.GR.YPath).Value;
                     xmlNode2 = wNode.SelectSingleNode(_gr.YPath, wNm);
                     if (xmlNode2 != null)
                     {
                         workStr = xmlNode2.Value;
-                        y = double.Parse(workStr, System.Globalization.CultureInfo.InvariantCulture);
+                        y = double.Parse(workStr, CultureInfo.InvariantCulture);
                     }
                 }
                 if (x == -1 || y == -1) throw new Data.DataLoadException("Ошибка чтения координат точки");
                 return new Geometry.TPoint(x, y);
             }
-            catch (System.Xml.XPath.XPathException e)
+            catch (XPathException e)
             {
                 throw new Data.DataLoadException("Ошибка XPath в Point", e);
             }
         }
 
         /// <summary>Загрузка данных линии</summary>
-        /// <param name="wNode"> Узел с данными </param>
-        /// <param name="wNm"> Список пространств имён файла данных </param>
-        /// <returns> Линия </returns>
-        /// <exception cref="Data.DataLoadException"> Ошибка XPath в LineString </exception>
+        /// <param name="wNode">Узел с данными</param>
+        /// <param name="wNm">Список пространств имён файла данных</param>
+        /// <returns>Линия</returns>
+        /// <exception cref="Data.DataLoadException">Ошибка XPath в LineString</exception>
         private Geometry.TLineString LoadLineString(XmlNode wNode, XmlNamespaceManager wNm)
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(_gr.PointPath, wNm);
+                var crNodes = wNode.SelectNodes(_gr.PointPath, wNm);
                 var coords = (from XmlNode n in crNodes select LoadPoint(n, wNm)).ToList();
                 return new Geometry.TLineString(coords);
             }
-            catch (System.Xml.XPath.XPathException e)
+            catch (XPathException e)
             {
                 throw new Data.DataLoadException("Ошибка XPath в LineString", e);
             }
         }
 
         /// <summary>Загрузка данных полигона</summary>
-        /// <param name="wNode"> Узел с данными </param>
-        /// <param name="wNm"> Список пространств имён файла данных </param>
+        /// <param name="wNode">Узел с данными</param>
+        /// <param name="wNm">Список пространств имён файла данных</param>
         /// <returns> Полигон </returns>
         /// <exception cref="Data.DataLoadException"> Ошибка XPath в Polygon </exception>
         private Geometry.TPolygon LoadPolygon(XmlNode wNode, XmlNamespaceManager wNm)
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(_gr.LineStringPath, wNm);
+                var crNodes = wNode.SelectNodes(_gr.LineStringPath, wNm);
                 var rings = (from XmlNode n in crNodes select LoadLineString(n, wNm)).ToList();
                 return new Geometry.TPolygon(rings);
             }
-            catch (System.Xml.XPath.XPathException e)
+            catch (XPathException e)
             {
                 throw new Data.DataLoadException("Ошибка XPath в Polygon", e);
             }
@@ -192,11 +193,11 @@ namespace RosReestrImp.Rule
         {
             try
             {
-                XmlNodeList crNodes = wNode.SelectNodes(_gr.PolygonPath, wNm);
+                var crNodes = wNode.SelectNodes(_gr.PolygonPath, wNm);
                 var nPolygons = (from XmlNode n in crNodes select LoadPolygon(n, wNm)).ToList();
                 return new Geometry.TMultiPolygon(nPolygons);
             }
-            catch (System.Xml.XPath.XPathException e)
+            catch (XPathException e)
             {
                 throw new Data.DataLoadException("Ошибка XPath в MultiPolygon", e);
             }

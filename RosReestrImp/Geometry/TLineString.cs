@@ -28,9 +28,9 @@ namespace RosReestrImp.Geometry
             nCoords.ForEach(p => Coords.Add(new MyPoint(p.Coord)));
         }
 
-        public new bool IsEmpty() => Coords.Count == 0;
+        public override bool IsEmpty() => Coords.Count == 0;
 
-        public new string ToShortWKT2D() => string.Join(", ", Coords.Select(p => p.ToWKT2D()));
+        public override string ToShortWKT2D() => string.Join(", ", Coords.Select(p => p.ToWKT2D()));
 
         /// <summary>Получение короткой wkt-строки (2D) для кольца (без типа)</summary>
         /// <returns></returns>
@@ -38,7 +38,7 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0])  </summary>
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
-        public new string ToWKT2D() => IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({ToShortWKT2D()})";
+        public override string ToWKT2D() => IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({ToShortWKT2D()})";
 
         /// <summary>Получение wkt-строки (2D) для кольца</summary>
         /// <returns></returns>
@@ -46,9 +46,9 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.LineString</summary>
         /// <returns> TGeometry.GeometryType.LineString </returns>
-        public new GeometryType GetGeometryType() => GeometryType.LineString;
+        public override GeometryType GetGeometryType() => GeometryType.LineString;
 
-        public new double[] GetXYArray()
+        public override double[] GetXYArray()
         {
             var arr = new double[Coords.Count*2];
             for (var i = 0; i < Coords.Count; i++)
@@ -59,7 +59,7 @@ namespace RosReestrImp.Geometry
             return arr;
         }
 
-        public new double[] GetZArray()
+        public override double[] GetZArray()
         {
             var arr = new double[Coords.Count];
             for (var i = 0; i < Coords.Count; i++)
@@ -69,7 +69,7 @@ namespace RosReestrImp.Geometry
             return arr;
         }
 
-        public new TMBR GetMBR()
+        public override TMBR GetMBR()
         {
             TMBR res = null;
             foreach (var p in Coords)
@@ -80,6 +80,6 @@ namespace RosReestrImp.Geometry
             return res;
         }
 
-        public new bool IsValid() => Coords.Count > 1;
+        public override bool IsValid() => Coords.Count > 1;
     }
 }

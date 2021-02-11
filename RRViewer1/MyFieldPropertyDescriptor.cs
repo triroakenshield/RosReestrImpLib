@@ -16,19 +16,19 @@ namespace RRViewer1
         /// <param name="nOwnerRule"></param>
         public MyFieldPropertyDescriptor(FieldRule nOwnerRule) : base(nOwnerRule.FName, null)
         {
-            this._rule = nOwnerRule;
+            _rule = nOwnerRule;
         }
 
         /// <summary>Конструктор</summary>
         /// <param name="nOwner">значение</param>
         public MyFieldPropertyDescriptor(FieldValue nOwner) : base(nOwner.Rule.FName, null)
         {
-            this._owner = nOwner;
-            this._rule = _owner.Rule;
+            _owner = nOwner;
+            _rule = _owner.Rule;
         }
 
         /// <inheritdoc />
-        public override string DisplayName => this._rule.FName;
+        public override string DisplayName => _rule.FName;
 
         /// <inheritdoc />
         public override Type ComponentType => typeof(MyRecordView); //!!!

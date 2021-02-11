@@ -20,23 +20,23 @@ namespace RosReestrImp.Geometry
             Rings = nRings.GetRange(0, nRings.Count);
         }
 
-        public new bool IsEmpty() => Rings.Count == 0;
+        public override bool IsEmpty() => Rings.Count == 0;
 
-        public new string ToShortWKT2D() => string.Join(", ", Rings.Select(p => $"({p.RingToShortWKT2D()})"));
+        public override string ToShortWKT2D() => string.Join(", ", Rings.Select(p => $"({p.RingToShortWKT2D()})"));
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - Polygon((x0 y0, x1 y1, ..., xn yn, x0 y0), ..., (...))</summary>
         /// <returns></returns>
-        public new string ToWKT2D() => IsEmpty() ? $"{TPolygon.Type} {TGeometry.Emp}" : $"{TPolygon.Type}({ToShortWKT2D()})";
+        public override string ToWKT2D() => IsEmpty() ? $"{TPolygon.Type} {TGeometry.Emp}" : $"{TPolygon.Type}({ToShortWKT2D()})";
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.Polygon</summary>
         /// <returns> TGeometry.GeometryType.Polygon </returns>
-        public new GeometryType GetGeometryType() => GeometryType.Polygon;
+        public override GeometryType GetGeometryType() => GeometryType.Polygon;
 
-        public new double[] GetXYArray() => null;
+        public override double[] GetXYArray() => null;
 
-        public new double[] GetZArray() => null;
+        public override double[] GetZArray() => null;
 
-        public new TMBR GetMBR()
+        public override TMBR GetMBR()
         {
             TMBR res = null;
             foreach (var p in Rings)
@@ -47,7 +47,7 @@ namespace RosReestrImp.Geometry
             return res;
         }
 
-        public new bool IsValid() => Rings.Count > 0 && Rings.All(ls => ls.IsValid());
+        public override bool IsValid() => Rings.Count > 0 && Rings.All(ls => ls.IsValid());
 
         public TLineString GetOuterBoundary()
         {
