@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using System.Xml.XPath;
 // ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Data
@@ -10,9 +11,9 @@ namespace RosReestrImp.Data
         internal Rule.FieldRule _Rule;
 
         /// <summary>Правило загрузки данных</summary>
-        public Rule.FieldRule Rule => this._Rule;
+        public Rule.FieldRule Rule => _Rule;
 
-        public string FName => this._Rule.FName;
+        public string FName => _Rule.FName;
 
         /// <summary>Значение поля</summary>
         public object Value;
@@ -21,7 +22,7 @@ namespace RosReestrImp.Data
         /// <param name="nRule"> правило </param>
         internal FieldValue(Rule.FieldRule nRule)
         {
-            this._Rule = nRule;
+            _Rule = nRule;
         }
 
         /// <summary>Создание значения поля</summary>
@@ -29,12 +30,12 @@ namespace RosReestrImp.Data
         /// <param name="nValue"> значение </param>
         internal FieldValue(Rule.FieldRule nRule, object nValue)
         {
-            this._Rule = nRule;
-            this.Value = nValue;
+            _Rule = nRule;
+            Value = nValue;
         }
 
         /// <summary>Является ли поле геометрией</summary>
-        public bool IsGeom => this.Rule.IsGeom;
+        public bool IsGeom => Rule.IsGeom;
         
         /// <summary>Загрузка данных поля</summary>
         /// <param name="wNode"> Узел с данными </param>
@@ -44,44 +45,44 @@ namespace RosReestrImp.Data
         {
             try
             {
-                XmlNode crNode = Rule.FPath != "" ? wNode.SelectSingleNode(Rule.FPath, wNM) : wNode;
-                if (crNode != null)
+                var crNode = Rule.FPath != "" ? wNode.SelectSingleNode(Rule.FPath, wNM) : wNode;
+                if (crNode == null) return;
+                XmlNode resNode;
+                if (Rule.FAttr != "")
                 {
-                    XmlNode resNode;
-                    if (this.Rule.FAttr != "")
-                    {
-                        var tNode = (XmlElement)crNode;
-                        resNode = tNode.HasAttribute(Rule.FAttr) ? crNode.Attributes?.GetNamedItem(Rule.FAttr) : crNode;
-                    }
-                    else resNode = crNode;
-                    //
-                    Value = IsGeom ? Rule.LoadGeometry(resNode, wNM) : resNode?.Value as object;
+                    var tNode = (XmlElement)crNode;
+                    resNode = tNode.HasAttribute(Rule.FAttr) 
+                        ? crNode.Attributes?.GetNamedItem(Rule.FAttr) : crNode;
                 }
+                else resNode = crNode;
+                Value = IsGeom ? Rule.LoadGeometry(resNode, wNM) : resNode?.Value as object;
             }
-            catch (System.Xml.XPath.XPathException e) 
+            catch (XPathException e) 
             {
                 throw new DataLoadException("Ошибка XPath при загрузке поля", e);
             }
         }
         
         /// <summary>Получение значения поля, в виде строки</summary>
-        /// <returns> значение поля в виде строки </returns>
-        public string GetString() 
+        /// <returns>значение поля в виде строки</returns>
+        public string GetString()
         {
-            if (Value != null) return IsGeom ? ((Geometry.TGeometry)Value).ToWKT2D() : Value.ToString();
-            else return "null";
+            if (Value != null) return IsGeom 
+                ? ((Geometry.TGeometry)Value).ToWKT2D() : Value.ToString();
+            return "null";
         }
 
         /// <summary>Получение данных поля, в виде csv-файла</summary>
         /// <returns></returns>
         public string GetCSV()
         {
-            if (this.Value != null)
+            if (Value != null)
             {
-                return this.IsGeom ? ((Geometry.TGeometry)this.Value).ToWKT2D() 
-                    : $"\"{this.Value.ToString().Replace("\"", "\"\"")}\"";
+                return IsGeom 
+                    ? ((Geometry.TGeometry)Value).ToWKT2D() 
+                    : $"\"{Value.ToString().Replace("\"", "\"\"")}\"";
             }
-            else return "\"null\"";
+            return "\"null\"";
         }
     }
 }

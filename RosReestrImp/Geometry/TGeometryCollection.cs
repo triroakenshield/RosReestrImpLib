@@ -7,7 +7,7 @@ namespace RosReestrImp.Geometry
     /// <summary>Абстрактная коллекция геометрии</summary>
     public class TGeometryCollection : TGeometry
     {
-        /// <summary></summary>
+        /// <summary>Имя типа</summary>
         public new static readonly string Type = "GEOMETRYCOLLECTION";
 
         /// <summary>Список</summary>
@@ -26,33 +26,19 @@ namespace RosReestrImp.Geometry
             Geometries = nGeometries.GetRange(0, nGeometries.Count);
         }
 
-        ///<inheritdoc/>
-        public override bool IsEmpty()
+        public new bool IsEmpty() 
         {
             if (Geometries == null) return true;
             return Geometries.Count <= 0;
         }
 
-        ///<inheritdoc/>
-        public override GeometryType GetGeometryType()
-        {
-            return GeometryType.GeometryCollection;
-        }
+        public new GeometryType GetGeometryType() => GeometryType.GeometryCollection;
 
-        ///<inheritdoc/>
-        public override double[] GetXYArray()
-        {
-            return null;
-        }
+        public new double[] GetXYArray() => null;
 
-        ///<inheritdoc/>
-        public override double[] GetZArray()
-        {
-            return null;
-        }
+        public new double[] GetZArray() => null;
 
-        ///<inheritdoc/>
-        public override TMBR GetMBR()
+        public new TMBR GetMBR()
         {
             TMBR res = null;
             foreach (var p in Geometries)
@@ -63,21 +49,15 @@ namespace RosReestrImp.Geometry
             return res;
         }
 
-        ///<inheritdoc/>
-        public override bool IsValid()
+        public new bool IsValid()
         {
             if (Geometries == null) return false;
             return Geometries.Count > 0 && Geometries.All(ls => ls.IsValid());
         }
 
-        ///<inheritdoc/>
-        public override string ToShortWKT2D()
-        {
-            return string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
-        }
+        public new string ToShortWKT2D() => string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
 
-        ///<inheritdoc/>
-        public override string ToWKT2D()
+        public new string ToWKT2D()
         {
             return IsEmpty() ? $"{TGeometryCollection.Type} {TGeometry.Emp}" 
                 : $"{TGeometryCollection.Type}({ToShortWKT2D()})";

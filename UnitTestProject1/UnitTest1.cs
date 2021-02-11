@@ -19,14 +19,12 @@ using RRViewer1;
 
 namespace UnitTestProject1
 {
-    [TestClass]
-    public partial class UnitTest1
+    [TestClass] public partial class UnitTest1
     {
 
-        [TestMethod]
-        public void LoadData1()
+        [TestMethod] public void LoadData1()
         {
-            RuleManager wRM = new RuleManager("Shema\\testList3.xml");
+            RuleManager wRM = new RuleManager("Schema\\testList3.xml");
             List<DataLayer> res = wRM.LoadData("doc9415874.xml");
             var dl1 = new MyLayerDataView(res[0]);
             var r1 = dl1[0] as MyRecordView;
@@ -38,8 +36,7 @@ namespace UnitTestProject1
             Assert.IsTrue(true, "good");
         }
 
-        [TestMethod]
-        public void CreateTLineString()
+        [TestMethod] public void CreateTLineString()
         {
             List<MyPoint> nCoords = new List<MyPoint>();
             nCoords.Add(new MyPoint(1, 1, 1));
@@ -74,8 +71,7 @@ namespace UnitTestProject1
             return res;
         }
 
-        [TestMethod]
-        public void TestXPath1()
+        [TestMethod] public void TestXPath1()
         {
             XmlDocument wDoc = new XmlDocument();
             wDoc.Load("doc9415874.xml");
@@ -85,8 +81,7 @@ namespace UnitTestProject1
             Assert.IsTrue(true, "good");
         }
 
-        [TestMethod]
-        public void TestHashSet()
+        [TestMethod] public void TestHashSet()
         {
             HashSet<object> tSet = new HashSet<object>
             {
@@ -99,8 +94,7 @@ namespace UnitTestProject1
             var res = tSet.FirstOrDefault(i => (int)i == 4);
         }
 
-        [TestMethod]
-        public void TestProjectionsLoad()
+        [TestMethod] public void TestProjectionsLoad()
         {
             var projs = Projections.Load();
             var sk = projs.GetProjectionInfo("68", 1);
@@ -110,8 +104,7 @@ namespace UnitTestProject1
             Reproject.ReprojectPoints(xys, zs, sk, WGS1984, 0, 1);
         }
 
-        [TestMethod]
-        public void TestKml1()
+        [TestMethod] public void TestKml1()
         {
             var point = new Point();
             point.Coordinate = new Vector(-13.163959, -72.545992);
@@ -129,8 +122,7 @@ namespace UnitTestProject1
             }
         }
 
-        [TestMethod]
-        public void TestReadBigXml()
+        [TestMethod] public void TestReadBigXml()
         {
             string path = @"C:\work1\21_00_000000_2018-02-16_kpt10.xml";
             var fstream = File.OpenRead(path);
@@ -138,12 +130,11 @@ namespace UnitTestProject1
             for (var i=0; i<100;i++)
             {
                 byte[] bb = new byte[256];
-                fstream.Read(bb, 0, 256);                     
-                sw.WriteLine(System.Text.Encoding.UTF8.GetString(bb));                
+                fstream.Read(bb, 0, 256);
+                sw.WriteLine(System.Text.Encoding.UTF8.GetString(bb));
             }
             sw.Close();
             fstream.Close();
         }
-
     }
 }

@@ -15,13 +15,13 @@ namespace RosReestrImp.Rule
         /// <exception cref="RuleLoadException"> Ошибка xml-файла правил </exception>
         public RuleManager(XmlDocument wDoc)
         {
-            this._ShemaList = new List<ShemaRule>();
+            _ShemaList = new List<ShemaRule>();
             XmlElement wNode = wDoc.DocumentElement;
             if (wNode != null && wNode.Name == "ShemaList")
             {
                 foreach (XmlElement ch in wNode.ChildNodes)
                 {
-                    this._ShemaList.Add(new ShemaRule(ch));
+                    _ShemaList.Add(new ShemaRule(ch));
                 }
             }
             else { throw new RuleLoadException("ShemaList не найден"); }
@@ -45,7 +45,7 @@ namespace RosReestrImp.Rule
         /// <summary>Конструктор</summary>
         /// <param name="filename"> xml-файл правил </param>
         /// <exception cref="RuleLoadException"> Ошибка xml-файла правил </exception>
-        public RuleManager(string filename) : this(RuleManager.LoadXml(filename))        
+        public RuleManager(string filename) : this(LoadXml(filename))        
         {
         }
 
@@ -65,7 +65,7 @@ namespace RosReestrImp.Rule
         /// <returns> Список данных слоёв </returns>
         public List<Data.DataLayer> LoadData(string filename)
         {
-            return this.LoadData(RuleManager.LoadXml(filename));
+            return LoadData(LoadXml(filename));
         }
 
         /// <summary>Загрузка данных из файла</summary>
@@ -75,7 +75,7 @@ namespace RosReestrImp.Rule
         {
             if (wDoc.DocumentElement == null) return null;
             string docName = wDoc.DocumentElement.Name;
-            ShemaRule wSRule = this.FindShema(docName);
+            ShemaRule wSRule = FindShema(docName);
             return wSRule?.LoadData(wDoc);
         }
     }

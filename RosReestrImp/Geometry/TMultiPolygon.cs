@@ -17,32 +17,18 @@ namespace RosReestrImp.Geometry
             Geometries.AddRange(nPolygons.GetRange(0, nPolygons.Count)); 
         }
 
-        ///<inheritdoc/>
-        public override bool IsEmpty()
-        {
-            return Geometries == null || Geometries.Count <= 0;
-        }
+        public new bool IsEmpty() => Geometries == null || Geometries.Count <= 0;
 
-        ///<inheritdoc/>
-        public override GeometryType GetGeometryType()
+        public new GeometryType GetGeometryType()
         {
             return GeometryType.MultiPolygon;
         }
 
-        ///<inheritdoc/>
-        public override double[] GetXYArray()
-        {
-            return null;
-        }
+        public new double[] GetXYArray() => null;
 
-        ///<inheritdoc/>
-        public override double[] GetZArray()
-        {
-            return null;
-        }
+        public new double[] GetZArray() => null;
 
-        ///<inheritdoc/>
-        public override TMBR GetMBR()
+        public new TMBR GetMBR()
         {
             TMBR res = null;
             foreach (var p in Geometries)
@@ -53,23 +39,14 @@ namespace RosReestrImp.Geometry
             return res;
         }
 
-        ///<inheritdoc/>
-        public override bool IsValid()
+        public new bool IsValid()
         {
             if (Geometries == null) return false;
             return Geometries.Count > 0 && Geometries.All(ls => ls.IsValid());
         }
 
-        ///<inheritdoc/>
-        public override string ToShortWKT2D()
-        {
-            return string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
-        }
+        public new string ToShortWKT2D() => string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
 
-        ///<inheritdoc/>
-        public override string ToWKT2D()
-        {
-            return IsEmpty() ? $"{TMultiPolygon.Type} {TGeometry.Emp}" : $"{TMultiPolygon.Type}({ToShortWKT2D()})";
-        }
+        public new string ToWKT2D()  => IsEmpty() ? $"{TMultiPolygon.Type} {TGeometry.Emp}" : $"{TMultiPolygon.Type}({ToShortWKT2D()})";
     }
 }

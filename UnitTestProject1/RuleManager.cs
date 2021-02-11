@@ -17,7 +17,7 @@ namespace UnitTestProject1
         [TestCategoryAttribute("RuleManager"), TestMethod] //TestCategoryAttribute("RuleManager"), 
         public void LoadRuleManager1()
         {
-            RuleManager wRM = new RuleManager("Shema\\testList1.xml");
+            RuleManager wRM = new RuleManager("Schema\\testList1.xml");
             Assert.IsNotNull(wRM, "good");
         }
 
@@ -26,7 +26,7 @@ namespace UnitTestProject1
         {
             try
             {
-                RuleManager wRM = new RuleManager("Shema\\errorxml.xml");
+                RuleManager wRM = new RuleManager("Schema\\errorxml.xml");
             }
             catch (RuleLoadException e)
             {
@@ -39,7 +39,7 @@ namespace UnitTestProject1
         {
             try
             {
-                RuleManager wRM = new RuleManager("Shema\\empty.xml");
+                RuleManager wRM = new RuleManager("Schema\\empty.xml");
             }
             catch (RuleLoadException e)
             {
@@ -52,7 +52,7 @@ namespace UnitTestProject1
         {
             try
             {
-                RuleManager wRM = new RuleManager("Shema\\emptyShema.xml");
+                RuleManager wRM = new RuleManager("Schema\\emptyShema.xml");
             }
             catch (RuleLoadException e)
             {
@@ -65,7 +65,7 @@ namespace UnitTestProject1
         {
             try
             {
-                RuleManager wRM = new RuleManager("Shema\\emptyLayer.xml");
+                RuleManager wRM = new RuleManager("Schema\\emptyLayer.xml");
                 List<DataLayer> res = wRM.LoadData("doc9415874.xml");
             }
             catch (DataLoadException e)
@@ -79,13 +79,12 @@ namespace UnitTestProject1
         {
             try
             {
-                RuleManager wRM = new RuleManager("Shema\\rootElem.xml");
+                RuleManager wRM = new RuleManager("Schema\\rootElem.xml");
             }
             catch (RuleLoadException e)
             {
                 Assert.IsTrue(e.Message == "У Shema нет rootElem", "good");
             }
         }
-
     }
-}
+} 

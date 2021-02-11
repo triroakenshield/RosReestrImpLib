@@ -69,7 +69,7 @@ namespace RosReestrImp.Geometry
     }
 
     /// <summary>Внутренний формат для представления геометрии</summary>
-    public abstract class TGeometry
+    public class TGeometry
     {
         /// <summary>Имя типа</summary>
         public static readonly string Type = "GEOMETRY";
@@ -79,34 +79,34 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Признак пустой геометрии</summary>
         /// <returns></returns>
-        public abstract bool IsEmpty();
+        public bool IsEmpty() => true;
 
         /// <summary>Получение короткой wkt-строки с 2d геометрией</summary>
         /// <returns></returns>
-        public abstract string ToShortWKT2D();
+        public string ToShortWKT2D() => $"{TGeometry.Type} {TGeometry.Emp}";
 
         /// <summary>Получение геометрии в виде wkt-строки (2D)</summary>
         /// <returns> wkt-строка (2D) </returns>
-        public abstract string ToWKT2D();
+        public string ToWKT2D() => ToShortWKT2D();
 
         /// <summary>Получение типа геометрии</summary>
         /// <returns> <see cref="TGeometry"/>.<see cref="GeometryType"/> </returns>
-        public abstract GeometryType GetGeometryType();
+        public GeometryType GetGeometryType() => GeometryType.No;
 
         /// <summary>Получить архив координат xy</summary>
         /// <returns></returns>
-        public abstract double[] GetXYArray();
+        public double[] GetXYArray() => null;
 
         /// <summary>Получить архив координат z</summary>
         /// <returns></returns>
-        public abstract double[] GetZArray();
+        public double[] GetZArray() => null;
 
         /// <summary>Получить MBR для геометрии</summary>
         /// <returns></returns>
-        public abstract TMBR GetMBR();
+        public TMBR GetMBR() => null;
 
         /// <summary>Признак правильности геометрии</summary>
         /// <returns></returns>
-        public abstract bool IsValid();
+        public bool IsValid() => true;
     }
 }

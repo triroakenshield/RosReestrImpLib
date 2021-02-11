@@ -28,48 +28,27 @@ namespace RosReestrImp.Geometry
             nCoords.ForEach(p => Coords.Add(new MyPoint(p.Coord)));
         }
 
-        ///<inheritdoc/>
-        public override bool IsEmpty()
-        {
-            return Coords.Count == 0;
-        }
+        public new bool IsEmpty() => Coords.Count == 0;
 
-        ///<inheritdoc/>
-        public override string ToShortWKT2D()
-        {
-            return string.Join(", ", Coords.Select(p => p.ToWKT2D()));
-        }
+        public new string ToShortWKT2D() => string.Join(", ", Coords.Select(p => p.ToWKT2D()));
 
         /// <summary>Получение короткой wkt-строки (2D) для кольца (без типа)</summary>
         /// <returns></returns>
-        public string RingToShortWKT2D()
-        {
-            return $"{ToShortWKT2D()}, {Coords[0].ToWKT2D()}";
-        }
+        public string RingToShortWKT2D() => $"{ToShortWKT2D()}, {Coords[0].ToWKT2D()}";
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0])  </summary>
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
-        public override string ToWKT2D()
-        {
-            return IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({ToShortWKT2D()})";
-        }
+        public new string ToWKT2D() => IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({ToShortWKT2D()})";
 
         /// <summary>Получение wkt-строки (2D) для кольца</summary>
         /// <returns></returns>
-        public string RingToWKT2D()
-        {
-            return IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({RingToShortWKT2D()})";
-        }
+        public string RingToWKT2D() => IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({RingToShortWKT2D()})";
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.LineString</summary>
         /// <returns> TGeometry.GeometryType.LineString </returns>
-        public override GeometryType GetGeometryType()
-        {
-            return GeometryType.LineString;
-        }
+        public new GeometryType GetGeometryType() => GeometryType.LineString;
 
-        ///<inheritdoc/>
-        public override double[] GetXYArray()
+        public new double[] GetXYArray()
         {
             var arr = new double[Coords.Count*2];
             for (var i = 0; i < Coords.Count; i++)
@@ -80,8 +59,7 @@ namespace RosReestrImp.Geometry
             return arr;
         }
 
-        ///<inheritdoc/>
-        public override double[] GetZArray()
+        public new double[] GetZArray()
         {
             var arr = new double[Coords.Count];
             for (var i = 0; i < Coords.Count; i++)
@@ -91,8 +69,7 @@ namespace RosReestrImp.Geometry
             return arr;
         }
 
-        ///<inheritdoc/>
-        public override TMBR GetMBR()
+        public new TMBR GetMBR()
         {
             TMBR res = null;
             foreach (var p in Coords)
@@ -103,10 +80,6 @@ namespace RosReestrImp.Geometry
             return res;
         }
 
-        ///<inheritdoc/>
-        public override bool IsValid()
-        {
-            return Coords.Count > 1;
-        }
+        public new bool IsValid() => Coords.Count > 1;
     }
 }
