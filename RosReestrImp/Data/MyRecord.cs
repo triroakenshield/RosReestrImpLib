@@ -39,6 +39,8 @@ namespace RosReestrImp.Data
             return (TGeometry)res.Value;
         }
 
+        /// <summary>Признак наличия геометрии в записи</summary>
+        /// <returns></returns>
         public bool HasGeometry()
         {
             var geom = GetGeometry();
@@ -50,8 +52,8 @@ namespace RosReestrImp.Data
         /// <returns>Значение поля</returns>
         public FieldValue SearchField(string fName)       
         {
-            return FieldList.Exists(x => x.Rule.FName == fName)
-                 ? FieldList.First(x => x.Rule.FName == fName) : null;
+            return FieldList.Exists(x => x.Rule.CorrectName == fName)
+                 ? FieldList.First(x => x.Rule.CorrectName == fName) : null;
         }
 
         /// <summary>Получение записи в виде списка значений (строк)</summary>

@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 
 namespace RosReestrImp.Rule
 {
     /// <summary>Правила слоя, элемент DataLayer</summary>
-    public class LayerRule 
+    public class LayerRule
     {
         /// <summary>Имя слоя, атрибут Name</summary>
-        public string LName; 
+        public string LName;
+
+        /// <summary>Имя без пробелов (для AutoCAD Map 3D)</summary>
+        public string CorrectName => TrimString(LName.Replace(" ", ""));
 
         /// <summary>Путь слоя, атрибут LayerPath</summary>
         internal string LayerPath;
@@ -21,6 +25,21 @@ namespace RosReestrImp.Rule
         private string GetElAttr(XmlElement wEl, string attrName)
         {
             return wEl.HasAttribute(attrName) ? wEl.GetAttribute(attrName) : "";
+        }
+
+        /// <summary>Обрезаем строку меньше 64 символов</summary>
+        /// <param name="str1"></param>
+        /// <returns></returns>
+        public static string TrimString(string str1)
+        {
+            if (Encoding.Unicode.GetByteCount(str1) < 63) return str1;
+            var z = 0;
+            for (var i = 0; i < str1.Length; i++)
+            {
+                z += Encoding.Unicode.GetByteCount(str1[i].ToString());
+                if (z > 63) return str1.Substring(0, i - 1);
+            }
+            return str1;
         }
 
         internal LayerRule(XmlElement wEl)

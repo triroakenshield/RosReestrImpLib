@@ -14,7 +14,7 @@ using RosReestrImp.Geometry;
 using RosReestrImp.Data;
 using RosReestrImp.Projections;
 using System.IO;
-
+using System.Text;
 using RRViewer1;
 
 namespace UnitTestProject1
@@ -135,6 +135,24 @@ namespace UnitTestProject1
             }
             sw.Close();
             fstream.Close();
+        }
+
+        [TestMethod]
+        public void Test1()
+        {
+            var str1 = "Разрешенноеиспользованиеподокументу";
+            //str1 = str1.Replace(" ", "");
+            var l1 = Encoding.Unicode.GetByteCount(str1);
+            //ASCIIEncoding.Unicode.
+            var l2 = str1.Length;
+            var z = 0;
+            string gg = "";
+            for (var i = 0; i < str1.Length; i++)
+            {
+                z += Encoding.Unicode.GetByteCount(str1[i].ToString());
+                if (z < 63) gg = str1.Substring(0, i);
+            }
+            var l3 = Encoding.Unicode.GetByteCount(gg);
         }
     }
 }

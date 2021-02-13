@@ -34,6 +34,9 @@ namespace RosReestrImp.Rule
         /// <summary>Имя поля</summary>
         public string FName;
 
+        /// <summary>Имя без пробелов (для AutoCAD Map 3D)</summary>
+        public string CorrectName => LayerRule.TrimString(FName.Replace(" ", ""));
+
         /// <summary>Путь к данным</summary>
         public string FPath;
 

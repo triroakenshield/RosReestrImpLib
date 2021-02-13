@@ -9,11 +9,13 @@ using Autodesk.AutoCAD.Runtime;
 //
 using Autodesk.Gis.Map;
 using Autodesk.Gis.Map.ObjectData;
+using JetBrains.Annotations;
 using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace RosReestrImp
 {
     /// <summary>Команды для AutoCAD Civil 3D</summary>
+    [UsedImplicitly]
     public class MyCommands
     {
         /// <summary>Создаём таблицу ObjectData.</summary>
@@ -25,17 +27,17 @@ namespace RosReestrImp
             var activeProject = mapApp.ActiveProject;
             var tableList = activeProject.ODTables;
             //
-            if (!tableList.GetTableNames().Contains(wRule.LName))
+            if (!tableList.GetTableNames().Contains(wRule.CorrectName))
             {
                 var fieldDefs = mapApp.ActiveProject.MapUtility.NewODFieldDefinitions();
                 foreach (var fr in from Rule.FieldRule fr in wRule.FieldList where !fr.IsGeom select fr)
                 {
-                    fieldDefs.Add(fr.FName, "", Autodesk.Gis.Map.Constants.DataType.Character, 0);//!!1
+                    fieldDefs.Add(fr.CorrectName, "", Autodesk.Gis.Map.Constants.DataType.Character, 0);//!!1
                 }
-                tableList.Add(wRule.LName, fieldDefs, "", true);
+                tableList.Add(wRule.CorrectName, fieldDefs, "", true);
             }
             //
-            return tableList[wRule.LName];
+            return tableList[wRule.CorrectName];
         }
 
         /// <summary>Создаём Point2d из Geometry.TGeometry.MyPoint</summary>
@@ -184,8 +186,8 @@ namespace RosReestrImp
             var acCurDb = acDoc.Database;
             using (var acTrans = acCurDb.TransactionManager.StartTransaction())
             {
-                BlockTable acBlkTbl = (BlockTable)acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead);
-                BlockTableRecord acBlkTblRec = (BlockTableRecord)acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], 
+                var acBlkTbl = (BlockTable)acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead);
+                var acBlkTblRec = (BlockTableRecord)acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], 
                     OpenMode.ForWrite);
                 acBlkTblRec.AppendEntity(ent);
                 acTrans.AddNewlyCreatedDBObject(ent, true);
@@ -198,12 +200,13 @@ namespace RosReestrImp
         /// <param name="wl"> слой </param>
         public void DrawLayer(Data.DataLayer wl)
         {
+            if (!wl.HasGeometry()) return;
             Autodesk.Gis.Map.ObjectData.Table wTbl = null;
             if (wl.HasAttributes()) wTbl = CreateOdTable(wl._Rule);
             foreach (var wr in wl.Table)
             {
                 var g = wr.GetGeometry();
-                if (g == null) continue;
+                if (g == null || g.IsEmpty() || !g.IsValid()) continue;
                 if (wl.HasAttributes()) AddAttr(DrawEntity(MakeGeometry(g)), wr, wTbl);
             }
         }
@@ -211,7 +214,7 @@ namespace RosReestrImp
         private string FilterString = "xml files (*.xml)|*.xml";
 
         /// <summary>Импорт xml росреестра, используется файл правил - rule.xml</summary>
-        [CommandMethod("ImportXML")]
+        [UsedImplicitly,CommandMethod("ImportXML")]
         public void ImportXml()
         {
             var rulePath = Assembly.GetExecutingAssembly().Location.Replace("RosReestrImp.dll", "rule.xml");
@@ -222,7 +225,7 @@ namespace RosReestrImp
         }
 
         /// <summary>Импорт xml росреестра, с запросом файла правил</summary>
-        [CommandMethod("ImportXMLwithRule")]
+        [UsedImplicitly,CommandMethod("ImportXMLwithRule")]
         public void ImportXmLwithRule()
         {
             var openFileDialog1 = new OpenFileDialog { Filter = FilterString };
