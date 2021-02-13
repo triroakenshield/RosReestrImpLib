@@ -18,7 +18,7 @@ namespace RRViewer1.kml
         private readonly ProjectionInfo _projection;
         private readonly DataLayer _layer;
 
-        /// <summary></summary>
+        /// <summary>Конструктор</summary>
         /// <param name="layer"></param>
         /// <param name="projection"></param>
         public KmlConverter(DataLayer layer, ProjectionInfo projection)
@@ -27,7 +27,7 @@ namespace RRViewer1.kml
             _layer = layer;
         }
 
-        /// <summary></summary>
+        /// <summary>Получить документ</summary>
         /// <returns></returns>
         public Document GetKmlDocument()
         {
@@ -75,13 +75,13 @@ namespace RRViewer1.kml
 
         private Point GetKml(TPoint point)
         {
-            var (xys, zs) = ReprojectGeometry(point);
+            var (xys, _) = ReprojectGeometry(point);
             return new Point() { Coordinate = new Vector(xys[0], xys[1]) };
         }
 
         private LineString GetKml(TLineString line)
         {
-            var (xys, zs) = ReprojectGeometry(line);
+            var (xys, _) = ReprojectGeometry(line);
             var kml = new LineString();
             var cc = new CoordinateCollection();
             for (var i = 0; i < line.Coords.Count; i++)
@@ -94,7 +94,7 @@ namespace RRViewer1.kml
 
         private LinearRing GetRingKml(TLineString line)
         {
-            var (xys, zs) = ReprojectGeometry(line);
+            var (xys, _) = ReprojectGeometry(line);
             var kml = new LinearRing();
             var cc = new CoordinateCollection();
             for (var i = 0; i < line.Coords.Count; i++)
@@ -108,22 +108,15 @@ namespace RRViewer1.kml
         private Geometry GetKml(TPolygon polygon)
         {
             if (polygon.Rings.Count == 0) return null;
-
             var outher = polygon.GetOuterBoundary();
-
             if (outher == null) return GetKml(polygon.AsCollection());
-
             var outherKml = new OuterBoundary { LinearRing = GetRingKml(outher) };
-
             var kml = new Polygon { OuterBoundary = outherKml };
-
             foreach (var ring in polygon.Rings)
             {
-                if (ring != outher)
-                {
-                    var inner = new InnerBoundary() { LinearRing = GetRingKml(ring) };
-                    var innerBoundaries = kml.InnerBoundary.Append<InnerBoundary>(inner);
-                }
+                if (ring == outher) continue;
+                var inner = new InnerBoundary() { LinearRing = GetRingKml(ring) };
+                var _ = kml.InnerBoundary.Append(inner);
             }
             return kml;
         }

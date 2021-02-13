@@ -13,7 +13,7 @@ namespace RRViewer1.kml
     {
         static readonly ProjectionInfo Wgs1984 = KnownCoordinateSystems.Geographic.World.WGS1984;
 
-        /// <summary></summary>
+        /// <summary>Получить документ</summary>
         /// <param name="layer"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
@@ -30,7 +30,7 @@ namespace RRViewer1.kml
             return document;
         }
 
-        /// <summary></summary>
+        /// <summary>Получить метку</summary>
         /// <param name="record"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
@@ -45,7 +45,7 @@ namespace RRViewer1.kml
             return feature;
         }
 
-        /// <summary></summary>
+        /// <summary>Получить точку</summary>
         /// <param name="point"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
@@ -62,7 +62,7 @@ namespace RRViewer1.kml
             return kmlPoint;
         }
 
-        /// <summary></summary>
+        /// <summary>Получить линию (не реализовано)</summary>
         /// <param name="line"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
@@ -71,7 +71,7 @@ namespace RRViewer1.kml
             return null;
         }
 
-        /// <summary></summary>
+        /// <summary>Получить кольцо</summary>
         /// <param name="ring"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
@@ -93,7 +93,7 @@ namespace RRViewer1.kml
             return kml;
         }
 
-        /// <summary></summary>
+        /// <summary>Получить полигон</summary>
         /// <param name="polygon"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
@@ -101,11 +101,8 @@ namespace RRViewer1.kml
         {
             if (projection == null) return null;
             if (polygon.Rings.Count == 0) return null;
-
             var outher = new OuterBoundary {LinearRing = polygon.Rings[0].GetRingKml(projection)};
-
             var kml = new Polygon {OuterBoundary = outher};
-
             return kml;
         }
     }
