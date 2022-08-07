@@ -65,7 +65,7 @@ namespace MITAB
             _fileName = fileName;
         }
 
-        private List<List<Vertex>> GetParts(TGeometry geom)
+        private static List<List<Vertex>> GetParts(TGeometry geom)
         {
             var res = new List<List<Vertex>>();
             List<Vertex> plist;
@@ -110,12 +110,7 @@ namespace MITAB
             return res;
         }
 
-        private List<string> GetFieldValues(MyRecord rec)
-        {
-            var res = new List<string>();
-            foreach (var f in rec.FieldList) if (!f.IsGeom) res.Add(f.GetString());
-            return res;
-        }
+        private static List<string> GetFieldValues(MyRecord rec) => (from f in rec.FieldList where !f.IsGeom select f.GetString()).ToList();
 
         /// <summary>Добавить сущность</summary>
         /// <param name="rec">Запись</param>
@@ -249,8 +244,8 @@ namespace MITAB
         /// <inheritdoc />
         public override string ToString() => $"Layer: {FileName}";
 
-        /// <summary>Writes this layers features to the given textwriter</summary>
-        /// <param name="writer">Destintation for the layers features</param>
+        /// <summary>Writes this layers features to the given text writer</summary>
+        /// <param name="writer">Destination for the layers features</param>
         public void ToText(TextWriter writer)
         {
             writer.WriteLine(this);

@@ -44,7 +44,7 @@ namespace RRViewer1.kml
         private Placemark GetKml(MyRecord record)
         {
             return new Placemark() { 
-                Name = record.Rule.Entpath, 
+                Name = record.Rule.EntPath, 
                 Geometry = GetKmlGeometry(record.GetGeometry()), 
                 Description = new Description() { Text = record.GetFieldsString() 
             }};

@@ -67,7 +67,7 @@ namespace RosReestrImp.Data
                 if (layersXmlNodeList == null) return Table;
                 foreach (XmlNode n in layersXmlNodeList)
                 {
-                    var layerXmlNodeList = n.SelectNodes(_Rule.Entpath, wNm);
+                    var layerXmlNodeList = n.SelectNodes(_Rule.EntPath, wNm);
                     if (layerXmlNodeList == null) continue;
                     foreach (XmlNode nn in layerXmlNodeList)
                     {

@@ -7,15 +7,15 @@ using RosReestrImp.Projections;
 namespace RRViewer1
 {
     /// <summary>Логика взаимодействия для Window1.xaml</summary>
-    public partial class SelectProjectionWindow : Window
+    public partial class SelectProjectionWindow
     {
-        Projections Projections;
+        private readonly Projections _projections;
         public ProjectionInfo SelectProjection = null;
 
         public SelectProjectionWindow()
         {
             InitializeComponent();
-            Projections = Projections.Load();
+            _projections = Projections.Load();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -24,7 +24,7 @@ namespace RRViewer1
             int Zone;
             if (int.TryParse(TB_Zone.Text, out Zone))
             {
-                SelectProjection = Projections.GetProjectionInfo(SKCode, Zone);
+                SelectProjection = _projections.GetProjectionInfo(SKCode, Zone);
                 TB_SelectProjection.Text = SelectProjection.ToProj4String();
             }
         }

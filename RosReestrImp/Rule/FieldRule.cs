@@ -212,23 +212,14 @@ namespace RosReestrImp.Rule
         /// <returns> Геометрия </returns>
         internal Geometry.TGeometry LoadGeometry(XmlNode wNode, XmlNamespaceManager wNm)
         {
-            switch (GetGeomType())
+            return GetGeomType() switch
             {
-                case Geometry.GeometryType.Point:
-                    return LoadPoint(wNode, wNm);
-
-                case Geometry.GeometryType.LineString:
-                    return LoadLineString(wNode, wNm);
-
-                case Geometry.GeometryType.Polygon:
-                    return LoadPolygon(wNode, wNm);
-
-                case Geometry.GeometryType.MultiPolygon:
-                    return LoadMultiPolygon(wNode, wNm);
-
-                default:
-                    return null;
-            }
+                Geometry.GeometryType.Point => LoadPoint(wNode, wNm),
+                Geometry.GeometryType.LineString => LoadLineString(wNode, wNm),
+                Geometry.GeometryType.Polygon => LoadPolygon(wNode, wNm),
+                Geometry.GeometryType.MultiPolygon => LoadMultiPolygon(wNode, wNm),
+                _ => null
+            };
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 //
 using RosReestrImp.Rule;
-using System.IO;
 
 namespace UnitTestProject1
 {
@@ -32,6 +31,5 @@ namespace UnitTestProject1
                 Assert.IsTrue(e.Message == "Ошибка чтения правила геометрии", "good");
             }
         }
-
     }
 }

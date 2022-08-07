@@ -26,7 +26,7 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - Polygon((x0 y0, x1 y1, ..., xn yn, x0 y0), ..., (...))</summary>
         /// <returns></returns>
-        public override string ToWKT2D() => IsEmpty() ? $"{TPolygon.Type} {TGeometry.Emp}" : $"{TPolygon.Type}({ToShortWKT2D()})";
+        public override string ToWKT2D() => IsEmpty() ? $"{Type} {Emp}" : $"{Type}({ToShortWKT2D()})";
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.Polygon</summary>
         /// <returns> TGeometry.GeometryType.Polygon </returns>
@@ -66,6 +66,6 @@ namespace RosReestrImp.Geometry
             return res == -1 ? null : Rings[res];
         }
 
-        public TGeometryCollection AsCollection() => new TGeometryCollection(Rings.Select(l=>(TGeometry) l).ToList());
+        public TGeometryCollection AsCollection() => new(Rings.Select(l=>(TGeometry)l).ToList());
     }
 }

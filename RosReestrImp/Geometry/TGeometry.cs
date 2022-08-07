@@ -62,10 +62,7 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Получение wkt-строки с 2d геометрией</summary>
         /// <returns></returns>
-        public string ToWKT2D()
-        {
-            return $"{X.ToString(CultureInfo.InvariantCulture)} {Y.ToString(CultureInfo.InvariantCulture)}";
-        }
+        public string ToWKT2D() => $"{X:InvariantCulture} {Y:InvariantCulture}";
     }
 
     /// <summary>Внутренний формат для представления геометрии</summary>
@@ -83,7 +80,7 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Получение короткой wkt-строки с 2d геометрией</summary>
         /// <returns></returns>
-        public virtual string ToShortWKT2D() => $"{TGeometry.Type} {TGeometry.Emp}";
+        public virtual string ToShortWKT2D() => $"{Type} {Emp}";
 
         /// <summary>Получение геометрии в виде wkt-строки (2D)</summary>
         /// <returns> wkt-строка (2D) </returns>

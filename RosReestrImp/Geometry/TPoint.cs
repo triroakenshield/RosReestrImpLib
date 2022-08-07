@@ -37,7 +37,7 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - POINT(X Y)</summary>
         /// <returns> wkt-строка (2D) - POINT(X Y) </returns>
-        public override string ToWKT2D() => IsEmpty() ? $"{TPoint.Type} {TGeometry.Emp}" : $"{TPoint.Type}({ToShortWKT2D()})";
+        public override string ToWKT2D() => IsEmpty() ? $"{Type} {Emp}" : $"{Type}({ToShortWKT2D()})";
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.Point</summary>
         /// <returns> TGeometry.GeometryType.Point </returns>
@@ -47,7 +47,7 @@ namespace RosReestrImp.Geometry
 
         public override double[] GetZArray() => new[] { Coord.Z };
 
-        public override TMBR GetMBR() => new TMBR(Coord);
+        public override TMBR GetMBR() => new(Coord);
 
         public override bool IsValid() => true;
     }

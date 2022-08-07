@@ -26,7 +26,7 @@ namespace RRViewer1
         public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance)
         {
             ICustomTypeDescriptor defaultDescriptor = base.GetTypeDescriptor(objectType, instance);
-            return _instance == null ? defaultDescriptor : _instance;
+            return _instance ?? defaultDescriptor;
         }
     }
 }

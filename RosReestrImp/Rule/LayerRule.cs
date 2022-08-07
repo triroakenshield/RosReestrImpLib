@@ -17,7 +17,7 @@ namespace RosReestrImp.Rule
         internal string LayerPath;
 
         /// <summary>Путь элементов слоя, атрибут EntPath</summary>
-        public string Entpath; 
+        public string EntPath; 
 
         /// <summary>Список полей слоя</summary>
         public List<FieldRule> FieldList; 
@@ -46,7 +46,7 @@ namespace RosReestrImp.Rule
         {
                 LName = GetElAttr(wEl, "Name");
                 LayerPath = GetElAttr(wEl, "LayerPath");
-                Entpath = GetElAttr(wEl, "EntPath");
+                EntPath = GetElAttr(wEl, "EntPath");
                 FieldList = new List<FieldRule>();
                 foreach (XmlElement ch in wEl.ChildNodes)
                 {

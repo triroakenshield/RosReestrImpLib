@@ -59,8 +59,7 @@ namespace RosReestrImp.Geometry
 
         public override string ToWKT2D()
         {
-            return IsEmpty() ? $"{TGeometryCollection.Type} {TGeometry.Emp}" 
-                : $"{TGeometryCollection.Type}({ToShortWKT2D()})";
+            return IsEmpty() ? $"{Type} {Emp}" : $"{Type}({ToShortWKT2D()})";
         }
     }
 }

@@ -24,8 +24,8 @@ namespace UnitTestProject1
 
         [TestMethod] public void LoadData1()
         {
-            RuleManager wRM = new RuleManager("Schema\\testList3.xml");
-            List<DataLayer> res = wRM.LoadData("doc9415874.xml");
+            var wRM = new RuleManager("Schema\\testList3.xml");
+            var res = wRM.LoadData("doc9415874.xml");
             var dl1 = new MyLayerDataView(res[0]);
             var r1 = dl1[0] as MyRecordView;
             var dl2 = new MyLayerDataView(res[1]);
@@ -38,20 +38,20 @@ namespace UnitTestProject1
 
         [TestMethod] public void CreateTLineString()
         {
-            List<MyPoint> nCoords = new List<MyPoint>();
+            var nCoords = new List<MyPoint>();
             nCoords.Add(new MyPoint(1, 1, 1));
             nCoords.Add(new MyPoint(2, 2, 2));
             nCoords.Add(new MyPoint(3, 3, 3));
             nCoords.Add(new MyPoint(4, 4, 4));
-            TLineString nLS = new TLineString(nCoords);
+            var nLS = new TLineString(nCoords);
             Assert.IsTrue(true, "good");
         }
 
         public XmlNamespaceManager LoadNamespace(XmlDocument wDoc)
         {
-            XmlNamespaceManager res = new XmlNamespaceManager(wDoc.NameTable);
+            var res = new XmlNamespaceManager(wDoc.NameTable);
             res.PopScope();
-            XmlElement rNode = wDoc.DocumentElement;
+            var rNode = wDoc.DocumentElement;
             string nStr;
             foreach (XmlAttribute attr in rNode.Attributes)
             {
@@ -73,17 +73,17 @@ namespace UnitTestProject1
 
         [TestMethod] public void TestXPath1()
         {
-            XmlDocument wDoc = new XmlDocument();
+            var wDoc = new XmlDocument();
             wDoc.Load("doc9415874.xml");
-            XmlElement wNode = wDoc.DocumentElement;
-            XmlNamespaceManager wNM = this.LoadNamespace(wDoc);
-            XmlNode XmlNode1 = wDoc.DocumentElement.SelectSingleNode("//ns:ObjectsRealty//ns:EntitySpatial", wNM);
+            var wNode = wDoc.DocumentElement;
+            var wNM = this.LoadNamespace(wDoc);
+            var XmlNode1 = wDoc.DocumentElement.SelectSingleNode("//ns:ObjectsRealty//ns:EntitySpatial", wNM);
             Assert.IsTrue(true, "good");
         }
 
         [TestMethod] public void TestHashSet()
         {
-            HashSet<object> tSet = new HashSet<object>
+            var tSet = new HashSet<object>
             {
                 1,
                 2,
@@ -115,7 +115,7 @@ namespace UnitTestProject1
             placemark.Name = "Machu Picchu";
 
             // This allows us to save and Element easily.
-            KmlFile kml = KmlFile.Create(placemark, false);
+            var kml = KmlFile.Create(placemark, false);
             using (var stream = System.IO.File.OpenWrite("my placemark.kml"))
             {
                 kml.Save(stream);
@@ -124,12 +124,12 @@ namespace UnitTestProject1
 
         [TestMethod] public void TestReadBigXml()
         {
-            string path = @"C:\work1\21_00_000000_2018-02-16_kpt10.xml";
+            var path = @"C:\work1\21_00_000000_2018-02-16_kpt10.xml";
             var fstream = File.OpenRead(path);
-            StreamWriter sw = new StreamWriter(@"C:\work1\test1.txt");
+            var sw = new StreamWriter(@"C:\work1\test1.txt");
             for (var i=0; i<100;i++)
             {
-                byte[] bb = new byte[256];
+                var bb = new byte[256];
                 fstream.Read(bb, 0, 256);
                 sw.WriteLine(System.Text.Encoding.UTF8.GetString(bb));
             }
@@ -146,7 +146,7 @@ namespace UnitTestProject1
             //ASCIIEncoding.Unicode.
             var l2 = str1.Length;
             var z = 0;
-            string gg = "";
+            var gg = "";
             for (var i = 0; i < str1.Length; i++)
             {
                 z += Encoding.Unicode.GetByteCount(str1[i].ToString());

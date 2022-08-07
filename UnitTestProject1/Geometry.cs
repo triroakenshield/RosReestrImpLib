@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,65 +9,65 @@ namespace UnitTestProject1
     public partial class UnitTest1
     {
 
-        [TestCategoryAttribute("Geometry"), TestMethod] //TestCategoryAttribute("RuleManager"), 
+        [TestCategory("Geometry"), TestMethod] //TestCategoryAttribute("RuleManager"), 
         public void TestMyPointWKT()
         {
-            MyPoint p = new MyPoint(11.111, 22.222);
-            string test = p.ToWKT2D();
+            var p = new MyPoint(11.111, 22.222);
+            var test = p.ToWKT2D();
             Assert.IsTrue(true, "good");
         }
 
-        [TestCategoryAttribute("Geometry"), TestMethod] //TestCategoryAttribute("RuleManager"), 
+        [TestCategory("Geometry"), TestMethod] //TestCategoryAttribute("RuleManager"), 
         public void TestTLineStringToShortWKT2D()
         {
-            TLineString ls = new TLineString(new List<MyPoint>(){
-            new MyPoint(11.111, 22.222),
-            new MyPoint(33.333, 44.444),
-            new MyPoint(55.555, 66.666)
+            var ls = new TLineString(new List<MyPoint>(){
+            new(11.111, 22.222),
+            new(33.333, 44.444),
+            new(55.555, 66.666)
             });
-            string test1 = ls.ToShortWKT2D();
-            string test2 = ls.ToWKT2D();
-            string test3 = ls.RingToShortWKT2D();
-            string test4 = ls.RingToWKT2D();
+            var test1 = ls.ToShortWKT2D();
+            var test2 = ls.ToWKT2D();
+            var test3 = ls.RingToShortWKT2D();
+            var test4 = ls.RingToWKT2D();
             Assert.IsTrue(true, "good");
         }
 
-        [TestCategoryAttribute("Geometry"), TestMethod] //TestCategoryAttribute("RuleManager"), 
+        [TestCategory("Geometry"), TestMethod] //TestCategoryAttribute("RuleManager"), 
         public void TestMTPolygonToShortWKT2D()
         {
-            TLineString ls1 = new TLineString(new List<MyPoint>(){
-            new MyPoint(0, 0),
-            new MyPoint(1, 0),
-            new MyPoint(1, 1),
-            new MyPoint(0, 1) });
+            var ls1 = new TLineString(new List<MyPoint>(){
+            new(0, 0),
+            new(1, 0),
+            new(1, 1),
+            new(0, 1) });
 
-            TLineString ls2 = new TLineString(new List<MyPoint>(){
-            new MyPoint(0.25, 0.25),
-            new MyPoint(0.75, 0.25),
-            new MyPoint(0.75, 0.75),
-            new MyPoint(0.25, 0.75) });
+            var ls2 = new TLineString(new List<MyPoint>(){
+            new(0.25, 0.25),
+            new(0.75, 0.25),
+            new(0.75, 0.75),
+            new(0.25, 0.75) });
 
-            TPolygon poly = new TPolygon(new List<TLineString>() { ls1, ls2 });
-            string test1 = poly.ToShortWKT2D();
-            string test2 = poly.ToWKT2D();
-            string tp = poly.GetType().ToString();
+            var poly = new TPolygon(new List<TLineString>() { ls1, ls2 });
+            var test1 = poly.ToShortWKT2D();
+            var test2 = poly.ToWKT2D();
+            var tp = poly.GetType().ToString();
             Assert.IsTrue(true, "good");
         }
 
-        [TestCategoryAttribute("Geometry"), TestMethod] //TestCategoryAttribute("RuleManager"), 
+        [TestCategory("Geometry"), TestMethod] //TestCategoryAttribute("RuleManager"), 
         public void TestGeometryType()
         {
             var np = new TPoint(0, 0);
-            string tp = np.GetType().ToString();
+            var tp = np.GetType().ToString();
 
             var nl = new TLineString(new List<MyPoint>()
             {
-                new MyPoint(11.111, 22.222),
-                new MyPoint(33.333, 44.444),
-                new MyPoint(55.555, 66.666)
+                new(11.111, 22.222),
+                new(33.333, 44.444),
+                new(55.555, 66.666)
             });
 
-            string tl = nl.GetType().ToString();
+            var tl = nl.GetType().ToString();
             Assert.IsTrue(true, "good");
         }
     }

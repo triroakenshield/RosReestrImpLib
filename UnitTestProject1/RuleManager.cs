@@ -1,32 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using RosReestrImp.Data;
 //
 using RosReestrImp.Rule;
-using RosReestrImp.Geometry;
-using RosReestrImp.Data;
 
 namespace UnitTestProject1
 {
     public partial class UnitTest1
     {
 
-        [TestCategoryAttribute("RuleManager"), TestMethod] //TestCategoryAttribute("RuleManager"), 
+        [TestCategory("RuleManager"), TestMethod] //TestCategoryAttribute("RuleManager"), 
         public void LoadRuleManager1()
         {
-            RuleManager wRM = new RuleManager("Schema\\testList1.xml");
+            var wRM = new RuleManager("Schema\\testList1.xml");
             Assert.IsNotNull(wRM, "good");
         }
 
-        [TestCategoryAttribute("RuleManager"), TestCategoryAttribute("RuleLoadException"), TestMethod]
+        [TestCategory("RuleManager"), TestCategory("RuleLoadException"), TestMethod]
         public void LoadErrorXML()
         {
             try
             {
-                RuleManager wRM = new RuleManager("Schema\\errorxml.xml");
+                var wRM = new RuleManager("Schema\\errorxml.xml");
             }
             catch (RuleLoadException e)
             {
@@ -34,12 +31,12 @@ namespace UnitTestProject1
             }
         }
 
-        [TestCategoryAttribute("RuleManager"), TestCategoryAttribute("RuleLoadException"), TestMethod]
+        [TestCategory("RuleManager"), TestCategory("RuleLoadException"), TestMethod]
         public void LoadEmpRule()
         {
             try
             {
-                RuleManager wRM = new RuleManager("Schema\\empty.xml");
+                var wRM = new RuleManager("Schema\\empty.xml");
             }
             catch (RuleLoadException e)
             {
@@ -47,12 +44,12 @@ namespace UnitTestProject1
             }
         }
 
-        [TestCategoryAttribute("RuleManager"), TestCategoryAttribute("RuleLoadException"), TestMethod]
+        [TestCategory("RuleManager"), TestCategory("RuleLoadException"), TestMethod]
         public void LoadEmpShema()
         {
             try
             {
-                RuleManager wRM = new RuleManager("Schema\\emptyShema.xml");
+                var wRM = new RuleManager("Schema\\emptyShema.xml");
             }
             catch (RuleLoadException e)
             {
@@ -60,13 +57,13 @@ namespace UnitTestProject1
             }
         }
 
-        [TestCategoryAttribute("DataLayer"), TestCategoryAttribute("DataLoadException"), TestMethod]
+        [TestCategory("DataLayer"), TestCategory("DataLoadException"), TestMethod]
         public void LoadEmpLayer()
         {
             try
             {
-                RuleManager wRM = new RuleManager("Schema\\emptyLayer.xml");
-                List<DataLayer> res = wRM.LoadData("doc9415874.xml");
+                var wRM = new RuleManager("Schema\\emptyLayer.xml");
+                var res = wRM.LoadData("doc9415874.xml");
             }
             catch (DataLoadException e)
             {
@@ -74,12 +71,12 @@ namespace UnitTestProject1
             }
         }
 
-        [TestCategoryAttribute("RuleLoadException"), TestMethod]
+        [TestCategory("RuleLoadException"), TestMethod]
         public void LoadShemaRule_rootElem()
         {
             try
             {
-                RuleManager wRM = new RuleManager("Schema\\rootElem.xml");
+                var wRM = new RuleManager("Schema\\rootElem.xml");
             }
             catch (RuleLoadException e)
             {

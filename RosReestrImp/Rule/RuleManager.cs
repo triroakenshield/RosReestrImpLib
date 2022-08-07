@@ -16,7 +16,7 @@ namespace RosReestrImp.Rule
         public RuleManager(XmlDocument wDoc)
         {
             _ShemaList = new List<ShemaRule>();
-            XmlElement wNode = wDoc.DocumentElement;
+            var wNode = wDoc.DocumentElement;
             if (wNode != null && wNode.Name == "ShemaList")
             {
                 foreach (XmlElement ch in wNode.ChildNodes)

@@ -38,11 +38,11 @@ namespace RosReestrImp.Geometry
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0])  </summary>
         /// <returns> wkt-строка (2D) - LineString(x0 y0, x1 y1, ..., xn yn[, x0 y0]) </returns>
-        public override string ToWKT2D() => IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({ToShortWKT2D()})";
+        public override string ToWKT2D() => IsEmpty() ? $"{Type} {Emp}" : $"{Type}({ToShortWKT2D()})";
 
         /// <summary>Получение wkt-строки (2D) для кольца</summary>
         /// <returns></returns>
-        public string RingToWKT2D() => IsEmpty() ? $"{TLineString.Type} {TGeometry.Emp}" : $"{TLineString.Type}({RingToShortWKT2D()})";
+        public string RingToWKT2D() => IsEmpty() ? $"{Type} {Emp}" : $"{Type}({RingToShortWKT2D()})";
 
         /// <summary>Тип геометрии, всегда возвращает - TGeometry.GeometryType.LineString</summary>
         /// <returns> TGeometry.GeometryType.LineString </returns>

@@ -71,11 +71,9 @@ namespace RRViewer1
         /// <inheritdoc />
         public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
-            if (_owner != null)
-            {
-                return new PropertyDescriptorCollection(_owner.FieldList.Select(f => new MyFieldPropertyDescriptor(f)).ToArray<PropertyDescriptor>());
-            }
-            else return new PropertyDescriptorCollection(_rule.FieldList.Select(f => new MyFieldPropertyDescriptor(f)).ToArray<PropertyDescriptor>());
+            return _owner != null 
+                ? new PropertyDescriptorCollection(_owner.FieldList.Select(f => new MyFieldPropertyDescriptor(f)).ToArray<PropertyDescriptor>()) 
+                : new PropertyDescriptorCollection(_rule.FieldList.Select(f => new MyFieldPropertyDescriptor(f)).ToArray<PropertyDescriptor>());
         }
 
         /// <inheritdoc />
