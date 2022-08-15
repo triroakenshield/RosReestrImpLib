@@ -13,6 +13,7 @@ namespace RosReestrImp.Data
         /// <summary>Правило загрузки данных</summary>
         public Rule.FieldRule Rule => _Rule;
 
+        /// <summary>Имя поля</summary>
         public string FName => _Rule.FName;
 
         /// <summary>Значение поля</summary>

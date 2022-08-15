@@ -88,6 +88,8 @@ namespace RosReestrImp.Data
         /// <returns></returns>
         public bool HasAttributes() => _Rule.FieldList.Exists(f => !f.IsGeom);
 
+        /// <summary>Признак наличия геометрии</summary>
+        /// <returns></returns>
         public bool HasGeometry() => Table.Any(r => r.HasGeometry());
 
         /// <summary>Получение таблицы значений слоя (список списков)</summary>

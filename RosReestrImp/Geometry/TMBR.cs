@@ -74,6 +74,13 @@ namespace RosReestrImp.Geometry
             maxy = Math.Max(maxy, nmbr.maxy);
         }
 
-        public bool Contains(TMBR r) => !(maxx < r.maxx) && !(minx > r.minx) && !(maxy < r.maxy) && !(miny > r.miny);
+        /// <summary>Содержит ли этот MBR - MBR r</summary>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        public bool Contains(TMBR r) => 
+            !(maxx < r.maxx) && 
+            !(minx > r.minx) && 
+            !(maxy < r.maxy) && 
+            !(miny > r.miny);
     }
 }

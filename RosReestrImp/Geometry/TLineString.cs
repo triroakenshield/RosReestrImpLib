@@ -28,8 +28,10 @@ namespace RosReestrImp.Geometry
             nCoords.ForEach(p => Coords.Add(new MyPoint(p.Coord)));
         }
 
+        /// <inheritdoc/>
         public override bool IsEmpty() => Coords.Count == 0;
 
+        /// <inheritdoc/>
         public override string ToShortWKT2D() => string.Join(", ", Coords.Select(p => p.ToWKT2D()));
 
         /// <summary>Получение короткой wkt-строки (2D) для кольца (без типа)</summary>
@@ -48,6 +50,7 @@ namespace RosReestrImp.Geometry
         /// <returns> TGeometry.GeometryType.LineString </returns>
         public override GeometryType GetGeometryType() => GeometryType.LineString;
 
+        /// <inheritdoc/>
         public override double[] GetXYArray()
         {
             var arr = new double[Coords.Count*2];
@@ -59,6 +62,7 @@ namespace RosReestrImp.Geometry
             return arr;
         }
 
+        /// <inheritdoc/>
         public override double[] GetZArray()
         {
             var arr = new double[Coords.Count];
@@ -69,6 +73,7 @@ namespace RosReestrImp.Geometry
             return arr;
         }
 
+        /// <inheritdoc/>
         public override TMBR GetMBR()
         {
             TMBR res = null;
@@ -80,6 +85,7 @@ namespace RosReestrImp.Geometry
             return res;
         }
 
+        /// <inheritdoc/>
         public override bool IsValid() => Coords.Count > 1;
     }
 }

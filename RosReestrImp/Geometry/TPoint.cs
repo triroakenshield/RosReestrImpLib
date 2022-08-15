@@ -31,8 +31,10 @@ namespace RosReestrImp.Geometry
             Coord.Z = 0;
         }
 
+        /// <inheritdoc/>
         public override bool IsEmpty() => false;
 
+        /// <inheritdoc/>
         public override string ToShortWKT2D() => Coord.ToWKT2D();
 
         /// <summary>Получение геометрии в виде wkt-строки (2D) - POINT(X Y)</summary>
@@ -43,12 +45,16 @@ namespace RosReestrImp.Geometry
         /// <returns> TGeometry.GeometryType.Point </returns>
         public override GeometryType GetGeometryType() => GeometryType.Point;
 
+        /// <inheritdoc/>
         public override double[] GetXYArray() => new[] { Coord.X, Coord.Y };
 
+        /// <inheritdoc/>
         public override double[] GetZArray() => new[] { Coord.Z };
 
-        public override TMBR GetMBR() => new(Coord);
+        /// <inheritdoc/>
+        public override TMBR GetMBR() => new TMBR(Coord);
 
+        /// <inheritdoc/>
         public override bool IsValid() => true;
     }
 }

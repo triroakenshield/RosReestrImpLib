@@ -1,13 +1,21 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using RosReestrImp.Geometry;
+// ReSharper disable InconsistentNaming
 
 namespace RosReestrImp.Acad
 {
+    /// <summary>Расширения для экспорта геометрии в AutoCAD</summary>
     public static class GeometryExtensions
     {
-        public static Point2d GetPoint2d(this MyPoint wp) => new(wp.X, wp.Y);
+        /// <summary>Конвертируем внутреннею структура MyPoint в AutoCAD-структуру Point2d</summary>
+        /// <param name="wp">структура MyPoint</param>
+        /// <returns></returns>
+        public static Point2d GetPoint2d(this MyPoint wp) => new Point2d(wp.X, wp.Y);
 
+        /// <summary>Конвертируем линию в MPolygon</summary>
+        /// <param name="wLine"></param>
+        /// <returns></returns>
         public static MPolygonLoop GetMPolygonLoop(this TLineString wLine)
         {
             var res = new MPolygonLoop();
@@ -15,15 +23,22 @@ namespace RosReestrImp.Acad
             return res;
         }
 
-        public static MPolygonLoopCollection GetMPolygonLoopCollection(this TPolygon wPoly)
+        private static MPolygonLoopCollection GetMPolygonLoopCollection(this TPolygon wPoly)
         {
             var res = new MPolygonLoopCollection();
             wPoly.Rings.ForEach(wl => res.Add(wl.GetMPolygonLoop()));
             return res;
         }
 
-        public static DBPoint GetDBPoint(this TPoint wp) => new(new Point3d(wp.Coord.X, wp.Coord.Y, wp.Coord.Z));
+        /// <summary>Конвертируем объект точки в точку AutoCAD'а</summary>
+        /// <param name="wp"></param>
+        /// <returns></returns>
+        public static DBPoint GetDBPoint(this TPoint wp) 
+            => new DBPoint(new Point3d(wp.Coord.X, wp.Coord.Y, wp.Coord.Z));
 
+        /// <summary>Конвертируем линию в полилинию AutoCAD'а</summary>
+        /// <param name="wl"></param>
+        /// <returns></returns>
         public static Polyline GetPolyline(this TLineString wl)
         {
             var nPoly = new Polyline();
@@ -31,6 +46,9 @@ namespace RosReestrImp.Acad
             return nPoly;
         }
 
+        /// <summary>Конвертируем полигон в MPolygon</summary>
+        /// <param name="wp"></param>
+        /// <returns></returns>
         public static MPolygon GetMPolygon(this TPolygon wp)
         {
             var mpoly = new MPolygon();
@@ -46,6 +64,9 @@ namespace RosReestrImp.Acad
             return mpoly;
         }
 
+        /// <summary>Конвертируем внутреннею геометрию в примитив AutoCAD'а</summary>
+        /// <param name="wg"></param>
+        /// <returns></returns>
         public static Entity GetEntity(this TGeometry wg)
         {
             return wg.GetGeometryType() switch

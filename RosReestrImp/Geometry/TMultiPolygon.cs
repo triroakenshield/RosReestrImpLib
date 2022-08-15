@@ -17,14 +17,19 @@ namespace RosReestrImp.Geometry
             Geometries.AddRange(nPolygons.GetRange(0, nPolygons.Count)); 
         }
 
+        /// <inheritdoc/>
         public override bool IsEmpty() => Geometries is not { Count: > 0 };
 
+        /// <inheritdoc/>
         public override GeometryType GetGeometryType() => GeometryType.MultiPolygon;
 
+        /// <inheritdoc/>
         public override double[] GetXYArray() => null;
 
+        /// <inheritdoc/>
         public override double[] GetZArray() => null;
 
+        /// <inheritdoc/>
         public override TMBR GetMBR()
         {
             TMBR res = null;
@@ -36,14 +41,18 @@ namespace RosReestrImp.Geometry
             return res;
         }
 
+        /// <inheritdoc/>
         public override bool IsValid()
         {
             if (Geometries == null) return false;
             return Geometries.Count > 0 && Geometries.All(ls => ls.IsValid());
         }
 
-        public override string ToShortWKT2D() => string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
+        /// <inheritdoc/>
+        public override string ToShortWKT2D() 
+            => string.Join(", ", Geometries.Select(p => $"({p.ToShortWKT2D()})"));
 
+        /// <inheritdoc/>
         public override string ToWKT2D()  => IsEmpty() ? $"{Type} {Emp}" : $"{Type}({ToShortWKT2D()})";
     }
 }
